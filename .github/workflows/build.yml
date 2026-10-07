@@ -1,0 +1,25 @@
+name: Build Stelau static site
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+  schedule:
+    - cron: '15 5 * * *'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run verify
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stelau-static-site
+          path: dist
+          retention-days: 7

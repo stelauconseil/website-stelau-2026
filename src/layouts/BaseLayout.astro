@@ -1,0 +1,35 @@
+---
+import '@fontsource-variable/inter';
+import '@/styles/global.css';
+import Nav from '@/components/Nav/Nav.astro';
+import Footer from '@/components/Footer/Footer.astro';
+import Search from '@/components/Search/Search.astro';
+import {localeFromUrl,alternate,type Locale} from '@/config/site';
+interface Props {title:string;description:string;lang?:Locale;image?:string;noindex?:boolean;}
+const {title,description,lang=localeFromUrl(Astro.url),image='/social-card.jpg',noindex=false}=Astro.props;
+const canonical=new URL(Astro.url.pathname,Astro.site);
+const alt=new URL(alternate(Astro.url.pathname,lang),Astro.site);
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>{title.includes('Stelau')?title:`${title} — Stelau`}</title><meta name="description" content={description}/>
+  <meta name="theme-color" content="#212529"/><link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+  <link rel="canonical" href={canonical}/><link rel="alternate" hreflang={lang} href={canonical}/><link rel="alternate" hreflang={lang==='fr'?'en':'fr'} href={alt}/><link rel="alternate" hreflang="x-default" href={lang==='fr'?canonical:alt}/>
+  <link rel="alternate" type="application/rss+xml" href={lang==='fr'?'/rss.xml':'/en/rss.xml'} title={lang==='fr'?'Blog Stelau':'Stelau Journal'}/>
+  <meta property="og:type" content="website"/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:url" content={canonical}/><meta property="og:image" content={new URL(image,Astro.site)}/><meta property="og:locale" content={lang==='fr'?'fr_FR':'en_GB'}/><meta name="twitter:card" content="summary_large_image"/>
+  {noindex&&<meta name="robots" content="noindex,follow"/>}
+  <script is:inline>
+    (()=>{let preference='system';try{preference=localStorage.getItem('stelau-theme')||'system';}catch{}const dark=preference==='dark'||(preference==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',dark);document.documentElement.dataset.theme=preference;})();
+  </script>
+  <slot name="head"/>
+</head>
+<body>
+  <a class="skip-link" href="#main">{lang==='fr'?'Aller au contenu':'Skip to content'}</a>
+  <Nav lang={lang}/><main id="main" data-pagefind-body={noindex?undefined:''}><slot/></main><Footer lang={lang}/><Search lang={lang}/>
+  <script>
+    document.querySelectorAll<HTMLAnchorElement>('a[target="_blank"]').forEach(a=>a.rel='noopener noreferrer');
+  </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+---
+import {render} from 'astro:content';import BlogLayout from '@/layouts/BlogLayoutLeft.astro';import {getAllPosts,postSlug} from '@/js/blogUtils';
+export async function getStaticPaths(){return (await getAllPosts('fr')).map(post=>({params:{slug:postSlug(post)},props:{post}}));}
+const {post}=Astro.props;const {Content,headings}=await render(post);
+---
+<BlogLayout post={post} headings={headings} lang="fr"><Content/></BlogLayout>

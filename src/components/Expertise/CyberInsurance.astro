@@ -1,0 +1,124 @@
+---
+import Arrow from '@/components/Arrow.astro';
+import Icon from '@/components/Icon/Icon.astro';
+import { href, type Locale } from '@/config/site';
+const { lang } = Astro.props as { lang: Locale };
+const fr = lang === 'fr';
+const sections = [
+  { id: 'metier', fr: 'Un métier, une responsabilité', en: 'A profession, a responsibility' },
+  { id: 'deontologie', fr: 'Déontologie et vérité', en: 'Ethics and truth' },
+  { id: 'materialite', fr: 'Matérialité et mécanismes', en: 'Evidence and mechanisms' },
+  { id: 'causalite', fr: 'Causalité et sinistre', en: 'Causation and loss' },
+  { id: 'missions', fr: 'Nos missions avec IXI-Plus', en: 'Our work with IXI-Plus' },
+  { id: 'transmission', fr: 'Transmettre le métier', en: 'Passing on the profession' },
+];
+const questionIcons = ['magnifying-glass','share-nodes','link'] as const;
+const questions = fr ? [
+  ['01 / Matérialité', 'Quels faits établissent l’attaque ?', 'Identifier, examiner et documenter les traces disponibles.'],
+  ['02 / Mécanismes', 'Comment a-t-elle fonctionné ?', 'Reconstituer la chronologie et expliquer les mécanismes techniques.'],
+  ['03 / Causalité', 'A-t-elle causé le sinistre ?', 'Examiner le lien entre les événements et les dommages déclarés.'],
+] : [
+  ['01 / Evidence', 'What establishes that an attack occurred?', 'Identify, examine and document the available evidence.'],
+  ['02 / Mechanisms', 'How did it work?', 'Reconstruct the timeline and explain the technical mechanisms.'],
+  ['03 / Causation', 'Did it cause the loss?', 'Examine the link between events and the reported damage.'],
+];
+---
+<section class="container page-intro insurance-intro">
+  <a class="back-link" href={href(lang,'expertise')+'conseil/'}>← {fr?'Conseil & expertise':'Advice & expertise'}</a>
+  <p class="eyebrow">IXI-Plus / {fr?'Expertise professionnelle':'Professional expertise'}</p>
+  <h1>{fr?'Expertise cybersécurité.':'Cybersecurity expertise.'}<br/><em>{fr?'Pour l’assurance.':'For insurance.'}</em></h1>
+  <p class="lead">{fr?'Établir les faits, comprendre les mécanismes d’une attaque et examiner leur lien causal avec un sinistre. Au sein du réseau IXI-Plus, Stelau apporte une expertise technique guidée par la rigueur, la déontologie et la manifestation de la vérité.':'Establish the facts, understand an attack’s mechanisms and examine their causal link to a loss. Within the IXI-Plus network, Stelau provides technical expertise guided by rigour, professional ethics and a commitment to establishing the truth.'}</p>
+</section>
+<section class="container insurance-questions" aria-label={fr?'Les trois questions de l’expertise':'Three questions guiding an expert assessment'}>
+  {questions.map(([label,title,description],i)=><div class="insurance-question"><div class="insurance-question-top"><p class="eyebrow">{label}</p><span class="insurance-icon-tile"><Icon name={questionIcons[i]} size={38}/></span></div><h2>{title}</h2><p>{description}</p></div>)}
+</section>
+<div class="container article-grid section-space insurance-article">
+  <aside class="article-aside" data-pagefind-ignore><nav aria-label={fr?'Sur cette page':'On this page'}>{sections.map(s=><a href={'#'+s.id}>{s[lang]}</a>)}</nav><a class="text-link insurance-contact-link" href={href(lang,'contact')}>{fr?'Parlons de votre mission':'Discuss your assignment'}<Arrow /></a></aside>
+  <div class="prose insurance-copy">
+    <section id="metier">
+      <h2 class="insurance-section-title"><span class="insurance-heading-icon"><Icon name="briefcase" size={28}/></span><span>{fr?'Un métier, une responsabilité.':'A profession, a responsibility.'}</span></h2>
+      <p>{fr?'Être expert en cybersécurité mobilise une compétence technique, une expérience de terrain et une méthode d’investigation. Cela engage aussi une responsabilité professionnelle : examiner les faits avec discernement, expliciter son raisonnement et rendre des conclusions étayées, compréhensibles et vérifiables.':'Working as a cybersecurity expert calls for technical competence, practical experience and an investigative method. It also entails professional responsibility: examine facts carefully, explain the reasoning and produce substantiated, understandable and verifiable conclusions.'}</p>
+      <p>{fr?'Cette activité d’expertise pour l’assurance s’exerce dans le cadre d’une mission définie avec le mandant. Elle se distingue de l’expertise judiciaire confiée par un juge à un expert désigné par un tribunal. Son cadre propre n’atténue ni les exigences de rigueur ni l’engagement déontologique de l’expert.':'This work for insurance is carried out within the scope of an agreed assignment. It is distinct from a judicial expert assessment commissioned by a judge through appointment by a court in France. Its own framework carries demanding standards of rigour and professional ethics.'}</p>
+    </section>
+    <section id="deontologie">
+      <h2 class="insurance-section-title"><span class="insurance-heading-icon"><Icon name="compass" size={28}/></span><span>{fr?'La manifestation de la vérité comme engagement.':'A commitment to establishing the truth.'}</span></h2>
+      <p>{fr?'Notre démarche vise à contribuer à la manifestation de la vérité : établir ce que les éléments disponibles permettent de démontrer, examiner les hypothèses concurrentes et signaler ce qui demeure incertain. Les conclusions suivent les faits, y compris lorsqu’ils conduisent à revoir l’hypothèse initiale.':'Our approach seeks to establish the truth: determine what the available evidence supports, examine competing hypotheses and identify what remains uncertain. Conclusions follow the facts, including when those facts require the initial hypothesis to be revised.'}</p>
+      <ul class="insurance-ethics">
+        <li class="ethics-card"><span class="ethics-icon"><Icon name="eye" size={28}/></span><h3>{fr?'Objectivité et impartialité':'Objectivity and impartiality'}</h3><p>{fr?'Conserver son indépendance de jugement et identifier les conflits d’intérêts.':'Exercise independent judgement and identify conflicts of interest.'}</p></li>
+        <li class="ethics-card"><span class="ethics-icon"><Icon name="clipboard-check" size={28}/></span><h3>{fr?'Rigueur et traçabilité':'Rigour and traceability'}</h3><p>{fr?'Documenter les sources, les opérations réalisées et le raisonnement qui relie les constats aux conclusions.':'Document sources, investigative steps and the reasoning connecting findings to conclusions.'}</p></li>
+        <li class="ethics-card"><span class="ethics-icon"><Icon name="file-check" size={28}/></span><h3>{fr?'Confidentialité':'Confidentiality'}</h3><p>{fr?'Protéger les informations et les données confiées dans le cadre de la mission.':'Protect the information and data entrusted to the expert during the assignment.'}</p></li>
+        <li class="ethics-card"><span class="ethics-icon"><Icon name="users" size={28}/></span><h3>{fr?'Compétence et mesure':'Competence and sound judgement'}</h3><p>{fr?'Respecter le périmètre de la mission, reconnaître ses limites et mobiliser les compétences complémentaires nécessaires.':'Respect the scope of the assignment, acknowledge limitations and bring in additional expertise when needed.'}</p></li>
+      </ul>
+      <p>{fr?'Les constats, les hypothèses et les conclusions sont distingués dans le rapport. Les observations des interlocuteurs concernés sont examinées dans le cadre prévu par la mission.':'Findings, hypotheses and conclusions are distinguished in the report. Observations from relevant participants are examined within the framework of the assignment.'}</p>
+    </section>
+    <section id="materialite">
+      <h2 class="insurance-section-title"><span class="insurance-heading-icon"><Icon name="magnifying-glass" size={28}/></span><span>{fr?'Matérialiser l’attaque et expliquer ses mécanismes.':'Establish evidence of the attack and explain its mechanisms.'}</span></h2>
+      <p>{fr?'Une attaque déclarée appelle une investigation. Journaux techniques, traces réseau, fichiers, configurations, sauvegardes et autres artefacts numériques peuvent contribuer à en établir la matérialité. Leur origine, leur intégrité et les conditions de leur collecte doivent être documentées pour permettre d’apprécier leur portée.':'A reported attack calls for investigation. Logs, network traces, files, configurations, backups and other digital artefacts can help establish whether it occurred. Their origin, integrity and collection conditions need to be documented so their significance can be assessed.'}</p>
+      <ol class="insurance-method" aria-label={fr?'Repères de méthode':'Method at a glance'} data-pagefind-ignore>
+        <li><Icon name="magnifying-glass" size={24}/><span>{fr?'Examiner':'Examine'}</span></li>
+        <li><Icon name="share-nodes" size={24}/><span>{fr?'Reconstituer':'Reconstruct'}</span></li>
+        <li><Icon name="clipboard-check" size={24}/><span>{fr?'Documenter':'Document'}</span></li>
+      </ol>
+      <p>{fr?'L’analyse cherche à reconstituer la chronologie, les accès utilisés, les actions réalisées et les systèmes affectés. Elle examine les mécanismes susceptibles d’expliquer les faits et les autres causes possibles, comme une panne, une erreur humaine ou une mauvaise configuration.':'The analysis seeks to reconstruct the timeline, access paths, actions taken and affected systems. It examines mechanisms that could explain the findings alongside other possible causes, such as equipment failure, human error or misconfiguration.'}</p>
+      <p>{fr?'La disponibilité et la qualité des traces conditionnent ce qui peut être établi. Chaque conclusion précise les éléments qui la soutiennent et les limites de l’analyse.':'The availability and quality of evidence determine what can be established. Each conclusion identifies its supporting evidence and the limits of the analysis.'}</p>
+    </section>
+    <section id="causalite">
+      <h2 class="insurance-section-title"><span class="insurance-heading-icon"><Icon name="link" size={28}/></span><span>{fr?'Relier les mécanismes aux dommages. Ou écarter ce lien.':'Connect the mechanisms to the damage. Or rule out that link.'}</span></h2>
+      <p>{fr?'La présence d’une attaque et celle d’un dommage ne suffisent pas à établir une relation de cause à effet. L’expert examine l’enchaînement technique qui pourrait relier les événements observés à une interruption d’activité, une perte de données, une altération de systèmes ou d’autres dommages déclarés.':'The occurrence of an attack and the existence of damage do not, on their own, establish cause and effect. The expert examines the technical sequence that could connect observed events to business interruption, data loss, system alteration or other reported damage.'}</p>
+      <p>{fr?'Cette recherche de causalité confronte la chronologie, les mécanismes identifiés, l’étendue des effets et les explications alternatives. Elle permet de distinguer les conséquences imputables à l’attaque de celles liées à d’autres événements ou à des défaillances préexistantes.':'Assessing causation involves comparing the timeline, identified mechanisms, extent of the effects and alternative explanations. This helps distinguish consequences attributable to the attack from those associated with other events or pre-existing failures.'}</p>
+      <div class="insurance-conclusion"><ul class="insurance-statuses" aria-label={fr?'Conclusions possibles sur le lien causal':'Possible conclusions about causation'} data-pagefind-ignore>
+        <li><Icon name="check" size={18}/><span>{fr?'Lien établi':'Link established'}</span></li>
+        <li><Icon name="xmark" size={18}/><span>{fr?'Lien écarté':'Link ruled out'}</span></li>
+        <li><Icon name="question" size={18}/><span>{fr?'Lien indéterminé':'Link undetermined'}</span></li>
+      </ul><p>{fr?'Selon les éléments disponibles, l’expertise peut établir un lien causal, l’écarter ou conclure qu’il reste indéterminé. L’absence de traces suffisantes ne constitue pas, à elle seule, la preuve qu’aucune attaque n’a eu lieu.':'Depending on the available evidence, the assessment may establish a causal link, rule it out or conclude that it remains undetermined. Insufficient evidence does not, by itself, prove that no attack occurred.'}</p></div>
+    </section>
+    <section id="missions">
+      <h2 class="insurance-section-title"><span class="insurance-heading-icon"><Icon name="file-check" size={28}/></span><span>{fr?'Une expertise technique au sein du réseau IXI-Plus.':'Technical expertise within the IXI-Plus network.'}</span></h2>
+      <p>{fr?'Stelau apporte ses compétences en cybersécurité aux missions du réseau IXI-Plus auprès des acteurs de l’assurance. Les interventions peuvent porter sur la prévention des risques, la recherche des causes d’un sinistre, l’analyse de ses conséquences et les mesures de réparation ou de prévention adaptées.':'Stelau contributes its cybersecurity skills to IXI-Plus network assignments for the insurance sector. Work may cover risk prevention, investigation of the causes of a loss, analysis of its consequences and appropriate recovery or preventive measures.'}</p>
+      <p>{fr?'Les dimensions techniques sont mises en relation avec les autres compétences nécessaires à la mission, notamment financières, industrielles et de gestion de crise. Le rapport expose le périmètre, les éléments examinés, les constats, le raisonnement causal, les limites et les recommandations. Il éclaire les décisions des acteurs de l’assurance.':'Technical findings are considered alongside other expertise needed for the assignment, including financial, industrial and crisis management skills. The report sets out the scope, material examined, findings, causal reasoning, limitations and recommendations. It informs decisions by participants in the insurance sector.'}</p>
+    </section>
+    <section id="transmission">
+      <h2 class="insurance-section-title"><span class="insurance-heading-icon"><Icon name="users" size={28}/></span><span>{fr?'Transmettre la pratique du métier.':'Passing on professional practice.'}</span></h2>
+      <p>{fr?'Devenir expert pour l’assurance demande de compléter ses compétences en cybersécurité par l’apprentissage de l’investigation, de l’analyse causale, de la rédaction de rapports et de la déontologie. L’expérience des experts de Stelau constitue un socle pour transmettre cette pratique aux ingénieurs consultants et accompagner leur progression.':'Becoming an expert for insurance requires cybersecurity skills to be complemented by training in investigation, causal analysis, report writing and professional ethics. The experience of Stelau’s experts provides a foundation for passing on this practice to consulting engineers and supporting their development.'}</p>
+      <p>{fr?'Cette progression associe apprentissage, analyse de cas et travail aux côtés de praticiens expérimentés. Elle développe la capacité à argumenter une conclusion, à la confronter aux faits et à reconnaître ce que l’on ne peut pas démontrer.':'This development combines learning, case analysis and work alongside experienced practitioners. It builds the ability to justify a conclusion, test it against the facts and recognise what cannot be demonstrated.'}</p>
+    </section>
+    <div class="insurance-next"><p>{fr?'Une mission d’expertise à préparer ou une situation à analyser ?':'An expert assignment to prepare or a situation to analyse?'}</p><a class="button" href={href(lang,'contact')}>{fr?'Échanger avec nos experts':'Talk to our experts'}<Arrow /></a></div>
+    <div class="insurance-references" data-pagefind-ignore><p>{fr?'Repères complémentaires':'Further reading'}</p><ul><li><a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F2161" target="_blank" rel="noopener noreferrer">{fr?'Service Public — le cadre de l’expertise judiciaire':'Service Public — the framework for judicial expertise in France'} ↗</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/86/final" target="_blank" rel="noopener noreferrer">NIST SP 800-86 — Guide to Integrating Forensic Techniques into Incident Response ↗</a></li></ul></div>
+  </div>
+</div>
+<style>
+  .insurance-intro .back-link{margin-bottom:24px}
+  .insurance-intro .lead{max-width:890px}
+  .insurance-questions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding-bottom:26px}
+  .insurance-question{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:26px}
+  .insurance-question:nth-child(2){background:var(--soft)}
+  .insurance-question-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .insurance-icon-tile{display:flex;align-items:center;justify-content:center;width:62px;height:62px;border:1px solid var(--line);border-radius:14px;background:var(--paper);flex-shrink:0}
+  .insurance-copy h2.insurance-section-title{display:flex;align-items:flex-start;gap:15px}
+  .insurance-heading-icon{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--soft);flex-shrink:0;margin-top:1px}
+  .insurance-section-title>span:last-child{align-self:center}
+  .insurance-copy ul.insurance-ethics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:0;list-style:none;margin:28px 0}
+  .insurance-copy .ethics-card{margin:0;padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+  .ethics-icon{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;background:var(--soft)}
+  .insurance-copy .ethics-card h3{font-size:19px;line-height:1.4;letter-spacing:-.025em;margin:18px 0 10px;color:var(--ink)}
+  .insurance-copy .ethics-card p{font-size:inherit;line-height:1.8;margin:0}
+  .insurance-copy ol.insurance-method{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;list-style:none;padding:0;margin:28px 0}
+  .insurance-method li{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;font-size:14px;margin:0;min-width:0}
+  .insurance-copy ul.insurance-statuses{display:flex;gap:10px;flex-wrap:wrap;list-style:none;padding:0;margin:16px 0 18px}
+  .insurance-statuses li{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font-size:13px;line-height:1.4;margin:0;color:var(--ink)}
+  .insurance-question h2{font-size:25px;line-height:1.3;letter-spacing:-.03em;margin:18px 0 12px}
+  .insurance-question p:not(.eyebrow){font-size:16px;line-height:1.7;color:var(--muted)}
+  .insurance-copy section{scroll-margin-top:120px}
+  .insurance-copy section:first-child h2{margin-top:0}
+  .insurance-contact-link{margin-top:28px;gap:10px;font-size:14px}
+  .insurance-conclusion{background:var(--soft);border-left:3px solid var(--brand);border-radius:0 8px 8px 0;padding:8px 24px;margin:28px 0}
+  .insurance-next{border-top:1px solid var(--line);margin-top:42px;padding-top:24px}
+  .insurance-next .button{margin-top:12px;color:var(--on-action);text-decoration:none}
+  .insurance-references{font-size:13px;color:var(--muted);border-top:1px solid var(--line);margin-top:36px;padding-top:16px}
+  .insurance-references ul{padding-left:18px}
+  .insurance-references a{overflow-wrap:anywhere}
+  @media(max-width:1100px){.insurance-copy ol.insurance-method{grid-template-columns:1fr}.insurance-method li{padding:13px 16px}}
+  @media(max-width:720px){.insurance-copy ul.insurance-ethics{grid-template-columns:1fr}.insurance-copy .ethics-card{padding:22px}.insurance-copy h2.insurance-section-title{gap:12px}.insurance-heading-icon{width:40px;height:40px}.insurance-icon-tile{width:56px;height:56px}}
+  @media(max-width:900px){.insurance-question{padding:22px}.insurance-question h2{font-size:22px}}
+  @media(max-width:720px){.insurance-questions{grid-template-columns:1fr;padding-bottom:24px}.insurance-question h2{font-size:24px;margin-top:12px}.insurance-question{padding:24px}.insurance-article{padding-top:12px}.insurance-contact-link{margin-top:12px}.insurance-conclusion{padding:4px 18px}.insurance-intro h1{font-size:clamp(35px,8vw,60px)}}
+</style>

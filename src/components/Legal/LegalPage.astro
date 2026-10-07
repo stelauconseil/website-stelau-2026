@@ -1,0 +1,14 @@
+---
+import Icon from '@/components/Icon/Icon.astro';
+import type {IconName} from '@/data/icons';
+import {legalDocuments} from '@/data/legal';import type {Locale} from '@/config/site';
+const documentIcons: Record<string,IconName> = {notice:'circle-info',privacy:'database',cookies:'sliders',terms:'file-check'};
+const sectionIcons: Record<string,IconName> = {
+  editeur:'building',publisher:'building',hebergement:'server',hosting:'server',contenus:'images',content:'images',contact:'envelope',
+  responsable:'building',controller:'building',donnees:'database',data:'database',destinataires:'paper-plane',recipients:'paper-plane',
+  droits:'scale-balanced',rights:'scale-balanced',preferences:'sliders',theme:'circle-half-stroke',gestion:'sliders',control:'sliders',
+  services:'share-nodes',mesure:'eye',analytics:'eye',objet:'circle-info',purpose:'circle-info',publications:'book-open',liens:'globe',links:'globe'
+};
+const {lang,kind}=Astro.props as {lang:Locale;kind:keyof typeof legalDocuments};const doc=legalDocuments[kind][lang];const fr=lang==='fr';
+---
+<header class="container page-intro"><p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name={documentIcons[kind]} size={22}/></span>{fr?'Informations / Version de travail':'Information / Working draft'}</p><h1>{doc.title}</h1><p class="lead">{doc.description}</p></header><div class="container article-grid"><aside class="article-aside" data-pagefind-ignore><p class="eyebrow icon-eyebrow"><Icon name="list" size={20}/>{fr?'Sommaire':'Contents'}</p><nav aria-label={fr?'Sommaire du document':'Document contents'}>{doc.sections.map(([id,label])=><a href={'#'+id}>{label}</a>)}</nav></aside><article class="prose">{doc.sections.map(([id,label,text])=><section id={id}><h2 class="icon-heading"><Icon name={sectionIcons[id] || documentIcons[kind]} size={26}/><span>{label}</span></h2><p>{text}</p></section>)}{kind==='cookies'&&<p><a href="https://www.cnil.fr/fr/cookies-et-autres-traceurs/que-dit-la-loi" target="_blank" rel="noopener noreferrer">{fr?'En savoir plus sur les cookies et traceurs auprès de la CNIL':'Learn more about cookies and trackers from the CNIL'} ↗</a></p>}</article></div>

@@ -1,0 +1,14 @@
+---
+import type { IconName } from '@/data/icons';
+interface Props { name: IconName; size?: number; class?: string; }
+const { name, size = 24, class: className = '' } = Astro.props;
+const icons = import.meta.glob<string>('/src/assets/icons/fontawesome/duotone-solid/*.svg', { eager: true, query: '?raw', import: 'default' });
+const svg = icons[`/src/assets/icons/fontawesome/duotone-solid/${name}.svg`];
+if (!svg) throw new Error(`Missing Font Awesome Duotone Solid icon: ${name}`);
+---
+<span class:list={['fa-icon', className]} style={`--icon-size:${size}px`} data-icon={name} data-icon-family="duotone" data-icon-style="solid" aria-hidden="true" set:html={svg.replace('<svg ', '<svg focusable="false" aria-hidden="true" ')} />
+<style>
+  .fa-icon{display:inline-flex;align-items:center;justify-content:center;width:var(--icon-size);height:var(--icon-size);flex-shrink:0;line-height:0;color:var(--fa-primary-color,var(--brand));vertical-align:middle}
+  .fa-icon :global(svg){display:block;width:100%;height:100%;overflow:visible}
+  .fa-icon :global(path[opacity]){fill:var(--fa-secondary-color,currentColor);opacity:var(--fa-secondary-opacity,.4)}
+</style>

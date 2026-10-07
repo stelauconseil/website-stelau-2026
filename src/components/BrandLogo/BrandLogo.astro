@@ -1,0 +1,7 @@
+---
+import { href, type Locale } from '@/config/site';
+const { lang } = Astro.props as { lang: Locale };
+---
+<a href={href(lang,'home')} class="brand-logo" aria-label={lang==='fr'?'Stelau, accueil':'Stelau, home'}>
+  <img src="/brand/logo.stelau.png" alt="Stelau — digital security" width="677" height="156" decoding="async"/>
+</a>

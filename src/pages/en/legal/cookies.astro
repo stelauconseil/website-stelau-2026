@@ -1,0 +1,5 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';import LegalPage from '@/components/Legal/LegalPage.astro';import {legalDocuments} from '@/data/legal';
+const doc=legalDocuments.cookies.en;
+---
+<BaseLayout lang="en" title={doc.title} description={doc.description}><LegalPage lang="en" kind="cookies"/></BaseLayout>

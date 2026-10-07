@@ -1,0 +1,304 @@
+---
+title: "Vérifier des mDocs dans le navigateur : plongée dans ISO 18013-5"
+description: Comment nous avons construit un vérificateur mDoc entièrement côté client avec WebCrypto, Web Bluetooth et CBOR — sans aucun backend.
+draft: false
+authors:
+  - nicolas-chalanset
+pubDate: 2026-03-30
+heroImage: ../../en/mdoc-web-verifier-deep-dive/iso-18013-5-web-verifier.png
+categories:
+  - identity
+  - open-source
+  - standards
+mappingKey: mdoc-web-verifier-deep-dive
+---
+
+import videoSrc from '../../en/mdoc-web-verifier-deep-dive/iso-18013-5-web-verifier.mp4';
+
+<video
+  src={videoSrc}
+  autoplay
+  muted
+  loop
+  playsinline
+  class="border-base-300 dark:border-base-600/60 mt-6 w-full rounded-lg border object-cover"
+/>
+
+<a
+  href="https://github.com/stelauconseil/mdoc-web-verifier"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="not-prose mt-6 mb-2 inline-flex items-center gap-2 rounded-lg border border-base-200 bg-base-50 px-4 py-2 text-sm font-medium text-base-800 transition hover:border-base-400 hover:bg-base-100 dark:border-base-700 dark:bg-base-800/50 dark:text-base-200 dark:hover:border-base-500 dark:hover:bg-base-800"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+  </svg>
+  stelauconseil/mdoc-web-verifier
+</a>
+
+Les documents mobiles — mDLs, EU PIDs, attestations de vérification d'âge — arrivent. Les wallets sont déployés à travers l'Europe dans le cadre du règlement eIDAS 2.0. Mais *vérifier concrètement* l'une de ces credentials, de bout en bout, d'un scan de QR code jusqu'à la preuve cryptographique, est étonnamment non trivial.
+
+Cet article est un parcours technique de [mdoc-web-verifier](https://github.com/stelauconseil/mdoc-web-verifier), un vérificateur open-source en navigateur que nous avons construit chez Stelau, qui implémente la totalité du côté lecteur ISO 18013-5 — entièrement côté client, sans serveur, sans backend, sans que les données quittent le navigateur.
+
+## Ce que définit réellement ISO 18013-5
+
+ISO 18013-5 est la norme pour les permis de conduire mobiles (mDL), mais la couche protocolaire qu'elle définit — engagement de l'appareil, établissement de session, requête/réponse chiffrées, authentification de l'émetteur — est devenue le transport de facto pour l'écosystème mDoc au sens large, incluant les EU PIDs.
+
+À haut niveau, un flux de vérification ressemble à ceci :
+
+1. Le wallet affiche un **QR code de Device Engagement** (CBOR encodé, URI base64url)
+2. Le lecteur le parse pour obtenir la clé publique éphémère du wallet et les paramètres BLE
+3. Les deux parties effectuent un **échange de clés ECDH** pour dériver des clés de session
+4. Le lecteur envoie une **requête de credential chiffrée** via BLE
+5. Le wallet répond avec un payload **COSE_Encrypt0** contenant le document signé
+6. Le lecteur déchiffre, vérifie la signature de l'émetteur et valide les digests des valeurs
+
+Tout tourne sur **Bluetooth Low Energy**, avec CBOR comme format de sérialisation et COSE pour la signature et le chiffrement. Parcourons chaque couche.
+
+## Parser le QR code de Device Engagement
+
+Le QR code contient une URI comme `mdoc:owBjMS4wAYIB...` (CBOR encodé en base64url). Le parser est le premier défi — le CBOR est souvent doublement encodé (wrappers tagged type 24) :
+
+```javascript
+// Extrait de device-engagement.js
+export function parseDeviceEngagement(uri) {
+  // Supprimer le schéma "mdoc:" et les artefacts de scanner
+  const raw = uri.replace(/^mdoc:/, "").replace(/\s/g, "");
+
+  // Décoder base64url → bytes → CBOR
+  const bytes = base64urlDecode(raw);
+  let engagement = CBOR.decode(bytes);
+
+  // Gérer le double-encodage CBOR Tagged (type 24)
+  if (engagement instanceof CBOR.Tagged && engagement.tag === 24) {
+    engagement = CBOR.decode(engagement.value);
+  }
+
+  // Extraire les paramètres BLE : UUID de service, adresse de l'appareil
+  const bleOptions = extractBleOptions(engagement);
+  // Extraire la clé publique EC2 éphémère du wallet (format COSE_Key)
+  const eDeviceKey = extractEDeviceKey(engagement);
+
+  return { engagement, bleOptions, eDeviceKey };
+}
+```
+
+La `eDeviceKey` est la clé publique éphémère du wallet, encodée en structure COSE_Key — une map CBOR avec des clés numériques définies par la RFC 9052. Key type `2` = EC2, courbe `1` = P-256.
+
+## Établissement de session : ECDH + HKDF
+
+Une fois la clé publique éphémère du wallet obtenue, nous générons notre propre paire de clés éphémères et effectuons l'ECDH pour dériver un secret partagé. Ce secret est ensuite passé à HKDF pour produire deux clés de session — une pour chaque direction.
+
+```javascript
+// Extrait de session-establishment.js
+export async function establishSession(eDeviceKeyCoseKey, docTypes) {
+  // 1. Générer la paire de clés éphémères du lecteur (P-256)
+  const readerKeyPair = await crypto.subtle.generateKey(
+    { name: "ECDH", namedCurve: "P-256" },
+    true,
+    ["deriveKey", "deriveBits"]
+  );
+
+  // 2. Importer la clé publique du wallet depuis COSE_Key
+  const eDeviceKeyJwk = coseKeyToJwk(eDeviceKeyCoseKey);
+  const eDevicePublicKey = await crypto.subtle.importKey(
+    "jwk", eDeviceKeyJwk,
+    { name: "ECDH", namedCurve: "P-256" },
+    false, []
+  );
+
+  // 3. ECDH → secret partagé (32 bytes pour P-256)
+  const sharedSecretBits = await crypto.subtle.deriveBits(
+    { name: "ECDH", public: eDevicePublicKey },
+    readerKeyPair.privateKey,
+    256
+  );
+
+  // 4. Construire le SessionTranscript (per ISO 18013-5 §9.1.5.1)
+  //    C'est l'"info" HKDF et sert d'AAD pour le canal chiffré
+  const sessionTranscript = buildSessionTranscript(
+    engagement,
+    readerKeyPair.publicKey
+  );
+  const transcriptBytes = CBOR.encode(sessionTranscript);
+
+  // 5. Dériver les clés de session via HKDF-SHA256
+  //    Deux clés : SKReader (lecteur→appareil) et SKDevice (appareil→lecteur)
+  const skReader = await hkdfDerive(sharedSecretBits, transcriptBytes, "SKReader");
+  const skDevice = await hkdfDerive(sharedSecretBits, transcriptBytes, "SKDevice");
+
+  // 6. Construire la requête chiffrée
+  const encryptedRequest = await buildEncryptedRequest(docTypes, skReader);
+  return { sessionData: encodedSessionData, skDevice };
+}
+```
+
+Le `SessionTranscript` est essentiel : il lie les clés de session à l'engagement spécifique — empêchant les attaques par rejeu entre différentes sessions.
+
+## La requête : CBOR jusqu'au bout
+
+Une requête de document est une structure `DeviceRequest` encodée en CBOR listant les namespaces et éléments de données demandés. Par exemple, demander age-over-18 depuis un mDL :
+
+```javascript
+// Extrait de request-builder.js
+function buildAgeOver18Request() {
+  return {
+    docType: "org.iso.18013.5.1.mDL",
+    nameSpaces: {
+      "org.iso.18013.5.1": {
+        // Chaque élément : [intentToRetain, requested]
+        "age_over_18": [false, true],
+        "portrait":    [false, false], // portrait non demandé
+      }
+    }
+  };
+}
+```
+
+Cela est encodé en CBOR, chiffré avec AES-256-GCM en utilisant `SKReader`, et envoyé via BLE. Le IV est un compteur — commençant à `00000000000000000000000000000001` pour le premier message, incrémenté pour chaque message suivant.
+
+## Transport BLE : fragmentation et résilience
+
+Web Bluetooth a une limite MTU pratique (typiquement 512 bytes, parfois moins). Pour une réponse complète, on peut facilement avoir 5 à 20 Ko de CBOR. La couche transport gère ça avec un protocole de framing simple :
+
+- Byte `0x01` = fragment de continuation
+- Byte `0x00` = fragment final
+
+À la réception, on accumule les fragments et effectue un **décodage CBOR à blanc** pour détecter les messages incomplets — plutôt que de s'appuyer sur un préfixe de longueur :
+
+```javascript
+// Extrait de ble-transport.js
+function isCompleteMessage(buffer) {
+  try {
+    CBOR.decode(buffer);
+    return true; // décodage réussi = message complet
+  } catch {
+    return false; // erreur de décodage = attendre d'autres fragments
+  }
+}
+```
+
+C'est élégant : on utilise la nature auto-décrivante du CBOR comme contrôle de complétude. Pas besoin de framing par longueur.
+
+## Vérifier la réponse : COSE_Sign1 + chaîne de certificats
+
+La réponse du wallet contient une structure CBOR `DeviceResponse`. Dans chaque document, le champ `issuerSigned` contient :
+
+1. `issuerAuth` — un `COSE_Sign1` avec la signature de l'émetteur sur le `MobileSecurityObject`
+2. `nameSpaces` — les éléments de données réels, chacun avec une référence à un digest
+
+La vérification se déroule en deux étapes.
+
+### Étape 1 : Validation de la chaîne de certificats
+
+```javascript
+// Extrait de verification.js
+export async function validateCertificateChain(coseSign1) {
+  // Extraire x5chain des headers COSE protégés
+  const certChain = extractX5Chain(coseSign1);
+
+  // Parser chaque certificat DER (parsing X.509 byte par byte)
+  const certs = certChain.map(parseDerCertificate);
+
+  // Parcourir la chaîne : chaque cert doit être signé par le suivant
+  for (let i = 0; i < certs.length - 1; i++) {
+    const subject = certs[i];
+    const issuer = certs[i + 1];
+    const valid = await verifyCertSignature(subject, issuer);
+    if (!valid) throw new Error(`Chaîne de certificats brisée à la position ${i}`);
+  }
+
+  // La racine doit correspondre à un certificat IACA de confiance
+  const root = certs[certs.length - 1];
+  const trusted = await isTrustedIACA(root);
+  if (!trusted) throw new Error("Certificat racine absent du magasin IACA de confiance");
+
+  return certs[0]; // retourner le certificat du signataire du document
+}
+```
+
+Les certificats racines IACA (Issuing Authority Certificate Authority) sont gérés en localStorage et peuvent être importés depuis des fichiers PEM, DER, des bundles CBOR/COSE ou des listes VICAL.
+
+### Étape 2 : Vérification de la signature COSE_Sign1
+
+```javascript
+// Extrait de verification.js
+export async function verifyCoseSign1(coseSign1, docSignerCert) {
+  const [protectedHeader, , payload, signature] = coseSign1;
+
+  // Reconstruire Sig_Structure per RFC 9052 §4.4
+  const sigStructure = CBOR.encode([
+    "Signature1",
+    protectedHeader,        // bytes du header protégé
+    new Uint8Array(0),      // AAD externe (vide)
+    payload                 // bytes du MobileSecurityObject
+  ]);
+
+  // Importer la clé publique du signataire (depuis le certificat)
+  const publicKey = await importPublicKeyFromCert(docSignerCert);
+
+  // Vérifier la signature ECDSA
+  // Gérer les formats DER et raw (r||s) P1363
+  const normalizedSig = normalizeSignature(signature, publicKey.curve);
+
+  return crypto.subtle.verify(
+    { name: "ECDSA", hash: "SHA-256" },
+    publicKey,
+    normalizedSig,
+    sigStructure
+  );
+}
+```
+
+Une subtilité : les wallets produisent parfois des signatures encodées en DER, parfois en raw P1363 (r||s concaténés). On détecte et normalise automatiquement. De plus, certaines implémentations produisent des signatures non canoniques avec une valeur S élevée — on applique la normalisation low-S en utilisant l'ordre de la courbe.
+
+### Étape 3 : Vérification des digests de valeurs
+
+Même après avoir vérifié la signature de l'émetteur, on doit confirmer que chaque élément de données divulgué correspond bien au digest signé dans le `MobileSecurityObject` :
+
+```javascript
+// Extrait de verification.js
+export async function verifyIssuerSignedValueDigests(issuerSigned, mso) {
+  for (const [namespace, items] of issuerSigned.nameSpaces) {
+    for (const item of items) {
+      // item est un bstr CBOR enveloppant
+      // { digestID, random, elementIdentifier, elementValue }
+      const decoded = CBOR.decode(
+        item instanceof CBOR.Tagged ? item.value : item
+      );
+
+      // Hasher l'intégralité des IssuerSignedItemBytes (sel aléatoire inclus)
+      const digest = await crypto.subtle.digest("SHA-256", item);
+
+      // Comparer avec le digest signé dans le MSO
+      const signedDigest = mso.valueDigests[namespace][decoded.digestID];
+      if (!bytesEqual(new Uint8Array(digest), signedDigest)) {
+        throw new Error(`Divergence de digest pour ${decoded.elementIdentifier}`);
+      }
+    }
+  }
+}
+```
+
+Le sel `random` dans chaque `IssuerSignedItem` est ce qui permet la **divulgation sélective** — l'émetteur signe tous les digests d'avance ; le wallet ne révèle que les éléments choisis, et le vérificateur peut contrôler chacun indépendamment.
+
+## Privacy by design : zéro backend
+
+La vérification complète tourne dans le navigateur en utilisant uniquement :
+
+- **WebCrypto API** — ECDH, HKDF, AES-GCM, ECDSA
+- **Web Bluetooth API** — transport BLE (navigateurs Chromium uniquement)
+- **@noble/curves** — pour les signatures non canoniques et les courbes Brainpool non supportées par WebCrypto
+- **CBOR** — format de sérialisation pour tout
+
+Aucune donnée de credential n'est jamais envoyée à un serveur. Les certificats IACA sont stockés en `localStorage`. Les clés de session sont éphémères et ne vivent qu'en mémoire. Cela rend l'outil adapté à des contextes sensibles : démonstrations aux frontières, bornes de vérification d'âge, audits de sécurité.
+
+## L'essayer
+
+Le vérificateur est disponible sur [mdoc-verifier.stelau.com](https://mdoc-verifier.stelau.com) et la source complète est sur [GitHub](https://github.com/stelauconseil/mdoc-web-verifier).
+
+Il supporte mDL (ISO 18013-5), EU PID, ISO 23220 Photo ID, credentials de vérification d'âge (15/18/21), certificats de vaccination et cartes étudiantes françaises. L'onglet test de non-liabilité est particulièrement intéressant pour les développeurs de wallets — il détecte si votre wallet réutilise des clés d'appareil entre sessions, ce qui permettrait à un vérificateur de tracer un utilisateur à travers plusieurs vérifications.
+
+---
+
+*Nicolas Chalanset est co-fondateur de Stelau, travaillant sur l'infrastructure d'identité ouverte pour les EUDI Wallets et ISO 18013-5. Le mdoc-web-verifier est open-source sous licence MIT.*

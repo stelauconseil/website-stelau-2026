@@ -1,0 +1,6 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';import BlogIndex from '@/components/Blog/BlogIndex.astro';import {getAllPosts} from '@/js/blogUtils';import {slugify,categoryLabel} from '@/config/site';
+export async function getStaticPaths(){const posts=await getAllPosts('en');return [...new Set(posts.flatMap(p=>p.data.categories))].map(category=>({params:{category:slugify(category)},props:{category}}));}
+const {category}=Astro.props;
+---
+<BaseLayout lang="en" title={categoryLabel(category,'en')+' — Journal Stelau'} description="Stelau Journal"><BlogIndex lang="en" category={category}/></BaseLayout>

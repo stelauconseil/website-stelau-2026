@@ -1,0 +1,32 @@
+---
+import Arrow from '@/components/Arrow.astro';
+import BandTexture from '@/components/BandTexture/BandTexture.astro';
+import BrandLogo from '@/components/BrandLogo/BrandLogo.astro';
+import ThemePicker from '@/components/ThemePicker/ThemePicker.astro';
+import { href, alternate, type Locale, type Route } from '@/config/site';
+const {lang} = Astro.props as {lang:Locale};
+const fr=lang==='fr';
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en/';
+const links: {key:Route,label:string}[] = [{key:'expertise',label:fr?'Expertises':'Expertise'},{key:'cases',label:fr?'Réalisations':'Our work'},{key:'about',label:fr?'L’équipe':'Our team'},{key:'blog',label:fr?'Le Blog':'Journal'}];
+---
+<header class:list={['site-header', {'home-header':isHome}]} data-pagefind-ignore>
+  {isHome && <BandTexture/>}
+  <div class="container nav-shell">
+    <BrandLogo lang={lang}/>
+    <nav class="desktop-nav" aria-label={fr?'Navigation principale':'Main navigation'}>{links.map(l=><a href={href(lang,l.key)} aria-current={Astro.url.pathname.startsWith(href(lang,l.key))?'page':undefined}>{l.label}</a>)}</nav>
+    <div class="nav-tools">
+      <button class="icon-button" type="button" data-search-open aria-label={fr?'Rechercher sur le site':'Search the website'}><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.6"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.6"/></svg></button>
+      <ThemePicker lang={lang}/>
+      <a class="language-switch" href={alternate(Astro.url.pathname,lang)} lang={fr?'en':'fr'} hreflang={fr?'en':'fr'} aria-label={fr?'Read this page in English':'Lire cette page en français'}>{fr?'EN':'FR'}</a>
+      <a class="button nav-contact" href={href(lang,'contact')}>{fr?'Parlons de votre projet':'Let’s talk'}<Arrow /></a>
+      <button class="icon-button menu-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label={fr?'Ouvrir le menu':'Open menu'}><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.6"/></svg></button>
+    </div>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav container" aria-label={fr?'Navigation mobile':'Mobile navigation'} hidden>{links.map(l=><a href={href(lang,l.key)}>{l.label}<Arrow /></a>)}<a href={href(lang,'contact')}>{fr?'Contact':'Contact'}<Arrow /></a></nav>
+</header>
+<script>
+  const toggle=document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const menu=document.querySelector<HTMLElement>('#mobile-nav');
+  toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));if(menu)menu.hidden=!open;});
+  document.addEventListener('keydown',(event)=>{if(event.key==='Escape'&&toggle&&menu){menu.hidden=true;toggle.setAttribute('aria-expanded','false');}});
+</script>

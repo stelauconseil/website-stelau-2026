@@ -1,0 +1,5 @@
+---
+import Icon from '@/components/Icon/Icon.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';import {href} from '@/config/site';
+---
+<BaseLayout lang="fr" title="404 — Stelau" description="Page introuvable / Page not found" noindex><div class="container page-intro"><p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name="compass" size={22}/></span>404</p><h1>Une petite<br/><em>erreur de parcours.</em></h1><p class="lead">Cette page n’existe pas. Reprenons le fil.</p><a class="button" href={href('fr','home')}>Retour à l’accueil ↗</a></div></BaseLayout>

@@ -1,0 +1,375 @@
+---
+title: "Construire un vérificateur OID4VP : du QR Code au VP Token"
+description: Un parcours technique de l'implémentation d'un vérificateur conforme OID4VP en Node.js — de la construction du JWT de requête d'autorisation au déchiffrement JWE du VP Token et au parsing mdoc.
+draft: false
+authors:
+  - hector-colin
+pubDate: 2026-03-30
+heroImage: ../../en/oid4vp-backend-implementation/oid4vp-backend-implementation.png
+categories:
+  - standards
+mappingKey: oid4vp-backend-implementation
+---
+
+<a
+  href="https://github.com/stelauconseil/oid4vp-backend"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="not-prose mt-6 mb-2 inline-flex items-center gap-2 rounded-lg border border-base-200 bg-base-50 px-4 py-2 text-sm font-medium text-base-800 transition hover:border-base-400 hover:bg-base-100 dark:border-base-700 dark:bg-base-800/50 dark:text-base-200 dark:hover:border-base-500 dark:hover:bg-base-800"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+  </svg>
+  stelauconseil/oid4vp-backend
+</a>
+
+OpenID for Verifiable Presentations (OID4VP) est le protocole qui permet à une partie de confiance — le *vérificateur* — de demander la présentation de credentials ISO mdoc ou W3C VC depuis le portefeuille d'un détenteur. Alors que les déploiements de l'EUDI Wallet s'accélèrent en Europe, il devient urgent de construire des backends vérificateurs conformes qui gèrent l'intégralité du flux multi-appareils : génération du QR code, service du JWT de requête signé, déchiffrement de la réponse chiffrée, et parsing du mdoc.
+
+Voici un parcours technique de `oid4vp-backend`, notre implémentation ciblant le portefeuille France Identité et le draft 18 d'OID4VP.
+
+## Le flux multi-appareils
+
+Le flux QR multi-appareils est le modèle d'interaction principal pour la vérification web. L'utilisateur est sur un navigateur desktop ; son portefeuille est sur mobile. La séquence ressemble à ceci :
+
+```
+Navigateur         Backend              Portefeuille (mobile)
+  |                   |                        |
+  |-- GET /qrcode --> |                        |
+  |                   |-- crée la session --   |
+  |<-- deep-link QR --|                        |
+  |                   |                        |
+  |-- GET /poll/:id ->|                        |
+  |   (long-polling)  |                        |
+  |                   |                        |
+  |                   |<- GET /request-obj ----|  (scan QR)
+  |                   |--- JWT signé --------->|
+  |                   |                        |
+  |                   |<--- POST /response ----|  (VP Token JWE)
+  |                   |-- stocke la réponse -- |
+  |                   |--- redirect_uri ------>|
+  |                   |                        |
+  |<-- données -------|                        |
+```
+
+L'insight clé : le QR code n'embarque **pas** la requête d'autorisation complète. Il contient uniquement un `request_uri` pointant vers le backend. Le portefeuille récupère le JWT signé séparément — ce qui permet au vérificateur de lier l'état de session à ce scan précis.
+
+## Construction de la requête d'autorisation
+
+Le backend génère un UUID par session QR. Cet UUID sert à la fois de paramètre `state` et de clé dans le store de session en mémoire.
+
+```js
+// src/oid4vp/request.js
+export async function buildAuthorizationRequest(uuid, type = "age_over_18") {
+  const nonce = uuidv4();
+  const presentationDefinition = getPresentationDefinition(type);
+
+  const payload = {
+    aud: env.CLIENT_ID,
+    response_type: "vp_token",
+    response_mode: "direct_post.jwt",
+    client_id: env.CLIENT_ID,
+    client_id_scheme: env.CLIENT_ID_SCHEME,
+    response_uri: env.RESPONSE_URI,
+    redirect_uri: "",
+    require_signed_request_object: true,
+    client_metadata: buildClientMetadata(),
+    nonce,
+    state: uuid,
+    presentation_definition: presentationDefinition,
+    iss: env.CLIENT_ID,
+    iat: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + 300,
+  };
+
+  const jwt = await new SignJWT(payload)
+    .setProtectedHeader({
+      alg: "ES256",
+      typ: "oauth-authz-req+jwt",
+      x5c: signing.x5cChain, // chaîne de certificats encodée DER
+    })
+    .sign(signing.privateKey);
+
+  requestObjects.set(uuid, jwt);
+  store.set(uuid, { status: "generated", request: presentationDefinition });
+
+  const deepLink = `${env.AUTH_SCHEME}://?client_id=${encodeURIComponent(env.CLIENT_ID)}&request_uri=${encodeURIComponent(`${env.BASE_URL}/request-object/${uuid}`)}`;
+
+  return { uid: uuid, url: deepLink };
+}
+```
+
+Deux points essentiels :
+
+1. **`typ: "oauth-authz-req+jwt"`** — Le draft 18 d'OID4VP exige exactement cette valeur de header `typ`. Le portefeuille l'utilise pour distinguer un JWT de requête d'autorisation d'un JWT générique.
+
+2. **La chaîne `x5c` dans le header JOSE** — Puisque `client_id_scheme` est `x509_san_dns`, le portefeuille valide la requête en vérifiant que le `client_id` correspond au SAN DNS du certificat feuille dans la chaîne `x5c`. Aucun enregistrement de clé hors-bande n'est nécessaire.
+
+## Presentation Definition : divulgation sélective
+
+La `presentation_definition` indique au portefeuille exactement quelles données divulguer. Pour la vérification d'âge via la France Attestation (format EU mdoc) :
+
+```js
+// src/config/presentation.js
+export const AGE_OVER_18 = {
+  id: "pid-age-over-18",
+  input_descriptors: [
+    {
+      id: "eu.europa.ec.av.1",
+      format: {
+        mso_mdoc: {
+          alg: ["ES256", "ES384", "ES512", "ESB256", "ESB512"],
+        },
+      },
+      constraints: {
+        limit_disclosure: "required",
+        fields: [
+          {
+            path: ["$['eu.europa.ec.av.1']['age_over_18']"],
+            purpose: "Prouver que l'utilisateur est majeur",
+            intent_to_retain: false,
+          },
+        ],
+      },
+    },
+  ],
+};
+```
+
+`limit_disclosure: "required"` est un paramètre déterminant : il indique au portefeuille d'utiliser la divulgation sélective, ce qui signifie que le détenteur ne révèle **que** le booléen `age_over_18` — ni sa date de naissance, ni son nom, ni aucun autre attribut présent dans le credential. `intent_to_retain: false` signale que la valeur divulguée ne sera pas stockée.
+
+Pour le PID complet (31 attributs incluant nom, adresse, portrait), une définition séparée cible le doctype `eu.europa.ec.eudi.pid.1` :
+
+```js
+export const PID = {
+  id: "pid-full",
+  input_descriptors: [
+    {
+      id: "eu.europa.ec.eudi.pid.1",
+      format: { mso_mdoc: { alg: ["ES256", "ESB256", "ESB512"] } },
+      constraints: {
+        limit_disclosure: "required",
+        fields: [
+          { path: ["$['eu.europa.ec.eudi.pid.1']['family_name']"], intent_to_retain: false },
+          { path: ["$['eu.europa.ec.eudi.pid.1']['given_name']"], intent_to_retain: false },
+          { path: ["$['eu.europa.ec.eudi.pid.1']['birth_date']"], intent_to_retain: false },
+          // ... 28 autres attributs
+        ],
+      },
+    },
+  ],
+};
+```
+
+## Servir le Request Object une seule fois
+
+L'endpoint `/request-object/:id` est à usage unique — servir le JWT fait passer la session de `generated` à `scanned`, et toute récupération ultérieure retourne un 404 :
+
+```js
+// src/routes/request-object.routes.js
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const entry = store.get(id);
+
+  if (!entry || entry.status !== "generated") {
+    return res.status(404).json({ error: "Request object not found or already consumed" });
+  }
+
+  const jwt = requestObjects.get(id);
+  store.update(id, { status: "scanned" });
+  requestObjects.delete(id);
+
+  res.setHeader("Content-Type", "application/jwt");
+  res.send(jwt);
+});
+```
+
+C'est une propriété de sécurité du protocole : un QR rejoué ne peut pas récupérer une seconde copie du request object. La session est déjà consommée.
+
+## État de session et long-polling
+
+Le `Store` est un singleton Map en mémoire avec un TTL de 2 minutes par entrée :
+
+```js
+// src/utils/store.js
+class Store {
+  #map = new Map();
+
+  set(uuid, data) {
+    const timeout = setTimeout(() => this.#map.delete(uuid), 2 * 60 * 1000);
+    this.#map.set(uuid, { ...data, timeout, isStatusSend: false });
+  }
+
+  update(uuid, patch) {
+    const entry = this.#map.get(uuid);
+    if (!entry) return;
+    clearTimeout(entry.timeout);
+    const timeout = setTimeout(() => this.#map.delete(uuid), 2 * 60 * 1000);
+    this.#map.set(uuid, { ...entry, ...patch, timeout });
+  }
+}
+```
+
+Le frontend utilise le long-polling pour attendre les transitions d'état :
+
+```js
+// src/routes/qr.routes.js — long-poll
+router.get("/poll/:uuid", async (req, res) => {
+  const { uuid } = req.params;
+  const deadline = Date.now() + 60_000;
+
+  const check = () => {
+    const entry = store.get(uuid);
+    if (!entry) return res.status(404).json({ error: "Session not found" });
+
+    if (!entry.isStatusSend || entry.status === "finished" || entry.status === "error") {
+      store.update(uuid, { isStatusSend: true });
+      return res.json({ type: "status", status: entry.status });
+    }
+
+    if (Date.now() > deadline) return res.status(204).end();
+    setTimeout(check, 100);
+  };
+
+  check();
+});
+```
+
+`isStatusSend` garantit que chaque transition d'état n'est envoyée qu'une seule fois, même si le client se reconnecte.
+
+## Réception de la réponse chiffrée
+
+Quand le portefeuille répond par POST, le champ `response` est un JWE compact — l'intégralité du VP Token est chiffrée avec la clé publique du vérificateur :
+
+```
+POST /response
+Content-Type: application/x-www-form-urlencoded
+
+response=eyJhbGciOiJFQ0RILUVTIiwiZW5jIjoiQTEyOENCQy1IUzI1NiIsImVwayI6ey...&state=uuid-123
+```
+
+Le vérificateur annonce ses capacités de chiffrement dans `client_metadata` :
+
+```js
+authorization_encrypted_response_alg: "ECDH-ES",
+authorization_encrypted_response_enc: "A128CBC-HS256",
+jwks_uri: `${env.BASE_URL}/jwks`,
+```
+
+L'endpoint JWKS expose la même paire de clés EC deux fois — une fois pour la vérification de signature (`use: "sig"`) et une fois pour le chiffrement de la réponse (`use: "enc"`) :
+
+```js
+// src/crypto/signing.js
+export async function buildJwks() {
+  const publicJwk = await exportJWK(keyPair.publicKey);
+  const thumbprint = await calculateJwkThumbprint(publicJwk, "sha256");
+
+  return {
+    keys: [
+      { ...publicJwk, use: "sig", alg: "ES256", kid: thumbprint },
+      { ...publicJwk, use: "enc", alg: "ECDH-ES", kid: thumbprint },
+    ],
+  };
+}
+```
+
+## Déchiffrement du VP Token et parsing du mdoc
+
+Une fois le JWE reçu sur `/response`, il est stocké et la session passe à `finished`. Le client long-polling déclenche alors le déchiffrement :
+
+```js
+// src/utils/responseBuilder.js
+export async function decryptAndParse(jwe) {
+  // 1. Déchiffrement du JWE avec notre clé privée PKCS8
+  const { plaintext } = await compactDecrypt(jwe, signing.privateKey);
+  const { vp_token } = JSON.parse(new TextDecoder().decode(plaintext));
+
+  // 2. vp_token est un DeviceResponse CBOR encodé en base64url
+  const deviceResponse = await cbor.decodeFirst(
+    Buffer.from(vp_token, "base64url")
+  );
+
+  const results = [];
+
+  for (const document of deviceResponse.documents) {
+    const { docType, issuerSigned } = document;
+
+    // 3. issuerAuth est une structure COSE_Sign1 : [protected, unprotected, payload, signature]
+    const [protectedHeader, , msoBytes] = issuerSigned.issuerAuth;
+    const mso = await cbor.decodeFirst(msoBytes);
+
+    // 4. Extraction de la clé publique du device depuis le MSO
+    const deviceKey = mso.deviceKeyInfo.deviceKey;
+
+    // 5. Vérification du certificat émetteur contre les ancres de confiance IACA
+    const x5chain = cbor.decode(protectedHeader).get(33); // label COSE 33 = x5chain
+    await verifyIssuerCertificateChain(x5chain);
+
+    // 6. Parcours des namespaces divulgués
+    const claims = {};
+    for (const [namespace, items] of issuerSigned.nameSpaces) {
+      claims[namespace] = {};
+      for (const item of items) {
+        const decoded = await cbor.decodeFirst(item);
+        claims[namespace][decoded.elementIdentifier] = decoded.elementValue;
+      }
+    }
+
+    results.push({ docType, deviceKey, claims });
+  }
+
+  return results;
+}
+```
+
+Le modèle de confiance pour ISO mdoc est fondé sur X.509, pas sur les JWT : l'émetteur signe le Mobile Security Object (MSO) avec une clé liée à un certificat émis par l'IACA. On valide cette chaîne contre les certificats racines IACA de France Attestation et France Identité, encodés en dur dans `config/certificates.js`.
+
+## Configuration du vérificateur avec `@openid4vc/openid4vp`
+
+La bibliothèque `@openid4vc/openid4vp` gère les mécanismes protocolaires OID4VP de bas niveau. On configure une instance `Verifier` avec des callbacks de déchiffrement JWE :
+
+```js
+// src/oid4vp/verifier.js
+export function createVerifier() {
+  return new OpenId4VpVerifier({
+    verifier: {
+      clientId: env.CLIENT_ID,
+      clientIdScheme: env.CLIENT_ID_SCHEME,
+    },
+    callbacks: {
+      // Appelé quand la bibliothèque doit déchiffrer un JWE entrant
+      decryptJwe: async (jwe) => {
+        const { plaintext } = await compactDecrypt(jwe, signing.privateKey);
+        return JSON.parse(new TextDecoder().decode(plaintext));
+      },
+      // La signature du VP token n'est pas vérifiée ici — la confiance vient de la chaîne X.509
+      verifyJwt: async (jwt) => {
+        return decodeJwt(jwt);
+      },
+    },
+  });
+}
+```
+
+Cette séparation est intentionnelle : le callback `verifyJwt` de la bibliothèque est délibérément minimal ici, car la confiance dans le mdoc est établie via la chaîne de certificats X.509 de l'émetteur, validée séparément dans `responseBuilder.js`. Les deux chemins de vérification couvrent des modèles de menace différents — la signature JAR JWT prévient la falsification de la requête, tandis que la chaîne IACA vérifie l'autorité d'émission du credential.
+
+## Le nonce comme preuve de possession du détenteur
+
+Une propriété de sécurité à rendre explicite : le `nonce` émis dans la requête d'autorisation est intégré par le portefeuille dans la preuve de possession du détenteur à l'intérieur du `DeviceResponse`. Lors du parsing du mdoc, on vérifie que le `nonce` dans `document.deviceSigned.deviceAuth` correspond à celui qu'on a émis.
+
+Cela empêche un portefeuille compromis ou malveillant de rejouer un VP token obtenu dans une session dans une autre session — même si le transport chiffré est intact, le nonce ne correspondra pas. Dans notre implémentation, le nonce est un UUID généré à chaque session QR :
+
+```js
+const nonce = uuidv4();
+// stocké en session, vérifié lors de la validation du VP token
+```
+
+## Ce qui n'est pas géré ici
+
+Ce backend cible le playground France Identité. Quelques éléments sont simplifiés en conséquence :
+
+- **Pas de stockage persistant** — les sessions vivent en mémoire avec un TTL de 2 minutes. Un déploiement en production utiliserait Redis ou un store similaire.
+- **`response_code` statique** — l'URI de redirection retourné au portefeuille contient un `response_code` codé en dur requis par le playground France Identité, pas un code généré dynamiquement.
+- **Signature device non vérifiée** — la vérification de la possession du détenteur (la partie device-signed du mdoc) est parsée mais pas vérifiée cryptographiquement dans la version actuelle. C'est dans la feuille de route.
+- **Format unique** — seul `mso_mdoc` est supporté. Le support SD-JWT VC nécessiterait un chemin de parsing différent pour le VP token.
+
+Le [code source complet](https://github.com/stelauconseil/oid4vp-backend) est sous licence MIT et conçu pour être lisible — un point de départ pour construire des vérificateurs conformes OID4VP ciblant les EUDI Wallets.

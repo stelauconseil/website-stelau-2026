@@ -1,0 +1,20 @@
+---
+import Arrow from '@/components/Arrow.astro';
+import Icon from '@/components/Icon/Icon.astro';
+import type { Locale } from '@/config/site';
+import { group } from '@/data/company';
+const { lang } = Astro.props as { lang: Locale };
+const copy = group[lang];
+---
+<section class="container group-announcement" aria-labelledby="group-announcement-title">
+  <div class="group-announcement-card">
+    <div class="group-announcement-title">
+      <p class="eyebrow"><span class="group-spark"><Icon name="share-nodes" size={26}/></span>{copy.period}</p>
+      <h2 id="group-announcement-title">{copy.title}</h2>
+    </div>
+    <div class="group-announcement-copy">
+      <p>{copy.description}</p>
+      <a class="text-link" href={copy.announcement} target="_blank" rel="noopener noreferrer">{copy.cta}<Arrow /></a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,150 @@
+{
+  "kitId": "1daec18b88",
+  "kitRevision": 3,
+  "version": "7.3.1",
+  "family": "duotone",
+  "style": "solid",
+  "source": "Font Awesome CLI / authenticated Kit API",
+  "icons": [
+    {
+      "name": "users",
+      "sha256": "0b9e7974ffc5691dcc36f39c7e6176b6eee4dfeb6cb7be76e6c7f2e9819f1e32"
+    },
+    {
+      "name": "compass",
+      "sha256": "0d724907395210a8f315462af467ddd875c291236d3180b92ab859e1fd6bbfe8"
+    },
+    {
+      "name": "magnifying-glass",
+      "sha256": "6a224b918858e0ca78807eeaef4cb399af21a9347eefd0449f26e8288cfdf101"
+    },
+    {
+      "name": "code",
+      "sha256": "91a805506da9e8dd2e0210d6a0f7448c6cded72cceb55e50d209d5345f7e4dc7"
+    },
+    {
+      "name": "comments",
+      "sha256": "6ee6ab3c65f0d945581141b31551980a8a568a0104eefbe9a369a12ad52c970a"
+    },
+    {
+      "name": "briefcase",
+      "sha256": "1d631051789a1610f30deb67f13f33633cd6bef84bb42aa30a3658be29129b99"
+    },
+    {
+      "name": "book-open",
+      "sha256": "c2e91ed3cb6dfb0eca3d490cf857515f0828e0c58ad1ba28de203b9f6e4a1a8c"
+    },
+    {
+      "name": "share-nodes",
+      "sha256": "c6c9d76a6df2655a0aa9e29afe0a744b1b7450d670930ab21633e01b4c38a648"
+    },
+    {
+      "name": "link",
+      "sha256": "d4e6e93dc15a169ba9130c7482e88cb698707fa29f75f78147e76abf33fb5d67"
+    },
+    {
+      "name": "clipboard-check",
+      "sha256": "e666a807006587ff4a57a86c18b8a1fec7b54478abaca5585c050d7d10df01df"
+    },
+    {
+      "name": "eye",
+      "sha256": "c2dcb0055e67560d2c375f01fd693310297d0bbf0d745905b65e22ba23330209"
+    },
+    {
+      "name": "file-check",
+      "sha256": "21404d6c7c352dd9a9e2f90570fe9974aeefe0f73094969aa2ca5ef543acbf25"
+    },
+    {
+      "name": "check",
+      "sha256": "d007baaa6bd1a3d55023f8da34c2895d91673210202239976d43a105a581bc22"
+    },
+    {
+      "name": "xmark",
+      "sha256": "44bafbdff22ae224d4edb8e14d6462b6cedfafb5cdd15faab775aeec0250f3c6"
+    },
+    {
+      "name": "question",
+      "sha256": "2f7d6648785f9e18db1c352ad63c30cd483ab86f6aa7031bc2ffefa61e095633"
+    },
+    {
+      "name": "scale-balanced",
+      "sha256": "51c4b55701382cbbca6761dd6b17c1fc316a087ef35326b144c8d9dfb1a07f77"
+    },
+    {
+      "name": "wallet",
+      "sha256": "085ad0f24fba033327b7c66c2e2e1d27b7bac4e55813cf0e6213b463d6709141"
+    },
+    {
+      "name": "id-card",
+      "sha256": "aebf5331aaae15b2051f78aadee9ae8c500fb32a961f85402f4e57f1e6b88928"
+    },
+    {
+      "name": "microchip",
+      "sha256": "89510436b16ef40aa17bebf716b06e63f623a9072dbd2f7d672e459373b87f0e"
+    },
+    {
+      "name": "location-dot",
+      "sha256": "74d6a6cdfb58275eec030f129b7760ef4e7b8d060a579c8909fc2053af410373"
+    },
+    {
+      "name": "envelope",
+      "sha256": "7a6d3205486f3ec8541cfe75bc161b6e29c12b07880073af813dd8b3da75b350"
+    },
+    {
+      "name": "phone",
+      "sha256": "39bd179a8559ab0a854485aca9026bb599e7bc02ee92136020ec1e5089fa9501"
+    },
+    {
+      "name": "paper-plane",
+      "sha256": "da4f777628acd6471672db90027e190a754d98522a319e9d8c94c39243bad6dd"
+    },
+    {
+      "name": "calendar-days",
+      "sha256": "dfb53ab9199f0b679bbc28014ba22e0a589da435311cf924b7a7f64759e23d2a"
+    },
+    {
+      "name": "clock",
+      "sha256": "edaed4535cebd3a006b9f5c7a2386ec2c1bb0c61ac471b310926ce43c8d1aa81"
+    },
+    {
+      "name": "tags",
+      "sha256": "98fe35b215b00b4eedc68473995f3f5d27e0acbcb2e064a4191b0f581033d087"
+    },
+    {
+      "name": "list",
+      "sha256": "5f2898ac27d77f41711d46617398ee0c233a30137a6e8f59acbdf1c5992434ab"
+    },
+    {
+      "name": "sliders",
+      "sha256": "347149a3a11efaae1fcb57272494c0a2b31da288e77e67c7d1e14cb367f84523"
+    },
+    {
+      "name": "building",
+      "sha256": "a5e4b81d6192e824e6de79b87029816241713596bc907760e78d5646de763830"
+    },
+    {
+      "name": "server",
+      "sha256": "c88e6102acee69c01470b86c3b8fefed873c77c529cf87afb7a372b4be3b96d6"
+    },
+    {
+      "name": "images",
+      "sha256": "7585991436f096ee50b89f53b21b3d77cdc2eb6a4e1084fde8e83a6eea3529b7"
+    },
+    {
+      "name": "database",
+      "sha256": "99569001bc9777c3e3d593f18ffc3366baf50d30255db847772632b5bd17653d"
+    },
+    {
+      "name": "globe",
+      "sha256": "adaa3f0dab91a4808ee2523e6135f4a9acb69303e4ffa750fd395403c1c6cf90"
+    },
+    {
+      "name": "circle-half-stroke",
+      "sha256": "2fd76cecb034ffbcbdd08e5dff2a2b3e08fe29d17699159fe1441c10664b78d6"
+    },
+    {
+      "name": "circle-info",
+      "sha256": "61d9d137081a14d9f81bb2647b552da4dc448b265d36a0cacc40c0bcbc0899f8"
+    }
+  ]
+}

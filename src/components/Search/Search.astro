@@ -1,0 +1,32 @@
+---
+import '@pagefind/default-ui/css/ui.css';
+import type { Locale } from '@/config/site';
+const {lang}=Astro.props as {lang:Locale};
+---
+<dialog id="search-dialog" class="search-dialog" aria-labelledby="search-title" data-lang={lang} data-pagefind-ignore>
+  <div class="search-heading"><h2 id="search-title">{lang==='fr'?'Trouvons ce qui vous intéresse.':'Find what interests you.'}</h2><button class="icon-button" type="button" data-search-close aria-label={lang==='fr'?'Fermer la recherche':'Close search'}>×</button></div>
+  <div id="search-results"></div><p class="search-hint">{lang==='fr'?'Expertises, réalisations et articles. Échap pour fermer.':'Expertise, projects and articles. Escape to close.'}</p>
+</dialog>
+<script>
+  const dialog=document.querySelector<HTMLDialogElement>('#search-dialog');
+  let initialized=false;
+  dialog?.addEventListener('close',()=>document.documentElement.classList.remove('search-open'));
+  async function openSearch(){
+    if(!dialog)return;
+    if(dialog.open){dialog.querySelector<HTMLInputElement>('input')?.focus();return;}
+    dialog.showModal();
+    document.documentElement.classList.add('search-open');
+    if(!initialized){
+      try {
+        const {PagefindUI}=await import('@pagefind/default-ui');
+        new PagefindUI({element:'#search-results',bundlePath:'/pagefind/',showImages:false,showSubResults:true,translations:dialog.dataset.lang==='fr'?{language:'fr',placeholder:'Que recherchez-vous ?',clear_search:'Effacer',searching:'Recherche de [SEARCH_TERM]…',zero_results:'Aucun résultat pour [SEARCH_TERM]',one_result:'[COUNT] résultat pour [SEARCH_TERM]',many_results:'[COUNT] résultats pour [SEARCH_TERM]',search_label:'Rechercher',load_more:'Afficher plus de résultats'}:undefined});
+        initialized=true;
+      }catch{const el=document.querySelector('#search-results');if(el)el.textContent=dialog.dataset.lang==='fr'?'La recherche sera disponible dans la prévisualisation du build.':'Search is available in the production build preview.';}
+    }
+    setTimeout(()=>dialog.querySelector<HTMLInputElement>('input')?.focus(),100);
+  }
+  document.querySelectorAll('[data-search-open]').forEach(b=>b.addEventListener('click',openSearch));
+  document.querySelector('[data-search-close]')?.addEventListener('click',()=>dialog?.close());
+  dialog?.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
+  document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openSearch();}});
+</script>

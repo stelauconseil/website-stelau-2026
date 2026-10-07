@@ -1,0 +1,63 @@
+---
+import {Image} from 'astro:assets';
+import {Code} from 'astro:components';
+import githubDark from '@shikijs/themes/github-dark';
+import Arrow from '@/components/Arrow.astro';
+import Icon from '@/components/Icon/Icon.astro';
+import type { IconName } from '@/data/icons';
+import PostCard from '@/components/PostCard/PostCard.astro';
+import GroupAnnouncement from '@/components/GroupAnnouncement/GroupAnnouncement.astro';
+import {href,type Locale} from '@/config/site';
+import {expertises} from '@/data/expertises';
+import {caseStudies} from '@/data/cases';
+import {getAllPosts} from '@/js/blogUtils';
+import hero from '@/assets/images/hero-freepik.jpg';
+import workshop from '@/assets/images/workshop.jpeg';
+import codeReview from '@/assets/images/code-review.jpeg';
+const {lang}=Astro.props as {lang:Locale};const fr=lang==='fr';
+const posts=await getAllPosts(lang);
+const expertiseIcons: Record<string,IconName> = {conseil:'compass',audit:'magnifying-glass',developpement:'code'};
+// Both syntax palettes are generated at build time; theme switching needs no highlighter runtime.
+const stelauDarkTheme = {
+  ...githubDark,
+  name:'stelau-dark',
+  colors:{...githubDark.colors,'editor.background':'#20262d','editor.foreground':'#e2e8f0'},
+  tokenColors:[...(githubDark.tokenColors || []),{
+    scope:['keyword','storage.type','storage.modifier','entity.name.function','support.function'],
+    settings:{foreground:'#ffae73'}
+  }]
+};
+const terrain: {label:string; icon:IconName}[] = [
+  {label:'eIDAS',icon:'scale-balanced'}, {label:'EUDI Wallet',icon:'wallet'},
+  {label:'ISO 18013-5',icon:'id-card'}, {label:'PKI & HSM',icon:'microchip'},
+  {label:'ISO 27001',icon:'clipboard-check'}
+];
+const code=`const readerKeyPair = await crypto.subtle.generateKey(
+  { name: "ECDH", namedCurve: "P-256" },
+  true,
+  ["deriveKey", "deriveBits"]
+);`;
+---
+<section class="hero container">
+  <div class="hero-copy">
+    <p class="eyebrow"><span class="status-dot"></span>{fr?'Cybersécurité. Identité numérique. Confiance.':'Cybersecurity. Digital identity. Trust.'}</p>
+    <h1>{fr?'La confiance':'Trust'}<br/>{fr?'se construit.':'is built.'}<br/><em>{fr?'Ensemble.':'Together.'}</em></h1>
+    <p class="hero-description">{fr?'Nous sommes des ingénieurs consultants et des experts en cybersécurité. Nous codons, auditons, analysons et conseillons pour transformer les sujets complexes en réponses concrètes. Avec exigence, et avec le sens du collectif.':'We are consulting engineers and cybersecurity experts. We code, audit, analyse and advise, turning complex questions into practical answers. With rigour and a shared commitment to working together.'}</p>
+    <div class="hero-actions"><a href={href(lang,'expertise')} class="button">{fr?'Découvrir nos expertises':'Explore our expertise'}<Arrow /></a><a href={href(lang,'about')} class="text-link">{fr?'Rencontrer l’équipe':'Meet the team'}<span>↗</span></a></div>
+    <div class="hero-note"><span class="collective-mark"><Icon name="users" size={24}/></span><span>{fr?'La technique, avec le sens du collectif.':'Technical minds. A shared purpose.'}</span></div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-photo"><Image src={hero} alt={fr?'Une jeune professionnelle souriante travaille avec ses collègues dans un bureau lumineux.':'A smiling young professional working with colleagues in a bright office.'} widths={[480,800,1200]} sizes="(min-width: 900px) 48vw, 100vw" width={1200} loading="eager" fetchpriority="high" format="webp"/></div>
+    <div class="code-window"><div class="code-title"><span class="window-dots"><i></i><i></i><i></i></span><span>session-establishment.js</span><span class="code-language">JS</span></div><div class="code-body"><span class="code-comment">// {fr?'La confiance commence dans le code.':'Trust starts in the code.'}</span><Code code={code} lang="javascript" themes={{light:'github-light',dark:stelauDarkTheme}} defaultColor="light"/></div><div class="code-bottom"><span><i></i>WebCrypto · ECDH · P-256</span><a href={href(lang,'blog')+'mdoc-web-verifier-deep-dive/'}>{fr?'Lire le code':'Read the code'} ↗</a></div></div>
+    <span class="vertical-note">STELAU / {fr?'LES MAINS DANS LE CODE':'HANDS ON THE CODE'}</span>
+  </div>
+</section>
+<section class="trust-strip container" aria-label={fr?'Domaines d’intervention':'Areas of expertise'}><span>{fr?'Notre terrain de jeu':'Where we work'}</span><div>{terrain.map(t=><span><Icon name={t.icon} size={24}/>{t.label}</span>)}</div></section>
+<GroupAnnouncement lang={lang}/>
+<section class="expertise-section container section-space">
+  <div class="section-heading"><div><p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name="compass" size={22}/></span>01 / {fr?'Nos expertises':'Our expertise'}</p><h2>{fr?'Comprendre en profondeur.':'Understand deeply.'}<br/><em>{fr?'Faire avancer les choses.':'Move things forward.'}</em></h2></div><p>{fr?'Nous relions le conseil, l’audit et le développement. Parce qu’une bonne décision doit aussi tenir dans la réalité.':'We bring together advice, audits and development. Because a good decision has to work in practice.'}</p></div>
+  <div class="expertise-grid">{expertises.map(e=><a class="expertise-card" href={href(lang,'expertise')+e.slug+'/'}><div class="card-top"><span class="mono">/{e.number}</span><span class="expertise-icon-badge"><Icon name={expertiseIcons[e.slug]} size={36}/></span></div><h3>{e[lang].verb}</h3><h4>{e[lang].title}</h4><p>{e[lang].description}</p><div class="card-tags">{e.tags.slice(0,3).map(t=><span>{t}</span>)}</div><span class="card-link">{fr?'Explorer cette expertise':'Explore this expertise'}<Arrow /></span></a>)}</div>
+</section>
+<section class="human-section section-space"><div class="container human-grid"><div class="human-images"><Image src={workshop} alt={fr?'Atelier collectif autour d’une table et de notes adhésives.':'A collaborative workshop around a table with sticky notes.'} widths={[600,1000]} width={1000} format="webp" class="workshop-image"/><div class="small-work-image"><Image src={codeReview} alt={fr?'Revue de code en équipe, avec ordinateurs et écran partagé.':'Team code review with laptops and a shared screen.'} width={480} format="webp"/><span>{fr?'On réfléchit. On teste. On partage.':'Think. Test. Share.'}</span></div></div><div class="human-copy"><p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name="comments" size={22}/></span>02 / {fr?'Comment nous travaillons':'How we work'}</p><h2>{fr?'Du code.' : 'Code.'}<br/>{fr?'Des idées.' : 'Ideas.'}<br/><em>{fr?'Et des gens.' : 'And people.'}</em></h2><p>{fr?'Une revue de code autour d’un café. Un atelier avec votre équipe. Une note qui rend un sujet difficile plus clair. C’est aussi cela, la cybersécurité chez Stelau.':'A code review over coffee. A workshop with your team. A paper that makes a difficult topic clearer. This is also what cybersecurity looks like at Stelau.'}</p><p>{fr?'Nous utilisons l’IA pour explorer, analyser et préparer nos notes. Nos ingénieurs confrontent les résultats aux sources et assument les conclusions.':'We use AI to explore, analyse and draft our papers. Our engineers check the results against sources and take responsibility for the conclusions.'}</p><a class="text-link" href={href(lang,'about')}>{fr?'Faire connaissance':'Get to know us'}<Arrow /></a></div></div></section>
+<section class="cases-section container section-space"><div class="section-heading"><div><p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name="briefcase" size={22}/></span>03 / {fr?'Des preuves, pas seulement des promesses':'Work you can see'}</p><h2>{fr?'La confiance,':'Trust,'}<br/><em>{fr?'sur le terrain.':'in practice.'}</em></h2></div><a class="text-link" href={href(lang,'cases')}>{fr?'Toutes nos réalisations':'All our work'}<Arrow /></a></div><div class="case-list">{caseStudies.slice(1,4).map((c,i)=><a href={href(lang,'cases')+c.slug+'/'} class="case-row"><span class="case-number mono">0{i+1}</span><div><span class="eyebrow">{c.client}</span><h3>{c[lang].title}</h3></div><span class="case-year mono">{c.year==='Depuis 2016'&&!fr?'Since 2016':c.year}</span><Arrow /></a>)}</div></section>
+<section class="journal-section container section-space"><div class="section-heading"><div><p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name="book-open" size={22}/></span>04 / {fr?'Dans nos carnets':'From our notebooks'}</p><h2>{fr?'Ce qu’on construit.':'What we build.'}<br/><em>{fr?'Ce qu’on apprend.':'What we learn.'}</em></h2></div><a class="text-link" href={href(lang,'blog')}>{fr?'Ouvrir le Blog':'Open the journal'}<Arrow /></a></div><div class="posts-grid">{posts.slice(0,2).map(p=><PostCard post={p} lang={lang}/>)}</div></section>

@@ -1,0 +1,23 @@
+---
+import Icon from '@/components/Icon/Icon.astro';
+import Arrow from '@/components/Arrow.astro';
+import BandTexture from '@/components/BandTexture/BandTexture.astro';
+import BrandLogo from '@/components/BrandLogo/BrandLogo.astro';
+import {group,companyContact} from '@/data/company';
+import {href,type Locale} from '@/config/site';
+const {lang}=Astro.props as {lang:Locale};const fr=lang==='fr';
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en/';
+---
+<footer class:list={['site-footer', {'home-footer':isHome}]} data-pagefind-ignore>
+  {isHome && <BandTexture variant="footer"/>}
+  <div class="container">
+    <div class="footer-top"><div><p class="eyebrow">{fr?'Une question. Une idée. Un défi.':'A question. An idea. A challenge.'}</p><h2>{fr?'On en parle ?':'Let’s talk.'}</h2></div><a href={href(lang,'contact')} class="round-link" aria-label={fr?'Discuter de votre projet':'Discuss your project'}><Arrow /></a></div>
+    <div class="footer-grid">
+      <div><BrandLogo lang={lang}/><p>{fr?'Ingénieurs consultants et experts en cybersécurité, au service de la confiance numérique.':'Consulting engineers and cybersecurity experts, advancing digital trust.'}</p><a class="footer-group" href={group[lang].website} target="_blank" rel="noopener noreferrer">{group[lang].affiliation} ↗</a><a class="icon-text" href="mailto:contact@stelau.com"><Icon name="envelope" size={18}/>contact@stelau.com</a></div>
+      <div><h3 class="icon-heading"><Icon name="building" size={20}/>Stelau</h3><a href={href(lang,'expertise')}>{fr?'Nos expertises':'Our expertise'}</a><a href={href(lang,'cases')}>{fr?'Nos réalisations':'Our work'}</a><a href={href(lang,'about')}>{fr?'Notre équipe':'Our team'}</a><a href={href(lang,'blog')}>{fr?'Le Blog':'Journal'}</a><a href={href(lang,'contact')}>Contact</a></div>
+      <div><h3 class="icon-heading"><Icon name="share-nodes" size={20}/>{fr?'Suivez-nous':'Follow us'}</h3><a href="https://www.linkedin.com/company/stelau-conseil/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://github.com/stelauconseil" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://fullverify.io/" target="_blank" rel="noopener noreferrer">FullVerify ↗</a><a href={fr?'/rss.xml':'/en/rss.xml'}>{fr?'Flux RSS':'RSS feed'} ↗</a></div>
+      <div><h3 class="icon-heading"><Icon name="location-dot" size={20}/>{fr?'Retrouvez-nous':'Find us'}</h3><p>{companyContact.locationsLabel}</p><a class="icon-text" href={'tel:'+companyContact.phone}><Icon name="phone" size={18}/>{companyContact.phoneLabel}</a><span class="footer-status"><i></i>{fr?'Et là où vous êtes.':'And wherever you are.'}</span></div>
+    </div>
+    <div class="footer-bottom"><span>© {new Date().getFullYear()} Stelau</span><div><a href={href(lang,'notice')}>{fr?'Mentions légales':'Legal notice'}</a><a href={href(lang,'privacy')}>{fr?'Confidentialité':'Privacy'}</a><a href={href(lang,'cookies')}>Cookies</a><a href={href(lang,'terms')}>{fr?'Conditions':'Terms'}</a></div><span>{fr?'Conçu avec soin.':'Made with care.'}</span></div>
+  </div>
+</footer>

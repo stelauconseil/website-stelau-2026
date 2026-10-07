@@ -1,0 +1,7 @@
+---
+import Icon from '@/components/Icon/Icon.astro';
+import {caseIcons} from '@/data/icons';
+import Arrow from '@/components/Arrow.astro';import {href,type Locale} from '@/config/site';import {caseStudies} from '@/data/cases';
+const {lang}=Astro.props as {lang:Locale};const fr=lang==='fr';
+---
+<div class="container page-intro"><p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name="briefcase" size={22}/></span>{fr?'Nos réalisations':'Our work'}</p><h1>{fr?'Des projets concrets.':'Real projects.'}<br/><em>{fr?'Une confiance qui se vérifie.':'Trust you can verify.'}</em></h1><p class="lead">{fr?'Certification, identité numérique, cryptographie et développement : découvrez les interventions qui donnent corps à notre expertise.':'Certification, digital identity, cryptography and development: discover how we put our expertise into practice.'}</p></div><section class="container case-list section-space">{caseStudies.map((c,i)=><a class="case-row" href={href(lang,'cases')+c.slug+'/'}><span class="case-number mono">0{i+1}</span><div><p class="eyebrow icon-eyebrow"><Icon name={caseIcons[c.slug]} size={20}/>{c.client}</p><h2>{c[lang].title}</h2><p>{c[lang].description}</p></div><span class="case-year mono">{c.year==='Depuis 2016'&&!fr?'Since 2016':c.year}</span><Arrow /></a>)}</section>

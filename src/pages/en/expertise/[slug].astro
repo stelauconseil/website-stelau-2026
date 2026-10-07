@@ -1,0 +1,8 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Page from '@/components/Expertise/ExpertiseDetail.astro';
+import {expertises} from '@/data/expertises';
+export function getStaticPaths(){return expertises.map(item=>({params:{slug:item.slug},props:{item}}));}
+const {item}=Astro.props;
+---
+<BaseLayout lang="en" title={item.en.title} description={item.en.description}><Page lang="en" slug={item.slug}/></BaseLayout>

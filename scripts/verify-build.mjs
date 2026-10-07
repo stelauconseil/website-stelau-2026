@@ -1,0 +1,8 @@
+import {readFile,readdir,stat} from 'node:fs/promises';import {resolve,join} from 'node:path';import assert from 'node:assert/strict';
+const root=resolve('dist');const files=[];async function walk(dir){for(const name of await readdir(dir)){const p=join(dir,name);if((await stat(p)).isDirectory())await walk(p);else files.push(p);}}await walk(root);
+const html=files.filter(f=>f.endsWith('.html'));let links=0;
+for(const file of html){const content=await readFile(file,'utf8');assert.match(content,/<html[^>]*lang="(fr|en)"/,file);assert.match(content,/<title>/,file);for(const m of content.matchAll(/(?:href|src)="(\/[^"#?]*)/g)){const target=m[1];if(target.startsWith('//'))continue;const path=target.endsWith('/')?join(root,target,'index.html'):join(root,target);assert.ok(files.includes(path)||files.includes(join(root,target,'index.html'))||target==='/pagefind/',`Missing internal target ${target} from ${file}`);links++;}}
+for(const route of ['index.html','en/index.html','blog/index.html','en/blog/index.html','a-propos/index.html','en/about/index.html','contact/index.html','rss.xml','en/rss.xml','pagefind/pagefind.js'])assert.ok(files.includes(join(root,route)),`Missing ${route}`);
+for(const lang of ['', 'en/'])for(const slug of ['mdoc-web-verifier-deep-dive','oid4vp-backend-implementation'])assert.ok(files.includes(join(root,`${lang}blog/${slug}/index.html`)),`Missing imported article ${lang}${slug}`);
+const articles=html.filter(f=>/\/blog\/[^/]+\/index.html$/.test(f)).length;
+console.log(`Verified ${html.length} HTML pages, ${links} internal references, ${articles} article pages and both RSS feeds.`);

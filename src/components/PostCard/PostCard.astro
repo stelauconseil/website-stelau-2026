@@ -1,0 +1,13 @@
+---
+import Icon from '@/components/Icon/Icon.astro';
+import {Image} from 'astro:assets';
+import Arrow from '@/components/Arrow.astro';
+import {href,dateLabel,categoryLabel,type Locale} from '@/config/site';
+import {postSlug,readingTime} from '@/js/blogUtils';
+import type {CollectionEntry} from 'astro:content';
+const {post,lang,featured=false}=Astro.props as {post:CollectionEntry<'blog'>;lang:Locale;featured?:boolean};
+---
+<a class:list={['post-card',{'post-featured':featured}]} href={href(lang,'blog')+postSlug(post)+'/'}>
+  <div class="post-image">{post.data.heroImage&&<Image src={post.data.heroImage} alt="" widths={[480,800,1200]} sizes={featured?'(min-width: 900px) 50vw, 100vw':'(min-width: 900px) 33vw, 100vw'} width={800} format="webp" loading="lazy"/>}<span class="post-image-arrow"><Arrow /></span></div>
+  <div class="post-copy"><div class="post-meta"><span class="icon-text"><Icon name="tags" size={16}/>{categoryLabel(post.data.categories[0]||'standards',lang)}</span><span class="icon-text"><Icon name="clock" size={16}/>{readingTime(post.body)} min</span></div><h3>{post.data.title}</h3><p>{post.data.description}</p><time datetime={post.data.pubDate.toISOString()}>{dateLabel(post.data.pubDate,lang)}</time></div>
+</a>
