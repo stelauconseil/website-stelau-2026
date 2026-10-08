@@ -1,0 +1,83 @@
+{
+  "generator": "Playwright screenshots of the local Astro simulation component, encoded with Pillow",
+  "reference": "Original educational diagrams; no source GIF frames reused",
+  "durationMs": 18020,
+  "palettes": [
+    "Stelau light",
+    "Stelau dark"
+  ],
+  "simulations": [
+    {
+      "file": "dire-en-dark.gif",
+      "frames": 72,
+      "size": [
+        1000,
+        828
+      ],
+      "bytes": 122482
+    },
+    {
+      "file": "dire-en-light.gif",
+      "frames": 72,
+      "size": [
+        1000,
+        828
+      ],
+      "bytes": 121197
+    },
+    {
+      "file": "dire-fr-dark.gif",
+      "frames": 72,
+      "size": [
+        1000,
+        785
+      ],
+      "bytes": 119626
+    },
+    {
+      "file": "dire-fr-light.gif",
+      "frames": 72,
+      "size": [
+        1000,
+        785
+      ],
+      "bytes": 118101
+    },
+    {
+      "file": "rapport-en-dark.gif",
+      "frames": 72,
+      "size": [
+        1000,
+        785
+      ],
+      "bytes": 113842
+    },
+    {
+      "file": "rapport-en-light.gif",
+      "frames": 72,
+      "size": [
+        1000,
+        785
+      ],
+      "bytes": 113308
+    },
+    {
+      "file": "rapport-fr-dark.gif",
+      "frames": 72,
+      "size": [
+        1000,
+        807
+      ],
+      "bytes": 118145
+    },
+    {
+      "file": "rapport-fr-light.gif",
+      "frames": 72,
+      "size": [
+        1000,
+        807
+      ],
+      "bytes": 116919
+    }
+  ]
+}

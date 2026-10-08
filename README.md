@@ -74,3 +74,13 @@ L’extrait WebCrypto dispose de deux palettes Shiki générées au build : GitH
 ## Essai du bandeau d’accueil
 
 Les accueils FR/EN utilisent une texture de points discrète sur les bandeaux anthracite de navigation et de pied de page, accompagnée des références WebCrypto de la home. Le haut comporte un reflet bleu qui ne joue qu’une fois pendant 4,4 secondes ; le bas conserve une texture plus espacée, statique. La décoration est ignorée par les lecteurs d’écran et Pagefind ; le reflet est désactivé avec `prefers-reduced-motion`. Le composant `BandTexture.astro` ne charge aucun script ni actif externe.
+
+## Médias et simulations de l’expertise assurance
+
+L’entretien IXI-Plus ouvre les pages FR/EN : vidéo MP4 locale (2 min 51, français), sans lecture automatique, avec les contrôles du navigateur et `preload="none"`. Le fichier est remuxé en fast-start sans réencodage. Son affiche est extraite de l’entretien.
+
+Trois photographies Freepik fournies par Stelau sont copiées sous des noms descriptifs dans `src/assets/images/expertise-cyber/` et optimisées en WebP par Astro. Les légendes et la mention de confidentialité identifient leur rôle illustratif. Les photographies prises dans les missions ne sont pas publiées.
+
+`ExpertiseSimulation.astro` présente deux schémas originaux : sources → chronologie → causalité → rapport d’expertise ; observations d’une partie → pièces citées → questions → dire à l’expert judiciaire. Les situations sont fictives et les deux cadres restent distincts. Le rôle du dire est décrit avec une référence à l’article 276 du Code de procédure civile, sans présenter Stelau comme expert désigné par un tribunal.
+
+Les schémas sont animés dans la page, avec commandes Pause et Rejouer. Ils suivent le thème Stelau, s’arrêtent hors écran et proposent une vue complète immobile quand `prefers-reduced-motion` est activé ou quand JavaScript est désactivé. Les huit exports GIF (deux schémas × FR/EN × clair/sombre), leurs vues finales PNG et leur provenance se trouvent dans `public/media/expertise-cyber/`. Les GIF sont téléchargeables et ne sont pas chargés automatiquement. Ils sont générés à partir des rendus du composant, sans réutiliser d’image des GIF de référence ; les exports doivent être régénérés lorsque le schéma change.

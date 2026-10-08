@@ -1,0 +1,21 @@
+{
+  "source": "Freepik resources supplied by Stelau",
+  "purpose": "Illustrative photographs; no photographs from expert assignments are published",
+  "photos": [
+    {
+      "file": "equipe-gestion-incident.jpg",
+      "original": "black-colored-smartphone-young-people-working-call-center-new-deals-is-coming.jpg",
+      "sha256": "295cb453fadde34120586d844ea67f668ada646a11fcad29c28a3781229e5515"
+    },
+    {
+      "file": "analyse-collective.jpg",
+      "original": "man-with-coworkers-thinking.jpg",
+      "sha256": "36c2b0bc79a08591968a8fdb274b843976655009c888fbf57a22b74e08dba6b2"
+    },
+    {
+      "file": "regard-expert.jpg",
+      "original": "concentrated-manager-sitting-table-looking-camera.jpg",
+      "sha256": "71409b85d8e6195416736140c9612f40e5b33aa4d97321022764c206bd065889"
+    }
+  ]
+}
