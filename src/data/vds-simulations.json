@@ -1,0 +1,46 @@
+{
+  "integrity": {
+    "fr": {
+      "title": "Changer une donnée. Rompre la preuve.",
+      "caption": "La signature couvre les données du code. Le texte imprimé doit aussi être comparé à ces données.",
+      "steps": [
+        ["Émettre", "L’émetteur signe les données du document.", "MARTIN", "Données à signer", "Clé de l’émetteur", "Signature créée"],
+        ["Vérifier", "Le lecteur vérifie la signature des données reçues.", "MARTIN", "Données signées", "Vérification", "Signature valide"],
+        ["Modifier", "Une donnée du code change, la signature reste la même.", "DURAND", "Données modifiées", "Même signature", "Vérification requise"],
+        ["Détecter", "La signature ne correspond plus aux données modifiées.", "DURAND", "Données modifiées", "Vérification", "Signature invalide"]
+      ]
+    },
+    "en": {
+      "title": "Change the data. Break the proof.",
+      "caption": "The signature covers the data in the code. Printed text must also be compared with that data.",
+      "steps": [
+        ["Issue", "The issuer signs the document’s data.", "MARTIN", "Data to sign", "Issuer’s key", "Signature created"],
+        ["Verify", "The reader checks the signature of the received data.", "MARTIN", "Signed data", "Verification", "Valid signature"],
+        ["Modify", "Data in the code changes; the signature stays the same.", "DURAND", "Modified data", "Same signature", "Verification required"],
+        ["Detect", "The signature no longer matches the modified data.", "DURAND", "Modified data", "Verification", "Invalid signature"]
+      ]
+    }
+  },
+  "paper": {
+    "fr": {
+      "title": "Le support change. La signature reste.",
+      "caption": "Si le code reste lisible, l’impression préserve la preuve cryptographique. Elle n’établit pas qui le présente.",
+      "steps": [
+        ["Afficher", "Un document numérique porte des données signées.", "MARTIN", "Sur un écran", "Données + signature", "Code signé"],
+        ["Imprimer", "Le même code passe sur papier, sans changer son contenu.", "MARTIN", "Sur papier", "Données inchangées", "Même signature"],
+        ["Relire", "Le lecteur retrouve les données et vérifie leur signature.", "MARTIN", "Papier relu", "Vérification", "Signature valide"],
+        ["Distinguer", "Une copie peut garder une signature valide, sans prouver la légitimité du présentateur.", "MARTIN", "Une copie du code", "Qui le présente ?", "Détenteur non établi"]
+      ]
+    },
+    "en": {
+      "title": "The medium changes. The signature stays.",
+      "caption": "If the code stays readable, printing preserves the cryptographic proof. It does not establish who presents it.",
+      "steps": [
+        ["Display", "A digital document carries signed data.", "MARTIN", "On a screen", "Data + signature", "Signed code"],
+        ["Print", "The same code moves to paper without changing its content.", "MARTIN", "On paper", "Unchanged data", "Same signature"],
+        ["Read again", "The reader retrieves the data and checks its signature.", "MARTIN", "Scanned paper", "Verification", "Valid signature"],
+        ["Distinguish", "A copy can retain a valid signature without proving that the presenter is legitimate.", "MARTIN", "A copy of the code", "Who presents it?", "Holder not established"]
+      ]
+    }
+  }
+}

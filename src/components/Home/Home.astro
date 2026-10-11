@@ -7,7 +7,7 @@ import Icon from '@/components/Icon/Icon.astro';
 import type { IconName } from '@/data/icons';
 import PostCard from '@/components/PostCard/PostCard.astro';
 import GroupAnnouncement from '@/components/GroupAnnouncement/GroupAnnouncement.astro';
-import {href,type Locale} from '@/config/site';
+import {href,walletExpertiseHref,type Locale} from '@/config/site';
 import {expertises} from '@/data/expertises';
 import {caseStudies} from '@/data/cases';
 import {getAllPosts} from '@/js/blogUtils';
@@ -52,7 +52,7 @@ const code=`const readerKeyPair = await crypto.subtle.generateKey(
     <span class="vertical-note">STELAU / {fr?'LES MAINS DANS LE CODE':'HANDS ON THE CODE'}</span>
   </div>
 </section>
-<section class="trust-strip container" aria-label={fr?'Domaines d’intervention':'Areas of expertise'}><span>{fr?'Notre terrain de jeu':'Where we work'}</span><div>{terrain.map(t=><span><Icon name={t.icon} size={24}/>{t.label}</span>)}</div></section>
+<section class="trust-strip container" aria-label={fr?'Domaines d’intervention':'Areas of expertise'}><span>{fr?'Notre terrain de jeu':'Where we work'}</span><div>{terrain.map(t=><span><Icon name={t.icon} size={24}/>{t.label==='EUDI Wallet'?<a href={walletExpertiseHref(lang)}>{t.label}</a>:t.label}</span>)}</div></section>
 <GroupAnnouncement lang={lang}/>
 <section class="expertise-section container section-space">
   <div class="section-heading"><div><p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name="compass" size={22}/></span>01 / {fr?'Nos expertises':'Our expertise'}</p><h2>{fr?'Comprendre en profondeur.':'Understand deeply.'}<br/><em>{fr?'Faire avancer les choses.':'Move things forward.'}</em></h2></div><p>{fr?'Nous relions le conseil, l’audit et le développement. Parce qu’une bonne décision doit aussi tenir dans la réalité.':'We bring together advice, audits and development. Because a good decision has to work in practice.'}</p></div>

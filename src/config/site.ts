@@ -20,3 +20,5 @@ export const dateLabel = (date: Date, lang: Locale) => date.toLocaleDateString(l
 export const categoryLabel = (c: string, lang: Locale) => ({ identity: lang === 'fr' ? 'Identité numérique' : 'Digital identity', 'open-source': 'Open source', standards: lang === 'fr' ? 'Standards & protocoles' : 'Standards & protocols' }[c] || c);
 
 export const cyberInsuranceHref = (lang: Locale) => href(lang,'expertise') + 'expertise-cyber-assurance/';
+export const walletExpertiseHref = (lang: Locale) => href(lang,'expertise') + 'wallets-identite-numerique/';
+export const vdsVerifyHref = (lang: Locale) => href(lang,'expertise') + 'vds-verify/';

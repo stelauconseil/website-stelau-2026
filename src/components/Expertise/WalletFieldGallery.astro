@@ -1,0 +1,36 @@
+---
+import {Image} from 'astro:assets';
+import type {Locale} from '@/config/site';
+import demo from '@/assets/images/wallets-geneve/demonstration-preuve-age-google-wallet.jpg';
+import award from '@/assets/images/wallets-geneve/communaute-mdl-fides-collaboration-award.jpg';
+import team from '@/assets/images/wallets-geneve/rencontre-stelau-idakto.jpg';
+import conference from '@/assets/images/wallets-geneve/demonstration-conference-identite-numerique.jpg';
+const {lang} = Astro.props as {lang:Locale};
+const fr = lang === 'fr';
+---
+<div class="wallet-team-gallery">
+  <figure><Image src={team} alt={fr?'Trois participants à une conférence internationale sur l’identité numérique.':'Three participants at an international digital identity conference.'} widths={[480,800,1153]} sizes="(min-width: 900px) 560px, 90vw" width={1153} format="webp"/><figcaption>{fr?'Stelau et iDAKTO, au contact de l’écosystème de l’identité numérique.':'Stelau and iDAKTO, connecting with the digital identity ecosystem.'}</figcaption></figure>
+  <figure><Image src={conference} alt={fr?'Une présentation d’outils d’identité numérique sur scène, devant un public de professionnels.':'Digital identity tools presented on stage to an audience of professionals.'} widths={[360,600,900]} sizes="(min-width: 900px) 360px, 80vw" width={900} format="webp"/><figcaption>{fr?'Les démonstrations rendent les échanges de protocoles visibles et concrets.':'Demonstrations make protocol exchanges visible and tangible.'}</figcaption></figure>
+</div>
+<p class="wallet-photo-source">{fr?'Photographies fournies par Stelau.':'Photographs supplied by Stelau.'}</p>
+<div class="wallet-gallery">
+  <figure>
+    <Image src={demo} alt={fr?'Écran de démonstration Google Wallet présentant notamment une preuve d’âge France Identité.':'Google Wallet demonstration screen featuring a France Identité proof-of-age credential.'} widths={[360,600,800]} sizes="(min-width: 900px) 360px, 80vw" width={800} format="webp"/>
+    <figcaption>{fr?'Une preuve d’âge France Identité, présentée sur la démonstration Google Wallet à Genève.':'A France Identité proof-of-age credential on the Google Wallet demonstration in Geneva.'}</figcaption>
+  </figure>
+  <figure>
+    <Image src={award} alt={fr?'Photo de groupe de la communauté mDL avec le Fides Collaboration Award à Genève.':'Group photograph of the mDL community with the Fides Collaboration Award in Geneva.'} widths={[480,800,1280]} sizes="(min-width: 900px) 560px, 90vw" width={1280} format="webp"/>
+    <figcaption>{fr?'Le Fides Collaboration Award salue le travail collectif de la communauté mDL fondée sur ISO/IEC 18013-5.':'The Fides Collaboration Award recognises the collective work of the ISO/IEC 18013-5 mDL community.'}</figcaption>
+  </figure>
+</div>
+<p class="wallet-photo-source">{fr?'Démonstration Google Wallet : photographie issue du':'Google Wallet demonstration: photograph from'} <a href="https://www.linkedin.com/feed/update/urn:li:activity:7502698364082225153/" target="_blank" rel="noopener noreferrer">{fr?'retour de Nicolas Chalanset, republié par Stelau':'Nicolas Chalanset’s account, reshared by Stelau'}</a> · {fr?'Genève, septembre 2026. Photo du groupe mDL fournie par Stelau.':'Geneva, September 2026. mDL group photograph supplied by Stelau.'}</p>
+<style>
+  .wallet-team-gallery{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;align-items:start;margin:32px 0 12px}
+  .wallet-gallery{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:24px;align-items:start;margin:32px 0 12px}
+  figure{margin:0;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  figure :global(img){display:block;width:100%;height:auto;margin:0}
+  figcaption{padding:18px 20px;font-size:14px;line-height:1.7;color:var(--muted)}
+  .wallet-photo-source{font-size:12px!important;line-height:1.8;color:var(--muted);margin:0 0 24px!important}
+  .wallet-photo-source a{text-decoration:underline;text-underline-offset:3px;color:inherit}
+  @media(max-width:600px){.wallet-gallery,.wallet-team-gallery{grid-template-columns:1fr;gap:20px}.wallet-gallery figure:first-child :global(img){max-height:480px;object-fit:contain;background:var(--soft)}}
+</style>
