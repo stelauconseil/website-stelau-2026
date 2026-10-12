@@ -1,0 +1,26 @@
+{
+  "fr": {
+    "title": "De l’exigence au constat documenté.",
+    "caption": "Démarche pédagogique inspirée des lignes directrices ISO 19011:2026. Le périmètre et les règles du dispositif encadrent chaque mission.",
+    "steps": [
+      ["Cadrer", "Définir objectifs, périmètre et critères d’audit.", "Le cadre de la mission", "Objectifs · périmètre · critères", "Une exigence identifiée"],
+      ["Préparer", "Étudier les documents et organiser les investigations.", "Le plan d’audit", "Documents · activités · équipe", "Des questions préparées"],
+      ["Vérifier", "Croiser entretiens, observations et éléments vérifiables.", "Les éléments recueillis", "Entretiens · observations · preuves", "Des faits à recouper"],
+      ["Qualifier", "Comparer les preuves aux exigences et discuter les constats.", "Le constat étayé", "Exigence ↔ preuve ↔ constat", "Une conclusion motivée"],
+      ["Restituer", "Présenter les conclusions et rédiger le rapport.", "Le rapport d’audit", "Constats · conclusions · limites", "Une restitution fidèle"],
+      ["Suivre", "Examiner les actions et leur efficacité lorsque prévu.", "Le suivi des actions", "Actions · preuves · vérification", "Une correction vérifiée"]
+    ]
+  },
+  "en": {
+    "title": "From a requirement to a documented finding.",
+    "caption": "An educational illustration inspired by ISO 19011:2026 guidance. Each assignment is governed by its scope and scheme rules.",
+    "steps": [
+      ["Scope", "Define the audit’s objectives, scope and criteria.", "The assignment’s scope", "Objectives · scope · criteria", "An identified requirement"],
+      ["Prepare", "Review documentation and plan the investigations.", "The audit plan", "Documents · activities · team", "Prepared questions"],
+      ["Verify", "Cross-check interviews, observations and verifiable evidence.", "The collected evidence", "Interviews · observations · evidence", "Facts to cross-check"],
+      ["Assess", "Compare evidence with requirements and discuss findings.", "The supported finding", "Requirement ↔ evidence ↔ finding", "A reasoned conclusion"],
+      ["Report", "Present conclusions and prepare the audit report.", "The audit report", "Findings · conclusions · limitations", "An accurate account"],
+      ["Follow up", "Review actions and their effectiveness where required.", "Action follow-up", "Actions · evidence · verification", "A verified correction"]
+    ]
+  }
+}

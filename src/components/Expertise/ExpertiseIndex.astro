@@ -4,6 +4,7 @@ import ExpertiseThumbnail from './ExpertiseThumbnail.astro';
 import team from '@/assets/images/wallets-geneve/rencontre-stelau-idakto.jpg';
 import conference from '@/assets/images/wallets-geneve/demonstration-conference-identite-numerique.jpg';
 import expertPortrait from '@/assets/images/expertise-cyber/regard-expert.jpg';
+import auditMeeting from '@/assets/images/audits-certification/ecoute-reunion-audit.jpg';
 import {expertiseIcons} from '@/data/icons';
 import Arrow from '@/components/Arrow.astro';
 import {href,cyberInsuranceHref,walletExpertiseHref,type Locale} from '@/config/site';import {expertises} from '@/data/expertises';
@@ -14,7 +15,7 @@ const {lang}=Astro.props as {lang:Locale};const fr=lang==='fr';
   {expertises.map(e=><a class="expertise-detail-row expertise-with-media" href={href(lang,'expertise')+e.slug+'/'}>
     <span class="mono">/{e.number}</span>
     <div class="expertise-row-copy"><p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name={expertiseIcons[e.slug]} size={22}/></span>{e[lang].tag}</p><h2>{e[lang].title}</h2><p>{e[lang].description}</p><div class="card-tags">{e.tags.map(t=><span>{t}</span>)}</div></div>
-    <div class="expertise-row-media"><ExpertiseThumbnail image={e.slug==='conseil'?team:undefined} alt={fr?'Trois participants réunis lors d’une conférence internationale sur l’identité numérique.':'Three participants together at an international digital identity conference.'} icon={expertiseIcons[e.slug]} label={fr?'Visuel à venir':'Image to come'}/></div>
+    <div class="expertise-row-media"><ExpertiseThumbnail image={e.slug==='conseil'?team:e.slug==='audit'?auditMeeting:undefined} alt={e.slug==='audit'?(fr?'Une réunion professionnelle, photographie d’illustration de l’activité d’audit.':'A professional meeting, an illustrative photograph of auditing work.'):(fr?'Trois participants réunis lors d’une conférence internationale sur l’identité numérique.':'Three participants together at an international digital identity conference.')} illustration={e.slug==='audit'?(fr?'Illustration':'Illustration'):undefined} icon={expertiseIcons[e.slug]} label={fr?'Visuel à venir':'Image to come'}/></div>
     <Arrow />
   </a>)}
 </section>

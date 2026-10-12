@@ -22,3 +22,4 @@ export const categoryLabel = (c: string, lang: Locale) => ({ identity: lang === 
 export const cyberInsuranceHref = (lang: Locale) => href(lang,'expertise') + 'expertise-cyber-assurance/';
 export const walletExpertiseHref = (lang: Locale) => href(lang,'expertise') + 'wallets-identite-numerique/';
 export const vdsVerifyHref = (lang: Locale) => href(lang,'expertise') + 'vds-verify/';
+export const certificationAuditHref = (lang: Locale) => href(lang,'expertise') + 'audit/audits-certification/';
