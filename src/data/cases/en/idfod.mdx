@@ -1,0 +1,41 @@
+---
+title: "Cryptography for secure documents"
+description: "idFod: signing services, CVC certificates and a React administration interface for electronic passports and identity cards."
+client: "Eviden / ANTS"
+year: "2024"
+category: "Développement sécurisé"
+---
+
+import IdfodScreens from '@/components/Cases/IdfodScreens.astro';
+
+## Authorising access to biometric data
+
+For **Eviden and France’s Agence Nationale des Titres Sécurisés (ANTS)**, Stelau developed **idFod**, a signing solution for exchanges with electronic passports, electronic national identity cards and residence permits.
+
+The document sends a challenge. Signing that challenge contributes to terminal authentication: the terminal must prove it is authorised to access sensitive data. This project addresses access to **Data Group 3 (DG3)**, which contains fingerprint images.
+
+## CVC expertise across the whole chain
+
+**Card Verifiable Certificates (CVC)** are central to this project. Our engineers work on encoding and decoding, **EC and RSA** public keys, creating and authenticating certificate requests, signature verification and interpreting access rights.
+
+This expertise connects the **CVCA → DV → IS** chain to the project’s practical requirements: precise formats, cryptographic parameters, interoperability and certificate lifecycle management.
+
+### Two SOAP functions, an operational context
+
+The **SOAP webservices** provide the certificate chain and sign the challenge on request. Integration accounts for document delivery equipment in town halls, prefectures and consulates, as well as airport inspection systems.
+
+The solution connects to **PKIs issuing CVCs** and to **HSMs** used to generate asymmetric key pairs and perform signatures. Protected communications complete the architecture.
+
+## Making operations understandable
+
+The **React** interface lets operators manage certificates, keys and users, inspect logs and monitor service status. The screenshots show CVCA, DV and IS certificate families, signing activity and renewal monitoring.
+
+Statuses and diagnostics need to be clear. Operators must be able to identify and understand a rejected renewal request so that they can continue their checks.
+
+<IdfodScreens lang="en" variant="alert" />
+
+## From specifications to an integrated solution
+
+Challenge management services, PKI and HSM connections and the administration interface form a solution integrated into the ANTS operational environment. The work combines **interoperability**, **certificate management** and **control over cryptographic operations**.
+
+The security mechanisms draw on travel document specifications: [ICAO Doc 9303, Part 11](https://www.icao.int/sites/default/files/publications/DocSeries/9303_p11_cons_en.pdf), and [BSI TR-03110](https://www.bsi.bund.de/dok/TR-03110), particularly for terminal authentication and CVC certificates.

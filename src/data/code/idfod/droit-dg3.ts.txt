@@ -1,0 +1,13 @@
+public canReadDG3(): boolean {
+    const role =
+        this.certificateBody.getCertificateHolderAuthorizationTemplate()
+            .discretionaryData;
+    if (role[0] === undefined) {
+        throw new Error(
+            'Invalid CVCertificate, no discretionary data in authorization template',
+        );
+    }
+    const roleBinary = role[0].toString(2).padStart(8, '0');
+    // the last bit of the discretionary data is the read right for DG3, xxxxxxx1
+    return roleBinary.endsWith('1');
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "file": "CVCSignatureUtils.ts",
+    "lines": [
+      196,
+      209
+    ],
+    "excerpt": "cle-publique-ec.ts.txt",
+    "sourceSha256": "74ccafe53ce4f5e4e377d49ca0f86060859e798a759a1c24b2ebe598e6c2b0ae"
+  },
+  {
+    "file": "CVCertificateRequest.ts",
+    "lines": [
+      85,
+      98
+    ],
+    "excerpt": "signature-demande-cvc.ts.txt",
+    "sourceSha256": "7d7d5fb44bdded5e84bda4a7c149c78d1ac02041cace5a07cd419df663df4644"
+  },
+  {
+    "file": "CVCertificate.ts",
+    "lines": [
+      180,
+      192
+    ],
+    "excerpt": "droit-dg3.ts.txt",
+    "sourceSha256": "1398776e9e0d0befe5f294bdc665189ec5756fc0fbab394246b052147274a3fc"
+  }
+]

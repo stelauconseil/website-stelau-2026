@@ -1,0 +1,50 @@
+---
+import {Image} from 'astro:assets';
+import Icon from '@/components/Icon/Icon.astro';
+import type {Locale} from '@/config/site';
+import light from '@/assets/images/idfod/administration-claire.png';
+import dark from '@/assets/images/idfod/supervision-sombre.png';
+import alert from '@/assets/images/idfod/alerte-renouvellement.png';
+const {lang,variant='dashboard'}=Astro.props as {lang:Locale;variant?:'dashboard'|'alert'};
+const fr=lang==='fr';
+const dashboard=variant==='dashboard';
+const title=dashboard?(fr?'La cryptographie se pilote aussi.':'Cryptography needs operational oversight.'):(fr?'Une erreur explicite. Une décision possible.':'A clear error. An actionable decision.');
+const altLight=fr?'Interface d’administration idFod : certificats, utilisateurs, volumes de signatures et renouvellements.':'idFod administration interface: certificates, users, signature volumes and renewals.';
+const altDark=fr?'Vue de supervision idFod en thème sombre : activité des services, certificats CVCA, DV et IS, et erreurs de renouvellement.':'Dark idFod monitoring view: service activity, CVCA, DV and IS certificates, and renewal errors.';
+const altAlert=fr?'Alerte idFod : le certificat du système d’inspection n’a pas été émis, car la demande contient des paramètres invalides.':'idFod alert: the inspection system certificate was not issued because the request contains invalid parameters.';
+---
+<div class:list={['idfod-screens',{'idfod-dashboard':dashboard,'idfod-alert':!dashboard}]} data-idfod-screens>
+ {dashboard&&<div class="screen-heading"><div><p class="eyebrow icon-eyebrow"><Icon name="sliders" size={23}/>{fr?'idFod / Administration & supervision':'idFod / Administration & monitoring'}</p><h2>{title}</h2></div><p>{fr?'Une interface React pour suivre les services, les certificats et les opérations de signature.':'A React interface for monitoring services, certificates and signing operations.'}</p></div>}
+ <figure>
+  <button type="button" class="screen-open" data-idfod-open aria-label={fr?'Agrandir la capture idFod':'Enlarge the idFod screenshot'} aria-haspopup="dialog">
+   <div class:list={['screen-image',{'screen-theme-light':dashboard}]}>{dashboard?<Image src={light} alt={altLight} width={2200} widths={[800,1400,2200]} sizes="(max-width: 720px) 100vw, 90vw" format="webp" loading="eager"/>:<Image src={alert} alt={altAlert} width={790} widths={[480,790]} sizes="(max-width: 720px) 100vw, 460px" format="webp"/>}</div>
+   {dashboard&&<div class="screen-image screen-theme-dark"><Image src={dark} alt={altDark} width={2200} widths={[800,1400,2200]} sizes="(max-width: 720px) 100vw, 90vw" format="webp" loading="eager"/></div>}
+   <span class="screen-zoom"><Icon name="magnifying-glass" size={16}/>{fr?'Agrandir':'Enlarge'}</span>
+  </button>
+  <figcaption>{dashboard?(fr?'Captures de l’interface idFod · les indicateurs visibles illustrent les fonctions de supervision.':'idFod interface screenshots · the displayed indicators illustrate monitoring features.'):(fr?'Une demande de renouvellement refusée est rendue visible avec sa cause. Capture de l’interface idFod.':'A rejected renewal request is displayed along with its cause. idFod interface screenshot.')}</figcaption>
+ </figure>
+ <dialog class="screen-dialog" data-idfod-dialog data-pagefind-ignore aria-label={fr?'Capture idFod agrandie':'Enlarged idFod screenshot'}>
+  <header><span>{dashboard?(fr?'idFod / Administration & supervision':'idFod / Administration & monitoring'):(fr?'idFod / Diagnostic de renouvellement':'idFod / Renewal diagnostic')}</span><button type="button" data-idfod-close aria-label={fr?'Fermer la capture':'Close screenshot'}><Icon name="xmark" size={20}/></button></header>
+  <div class="dialog-scroll" tabindex="0" aria-label={fr?'Capture agrandie, zone défilante':'Enlarged screenshot, scrollable area'}>
+   <div class:list={['screen-image',{'screen-theme-light':dashboard}]}>{dashboard?<Image src={light} alt={altLight} width={2200} format="webp"/>:<Image src={alert} alt={altAlert} width={790} format="webp"/>}</div>
+   {dashboard&&<div class="screen-image screen-theme-dark"><Image src={dark} alt={altDark} width={2200} format="webp"/></div>}
+  </div>
+  <p>{fr?'Échap pour fermer.':'Press Escape to close.'}</p>
+ </dialog>
+</div>
+<script>
+ document.querySelectorAll<HTMLElement>('[data-idfod-screens]').forEach(el=>{
+  const open=el.querySelector<HTMLButtonElement>('[data-idfod-open]')!;
+  const dialog=el.querySelector<HTMLDialogElement>('[data-idfod-dialog]')!;
+  const close=()=>dialog.close();
+  open.addEventListener('click',()=>dialog.showModal());
+  el.querySelector('[data-idfod-close]')!.addEventListener('click',close);
+  dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close();});
+  dialog.addEventListener('close',()=>open.focus({preventScroll:true}));
+ });
+</script>
+<style>
+ .idfod-dashboard{padding-top:10px;padding-bottom:65px}.screen-heading{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:25px}.screen-heading .eyebrow{margin-bottom:18px}.screen-heading h2{font-size:clamp(27px,3.5vw,40px);letter-spacing:-.035em;line-height:1.2;margin:0}.screen-heading>p{max-width:350px;font-size:15px;margin:0;color:var(--muted);line-height:1.8}.idfod-screens figure{margin:0}.screen-open{display:block;width:100%;border:1px solid var(--line);border-radius:12px;overflow:hidden;padding:0;background:var(--surface);position:relative;text-align:left;cursor:zoom-in}.screen-image{overflow:hidden}.screen-image :global(img){width:100%;max-width:none;display:block;height:auto}.screen-theme-light :global(img){margin-top:-7.25%}.screen-theme-dark :global(img){margin-top:-2.2%}.screen-theme-dark{display:none}:global(.dark) .screen-theme-dark{display:block}:global(.dark) .screen-theme-light{display:none}.screen-zoom{position:absolute;right:16px;bottom:16px;display:flex;align-items:center;gap:8px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:9px 12px;font-size:12px;box-shadow:0 3px 12px #0002}.screen-open:hover .screen-zoom{border-color:var(--brand)}.idfod-screens figcaption{font-size:12px;line-height:1.8;color:var(--muted);margin-top:13px}.idfod-alert{margin:28px 0 32px;max-width:620px}.idfod-alert figcaption{max-width:560px}
+ .screen-dialog{padding:0;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);width:min(1400px,calc(100vw - 48px));max-width:none;max-height:calc(100dvh - 48px);margin:auto;overflow:hidden}.screen-dialog::backdrop{background:#111820c9;backdrop-filter:blur(5px)}.screen-dialog header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 20px;border-bottom:1px solid var(--line);font-size:13px}.screen-dialog header button{display:flex;padding:9px;background:var(--soft);border:1px solid var(--line);border-radius:6px}.dialog-scroll{max-height:calc(100dvh - 160px);overflow:auto}.dialog-scroll .screen-image{min-width:900px}.idfod-alert .dialog-scroll .screen-image{min-width:550px}.screen-dialog>p{padding:10px 20px;margin:0;font-size:11px;color:var(--muted)}
+ @media(max-width:720px){.idfod-dashboard{padding-bottom:40px}.screen-heading{flex-direction:column;align-items:start;gap:18px}.screen-heading>p{max-width:500px}.screen-heading .eyebrow{font-size:11px}.screen-zoom{right:8px;bottom:8px;font-size:10px;padding:6px 8px}.idfod-screens figcaption{font-size:11px}.screen-dialog{width:calc(100vw - 24px);max-height:calc(100dvh - 24px)}.screen-dialog header{padding:10px 12px;font-size:11px}.screen-dialog>p{padding:8px 12px}.dialog-scroll{max-height:calc(100dvh - 135px)}}
+</style>

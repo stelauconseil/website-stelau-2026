@@ -1,0 +1,41 @@
+---
+title: "La cryptographie au service des titres"
+description: "idFod : des services de signature, des certificats CVC et une administration React pour les passeports électroniques et les CNIe."
+client: "Eviden / ANTS"
+year: "2024"
+category: "Développement sécurisé"
+---
+
+import IdfodScreens from '@/components/Cases/IdfodScreens.astro';
+
+## Autoriser l’accès aux données biométriques
+
+Pour **Eviden et l’Agence Nationale des Titres Sécurisés (ANTS)**, Stelau a développé **idFod**, une solution de signature destinée aux échanges avec les passeports électroniques, les cartes nationales d’identité électroniques et les titres de séjour.
+
+Le titre émet un challenge. La signature de ce challenge participe à l’authentification du terminal, qui doit prouver qu’il est autorisé à accéder aux données sensibles. Dans ce projet, l’enjeu est la lecture du **Data Group 3 (DG3)**, contenant les images des empreintes digitales.
+
+## Une maîtrise de la chaîne CVC, de bout en bout
+
+Les **Card Verifiable Certificates (CVC)** sont au cœur de cette réalisation. Nos ingénieurs travaillent sur leur encodage et leur décodage, les clés publiques **EC et RSA**, la création et l’authentification des demandes de certificats, la vérification des signatures et l’interprétation des droits d’accès.
+
+Cette maîtrise relie la chaîne **CVCA → DV → IS** aux contraintes concrètes du projet : formats exacts, paramètres cryptographiques, interopérabilité et gestion du cycle de vie des certificats.
+
+### Deux fonctions SOAP, un contexte opérationnel
+
+Les **webservices SOAP** permettent d’obtenir la chaîne de certificats et de demander la signature du challenge. L’intégration tient compte des dispositifs de remise en mairie, préfecture et consulat, ainsi que des équipements de contrôle aéroportuaire.
+
+La solution se connecte aux **PKI émettrices de CVC** et aux **HSM** utilisés pour générer les paires de clés asymétriques et effectuer les signatures. La protection des communications complète cette architecture.
+
+## Rendre l’exploitation compréhensible
+
+L’interface **React** permet de gérer les certificats, les clés et les utilisateurs, consulter les journaux et suivre l’état des services. Les captures montrent notamment les familles de certificats CVCA, DV et IS, l’activité des opérations de signature et le suivi des renouvellements.
+
+Les statuts et les diagnostics doivent être explicites. Un renouvellement refusé doit pouvoir être identifié et compris, pour permettre à l’opérateur de poursuivre ses vérifications.
+
+<IdfodScreens lang="fr" variant="alert" />
+
+## De la spécification à une solution intégrée
+
+Les services de gestion des challenges, les connexions PKI et HSM et l’interface d’administration composent une solution intégrée au contexte opérationnel de l’ANTS. Le travail associe **interopérabilité**, **gestion des certificats** et **maîtrise des opérations cryptographiques**.
+
+Les mécanismes de sécurité s’inscrivent dans les spécifications des titres de voyage : [ICAO Doc 9303, partie 11](https://www.icao.int/sites/default/files/publications/DocSeries/9303_p11_cons_en.pdf), et [BSI TR-03110](https://www.bsi.bund.de/dok/TR-03110), notamment pour l’authentification du terminal et les certificats CVC.

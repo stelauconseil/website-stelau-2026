@@ -34,11 +34,11 @@ export const caseStudies = [
     "category": "Développement sécurisé",
     "fr": {
       "title": "La cryptographie au service des titres",
-      "description": "Une solution de signature pour les échanges avec les passeports électroniques et les CNIe."
+      "description": "idFod : des services de signature, des certificats CVC et une administration React pour les passeports électroniques et les CNIe."
     },
     "en": {
       "title": "Cryptography for secure documents",
-      "description": "A signing solution for exchanges with electronic passports and identity cards."
+      "description": "idFod: signing services, CVC certificates and a React administration interface for electronic passports and identity cards."
     }
   },
   {

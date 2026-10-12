@@ -1,0 +1,28 @@
+{
+  "fr": {
+    "title": "Un exercice crédible se prépare en amont.",
+    "caption": "Démonstration pédagogique · scénario fictif. Les événements, acteurs et horaires sont adaptés à l’organisation qui s’entraîne.",
+    "marker": "EXERCICE · EXERCICE · EXERCICE",
+    "steps": [
+      ["Concevoir", "Relier le scénario aux risques et aux décisions à entraîner.", "Objectif d’entraînement", "Décider malgré l’incertitude", "Attaque · accident · menace interne"],
+      ["Écrire", "Préparer les messages, les pièces et les réponses des acteurs simulés.", "Message du prestataire", "Un service est indisponible. Les vérifications sont en cours.", "Émetteur · destinataire · information"],
+      ["Cadencer", "Distinguer le temps de la crise et celui de la journée de jeu.", "Le chronogramme", "4 jours de crise → 1 journée d’exercice", "Vendredi → samedi → dimanche → lundi"],
+      ["Répéter", "Vérifier la cohérence et préparer l’équipe d’animation.", "La revue avant le jour J", "Un événement, un acteur, un objectif", "Chronologie · artefacts · rôles"]
+    ],
+    "gameTimes": ["09:00", "11:00", "14:00", "16:00"],
+    "crisisDays": ["Ven.", "Sam.", "Dim.", "Lun."]
+  },
+  "en": {
+    "title": "A credible exercise starts with preparation.",
+    "caption": "Educational demonstration · fictional scenario. Events, actors and timings are adapted to the organisation taking part.",
+    "marker": "EXERCISE · EXERCISE · EXERCISE",
+    "steps": [
+      ["Design", "Connect the scenario to risks and decisions to practise.", "Training objective", "Make decisions under uncertainty", "Attack · accident · insider threat"],
+      ["Write", "Prepare messages, supporting material and simulated actors’ responses.", "Provider’s message", "A service is unavailable. Investigations are ongoing.", "Sender · recipient · information"],
+      ["Sequence", "Distinguish crisis time from the exercise day’s timeline.", "The event schedule", "4 crisis days → 1 exercise day", "Friday → Saturday → Sunday → Monday"],
+      ["Rehearse", "Check consistency and prepare the exercise control team.", "The pre-exercise review", "One event, one actor, one objective", "Timeline · materials · roles"]
+    ],
+    "gameTimes": ["09:00", "11:00", "14:00", "16:00"],
+    "crisisDays": ["Fri.", "Sat.", "Sun.", "Mon."]
+  }
+}

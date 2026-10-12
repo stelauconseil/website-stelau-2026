@@ -10,7 +10,7 @@ const authors = defineCollection({
   schema: ({image}) => z.object({name:z.string(),avatar:image(),about:z.string(),email:z.string(),authorLink:z.string()}),
 });
 const cases = defineCollection({
-  loader: glob({pattern:'**/*.md',base:'./src/data/cases'}),
+  loader: glob({pattern:'**/*.{md,mdx}',base:'./src/data/cases'}),
   schema: () => z.object({title:z.string(),description:z.string(),client:z.string(),year:z.string(),category:z.string()}),
 });
 export const collections = {blog, authors, cases};

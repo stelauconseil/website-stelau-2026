@@ -1,0 +1,14 @@
+const bsiOID = publicKey.getOID();
+const tbsData = Buffer.from(requestBody.encode().toBER(false));
+const SignatureRequest = {
+    mechanismPkcs11Code: getSignatureAlgorithm(bsiOID),
+    data: Buffer.from(tbsData).toString('base64'),
+    parameters: getSignatureParameters(bsiOID),
+};
+const signature = await sign(keyID, SignatureRequest);
+
+// Assemble the request body and the signature
+return new CVCertificateRequest(
+    requestBody,
+    Buffer.from(signature, 'base64'),
+);

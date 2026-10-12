@@ -1,0 +1,27 @@
+---
+import {Code} from 'astro:components';
+import githubDark from '@shikijs/themes/github-dark';
+import Icon from '@/components/Icon/Icon.astro';
+import type {Locale} from '@/config/site';
+import ec from '@/data/code/idfod/cle-publique-ec.ts.txt?raw';
+import request from '@/data/code/idfod/signature-demande-cvc.ts.txt?raw';
+import dg3 from '@/data/code/idfod/droit-dg3.ts.txt?raw';
+const {lang}=Astro.props as {lang:Locale};const fr=lang==='fr';
+const darkTheme={...githubDark,name:'idfod-stelau-dark',colors:{...githubDark.colors,'editor.background':'#20262d'},tokenColors:[...(githubDark.tokenColors||[]),{scope:['keyword','storage.type','storage.modifier','entity.name.function','support.function'],settings:{foreground:'#ffae73'}}]};
+const panels=[
+ {icon:'code' as const,title:fr?'Maîtriser les formats.':'Control the formats.',label:'CVCSignatureUtils.ts',code:ec,description:fr?'Conversion d’une clé publique CVC à courbe elliptique en DER, avec son identifiant de courbe et son point public.':'Converting an elliptic-curve CVC public key to DER, with its curve identifier and public point.',open:true},
+ {icon:'microchip' as const,title:fr?'Piloter la signature.':'Control the signature.',label:'CVCertificateRequest.ts',code:request,description:fr?'Choix du mécanisme PKCS#11 à partir de l’OID, appel au service de signature et assemblage de la demande CVC.':'Selecting the PKCS#11 mechanism from the OID, calling the signing service and assembling the CVC request.',open:true},
+ {icon:'eye' as const,title:fr?'Interpréter les droits.':'Interpret the rights.',label:'CVCertificate.ts / canReadDG3()',code:dg3,description:fr?'Lecture du droit DG3 dans le certificat. Ce contrôle s’inscrit dans la vérification complète de la chaîne et des autorisations.':'Reading the DG3 right from the certificate. This check forms part of complete chain and authorisation verification.',open:false},
+];
+---
+<section class="idfod-code" aria-labelledby="idfod-code-title">
+ <p class="eyebrow icon-eyebrow"><Icon name="code" size={23}/>{fr?'idFod / Cryptographie appliquée':'idFod / Applied cryptography'}</p>
+ <h2 id="idfod-code-title">{fr?'Des CVC, maîtrisés dans le code.':'CVC expertise, written in code.'}</h2>
+ <p class="code-intro">{fr?'ASN.1, courbes elliptiques, mécanismes de signature et droits d’accès : des extraits réels d’idFod montrent le travail de nos ingénieurs au plus près des certificats CVC.':'ASN.1, elliptic curves, signing mechanisms and access rights: real idFod excerpts show our engineers’ work with CVC certificates.'}</p>
+ <div class="code-panels">{panels.map((p,i)=><article class:list={['code-panel',{'code-panel-wide':i===2}]}><div class="code-panel-intro"><Icon name={p.icon} size={27}/><div><h3>{p.title}</h3><p>{p.description}</p></div></div><details open={p.open}><summary><span>{p.label}</span><span class="code-toggle">{fr?'Code':'Code'} <b aria-hidden="true">+</b></span></summary><div class="code-source" data-pagefind-ignore><Code code={p.code.trimEnd()} lang="typescript" themes={{light:'github-light',dark:darkTheme}} defaultColor="light"/></div></details></article>)}</div>
+</section>
+<style>
+ .idfod-code{padding:0 0 65px}.idfod-code .eyebrow{margin-bottom:18px}.idfod-code h2{font-size:clamp(27px,3.5vw,40px);letter-spacing:-.035em;line-height:1.2;margin:0 0 20px}.code-intro{max-width:850px;font-size:16px;color:var(--muted);line-height:1.9;margin-bottom:28px}.code-panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.code-panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0}.code-panel-intro{display:flex;gap:16px;padding:24px}.code-panel h3{font-size:21px;letter-spacing:-.025em;margin:0 0 10px}.code-panel-intro p{font-size:14px;line-height:1.9;color:var(--muted);margin:0}.code-panel-wide{grid-column:1 / -1}.code-panel-wide .code-panel-intro p{max-width:900px}.code-panel summary{padding:13px 20px;display:flex;justify-content:space-between;align-items:center;gap:15px;background:var(--soft);font:11px var(--font-mono);cursor:pointer;border-top:1px solid var(--line);list-style:none}.code-panel summary::-webkit-details-marker{display:none}.code-panel summary>span:first-child{overflow-wrap:anywhere}.code-toggle{color:var(--brand);white-space:nowrap}.code-toggle b{font-size:16px;font-weight:400;display:inline-block;margin-left:6px}.code-panel details[open] .code-toggle b{transform:rotate(45deg)}.code-source :global(pre){margin:0;padding:20px;font-size:12px;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%;font-family:var(--font-mono)}:global(.dark) .code-source :global(pre),:global(.dark) .code-source :global(span){color:var(--shiki-dark)!important;background-color:var(--shiki-dark-bg)!important}
+ @media(max-width:900px){.code-panels{grid-template-columns:1fr}.code-panel-wide{grid-column:auto}.code-panel-intro{padding:22px}.code-source :global(pre){font-size:12px}}
+ @media(max-width:720px){.idfod-code{padding-bottom:40px}.idfod-code .eyebrow{font-size:11px}.code-intro{font-size:15px}.code-panel-intro{gap:12px;padding:20px}.code-panel h3{font-size:20px}.code-panel-intro p{font-size:14px}.code-panel summary{padding:12px 15px;font-size:10px}.code-source :global(pre){padding:17px;font-size:12px}}
+</style>

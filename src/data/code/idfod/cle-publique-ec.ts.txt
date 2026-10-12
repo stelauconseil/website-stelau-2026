@@ -1,0 +1,14 @@
+export function cvcPublicKeyEcToDer(
+    oid: string,
+    publicPoint: Uint8Array,
+): Uint8Array {
+    const algorithmIdentifier = genASN1Sequence([
+        genASN1ObjectIdentifier('1.2.840.10045.2.1'), //ecPublicKey
+        genASN1ObjectIdentifier(oid), //curve oid
+    ]);
+
+    const publicKey = new asn1.BitString({ valueHex: publicPoint });
+    return Buffer.from(
+        genASN1Sequence([algorithmIdentifier, publicKey]).toBER(false),
+    );
+}

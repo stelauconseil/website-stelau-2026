@@ -23,3 +23,4 @@ export const cyberInsuranceHref = (lang: Locale) => href(lang,'expertise') + 'ex
 export const walletExpertiseHref = (lang: Locale) => href(lang,'expertise') + 'wallets-identite-numerique/';
 export const vdsVerifyHref = (lang: Locale) => href(lang,'expertise') + 'vds-verify/';
 export const certificationAuditHref = (lang: Locale) => href(lang,'expertise') + 'audit/audits-certification/';
+export const crisisExerciseHref = (lang: Locale) => href(lang,'expertise') + 'audit/exercices-crise-cyber/';
