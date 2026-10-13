@@ -5,7 +5,11 @@ import loic from '@/assets/images/loic.perry.png';
 import paul from '@/assets/images/paul.chabas.png';
 import hector from '@/assets/images/hector.colin.png';
 import julien from '@/assets/images/julien.erhard.png';
-export const team=[
+import lucas from '@/assets/images/lucas.kotevski-detoure.png';
+import kilian from '@/assets/images/kilian.hardy-detoure.png';
+import type {ImageMetadata} from 'astro';
+type TeamMember={name:string;image:ImageMetadata;fr:string;en:string;url?:string};
+export const team:TeamMember[]=[
 {name:'Nicolas Chalanset',image:nicolas,fr:'Directeur Expertise',en:'Head of Expertise',url:'https://linkedin.com/in/chalanset'},
 {name:'Benoit Leger-Derville',image:benoit,fr:'Directeur Conseil',en:'Head of Consulting',url:'https://linkedin.com/in/legerderville'},
 {name:'Quentin Ropele',image:quentin,fr:'Ingénieur cybersécurité',en:'Cybersecurity engineer',url:'https://linkedin.com/in/quentin-ropele-87878b178'},
@@ -13,4 +17,6 @@ export const team=[
 {name:'Paul Chabas',image:paul,fr:'Ingénieur cybersécurité',en:'Cybersecurity engineer',url:'https://linkedin.com/in/paul-chabas'},
 {name:'Hector Colin',image:hector,fr:'Ingénieur cybersécurité',en:'Cybersecurity engineer',url:'https://www.linkedin.com/in/hector-colin'},
 {name:'Julien Erhard',image:julien,fr:'Ingénieur cybersécurité',en:'Cybersecurity engineer',url:'https://www.linkedin.com/in/julien-erhard/'},
+{name:'Lucas Kotevski',image:lucas,fr:'Ingénieur cybersécurité',en:'Cybersecurity engineer',url:'https://www.linkedin.com/in/lucas-kotevski-a1565a383/'},
+{name:'Kilian Hardy',image:kilian,fr:'Ingénieur cybersécurité',en:'Cybersecurity engineer',url:'https://www.linkedin.com/in/kilian-hardy1/'},
 ];
