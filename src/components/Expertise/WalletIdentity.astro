@@ -1,4 +1,5 @@
 ---
+import {expertiseSectionHref} from '@/config/site';
 import {Image} from 'astro:assets';
 import Icon from '@/components/Icon/Icon.astro';
 import Arrow from '@/components/Arrow.astro';
@@ -27,7 +28,7 @@ const protocols = [
 ];
 ---
 <div class="container page-intro wallet-intro">
-  <a class="back-link" href={href(lang,'expertise')}>← {fr?'Toutes nos expertises':'All expertise'}</a>
+  <a class="back-link" href={expertiseSectionHref(lang,'developpement')}>← {fr?'Développement sécurisé':'Secure development'}</a>
   <p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name="wallet" size={24}/></span>{fr?'Wallets / Identité numérique / Interopérabilité':'Wallets / Digital identity / Interoperability'}</p>
   <h1>{fr?'De la norme':'From standards'}<br/><em>{fr?'à la confiance en pratique.':'to trust in practice.'}</em></h1>
   <p class="lead">{fr?'Un wallet prend tout son sens lorsqu’il fonctionne avec les autres. Nos experts relient les standards, la cryptographie et le développement pour construire des parcours d’identité numérique qui tiennent dans la réalité.':'A wallet fulfils its purpose when it works with others. Our experts connect standards, cryptography and development to build digital identity journeys that work in practice.'}</p>

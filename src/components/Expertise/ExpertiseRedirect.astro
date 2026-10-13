@@ -1,0 +1,7 @@
+---
+import {href,expertiseSectionHref,type Locale,type ExpertiseSection} from '@/config/site';
+const {lang,slug}=Astro.props as {lang:Locale;slug:ExpertiseSection};const fr=lang==='fr';
+const target=expertiseSectionHref(lang,slug);
+---
+<!doctype html><html lang={lang}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/><title>{fr?'Nos expertises — Stelau':'Our expertise — Stelau'}</title><meta http-equiv="refresh" content={'0;url='+target}/><meta name="robots" content="noindex,follow"/><link rel="canonical" href={new URL(href(lang,'expertise'),Astro.site)}/></head><body><main><p>{fr?'Retrouvez cette activité dans notre catalogue d’expertises.':'Find this activity in our expertise catalogue.'}</p><a href={target}>{fr?'Rejoindre cette expertise':'Explore this expertise'}</a></main></body></html>
+<style>html{color-scheme:light dark;font-family:system-ui}body{padding:40px;line-height:1.8}a{color:light-dark(#0069b4,#75baf0)}</style>

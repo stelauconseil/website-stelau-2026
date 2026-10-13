@@ -24,3 +24,6 @@ export const walletExpertiseHref = (lang: Locale) => href(lang,'expertise') + 'w
 export const vdsVerifyHref = (lang: Locale) => href(lang,'expertise') + 'vds-verify/';
 export const certificationAuditHref = (lang: Locale) => href(lang,'expertise') + 'audit/audits-certification/';
 export const crisisExerciseHref = (lang: Locale) => href(lang,'expertise') + 'audit/exercices-crise-cyber/';
+export type ExpertiseSection = 'conseil' | 'audit' | 'developpement';
+export const expertiseSectionHref = (lang: Locale, section: ExpertiseSection) => href(lang,'expertise') + '#' + section;
+export const formationHref = (lang: Locale) => href(lang,'expertise') + '#formation';

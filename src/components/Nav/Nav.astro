@@ -1,32 +1,49 @@
 ---
 import Arrow from '@/components/Arrow.astro';
+import Icon from '@/components/Icon/Icon.astro';
 import BandTexture from '@/components/BandTexture/BandTexture.astro';
 import BrandLogo from '@/components/BrandLogo/BrandLogo.astro';
 import ThemePicker from '@/components/ThemePicker/ThemePicker.astro';
-import { href, alternate, type Locale, type Route } from '@/config/site';
-const {lang} = Astro.props as {lang:Locale};
-const fr=lang==='fr';
-const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en/';
-const links: {key:Route,label:string}[] = [{key:'expertise',label:fr?'Expertises':'Expertise'},{key:'cases',label:fr?'Réalisations':'Our work'},{key:'about',label:fr?'L’équipe':'Our team'},{key:'blog',label:fr?'Le Blog':'Journal'}];
+import {href,alternate,expertiseSectionHref,formationHref,type Locale,type ExpertiseSection} from '@/config/site';
+import {expertises} from '@/data/expertises';
+import {activitiesFor} from '@/data/expertise-catalogue';
+import {expertiseIcons} from '@/data/icons';
+const {lang}=Astro.props as {lang:Locale};const fr=lang==='fr';
+const isHome=Astro.url.pathname==='/'||Astro.url.pathname==='/en/';
+const links=[{url:href(lang,'cases'),label:fr?'Réalisations':'Our work',current:Astro.url.pathname.startsWith(href(lang,'cases'))},{url:formationHref(lang),label:fr?'Formation':'Training',current:false},{url:href(lang,'about'),label:fr?'L’équipe':'Our team',current:Astro.url.pathname.startsWith(href(lang,'about'))},{url:href(lang,'blog'),label:fr?'Le Blog':'Journal',current:Astro.url.pathname.startsWith(href(lang,'blog'))}];
 ---
-<header class:list={['site-header', {'home-header':isHome}]} data-pagefind-ignore>
-  {isHome && <BandTexture/>}
-  <div class="container nav-shell">
-    <BrandLogo lang={lang}/>
-    <nav class="desktop-nav" aria-label={fr?'Navigation principale':'Main navigation'}>{links.map(l=><a href={href(lang,l.key)} aria-current={Astro.url.pathname.startsWith(href(lang,l.key))?'page':undefined}>{l.label}</a>)}</nav>
-    <div class="nav-tools">
-      <button class="icon-button" type="button" data-search-open aria-label={fr?'Rechercher sur le site':'Search the website'}><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.6"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.6"/></svg></button>
-      <ThemePicker lang={lang}/>
-      <a class="language-switch" href={alternate(Astro.url.pathname,lang)} lang={fr?'en':'fr'} hreflang={fr?'en':'fr'} aria-label={fr?'Read this page in English':'Lire cette page en français'}>{fr?'EN':'FR'}</a>
-      <a class="button nav-contact" href={href(lang,'contact')}>{fr?'Parlons de votre projet':'Let’s talk'}<Arrow /></a>
-      <button class="icon-button menu-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label={fr?'Ouvrir le menu':'Open menu'}><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.6"/></svg></button>
-    </div>
-  </div>
-  <nav id="mobile-nav" class="mobile-nav container" aria-label={fr?'Navigation mobile':'Mobile navigation'} hidden>{links.map(l=><a href={href(lang,l.key)}>{l.label}<Arrow /></a>)}<a href={href(lang,'contact')}>{fr?'Contact':'Contact'}<Arrow /></a></nav>
+<header class:list={['site-header',{'home-header':isHome}]} data-pagefind-ignore>
+ {isHome&&<BandTexture/>}
+ <div class="container nav-shell">
+  <BrandLogo lang={lang}/>
+  <nav class="desktop-nav" aria-label={fr?'Navigation principale':'Main navigation'}>
+   <div class="nav-expertise"><a href={href(lang,'expertise')} aria-current={Astro.url.pathname.startsWith(href(lang,'expertise'))?'page':undefined}>{fr?'Expertises':'Expertise'}</a><button class="expertise-disclosure" type="button" data-expertise-toggle aria-expanded="false" aria-controls="expertise-dropdown" aria-label={fr?'Afficher les activités de Stelau':'Show Stelau activities'} hidden><Arrow/></button>
+    <div id="expertise-dropdown" class="expertise-dropdown" hidden><div class="expertise-menu-top"><span>{fr?'Nos expertises, directement':'Go directly to our expertise'}</span><a href={href(lang,'expertise')}>{fr?'Tout explorer':'Explore all'}<Arrow/></a></div><div class="expertise-menu-groups">{expertises.map(e=><div><a class="expertise-menu-heading" href={expertiseSectionHref(lang,e.slug as ExpertiseSection)}><Icon name={expertiseIcons[e.slug]} size={21}/>{e[lang].verb}</a><ul>{activitiesFor(e.slug as ExpertiseSection).map(a=><li><a href={a.href(lang)} aria-current={Astro.url.pathname===a.href(lang)?'page':undefined}>{a[lang].label}</a></li>)}</ul></div>)}</div></div>
+   </div>
+   {links.map(l=><a href={l.url} aria-current={l.current?'page':undefined}>{l.label}</a>)}
+  </nav>
+  <div class="nav-tools"><button class="icon-button" type="button" data-search-open aria-label={fr?'Rechercher sur le site':'Search the website'}><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.6"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.6"/></svg></button><ThemePicker lang={lang}/><a class="language-switch" data-catalogue-language={Astro.url.pathname===href(lang,'expertise')?'true':undefined} href={alternate(Astro.url.pathname,lang)} lang={fr?'en':'fr'} hreflang={fr?'en':'fr'} aria-label={fr?'Read this page in English':'Lire cette page en français'}>{fr?'EN':'FR'}</a><a class="button nav-contact" href={href(lang,'contact')}>{fr?'Parlons de votre projet':'Let’s talk'}<Arrow/></a><button class="icon-button menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label={fr?'Ouvrir le menu':'Open menu'}><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8h16M4 16h16" stroke="currentColor" stroke-width="1.6"/></svg></button></div>
+ </div>
+ <nav id="mobile-nav" class="mobile-nav container" aria-label={fr?'Navigation mobile':'Mobile navigation'} hidden><div class="mobile-expertise"><div class="mobile-expertise-top"><a href={href(lang,'expertise')}>{fr?'Expertises':'Expertise'}</a><button type="button" class="expertise-disclosure" data-expertise-toggle aria-expanded="false" aria-controls="mobile-expertise-links" aria-label={fr?'Afficher les activités de Stelau':'Show Stelau activities'} hidden><Arrow/></button></div><div id="mobile-expertise-links" class="mobile-expertise-links" hidden>{expertises.map(e=><div><a class="mobile-group-heading" href={expertiseSectionHref(lang,e.slug as ExpertiseSection)}>{e[lang].verb}</a>{activitiesFor(e.slug as ExpertiseSection).map(a=><a href={a.href(lang)}>{a[lang].label}<Arrow/></a>)}</div>)}</div></div>{links.map(l=><a href={l.url}>{l.label}<Arrow/></a>)}<a href={href(lang,'contact')}>Contact<Arrow/></a></nav>
 </header>
 <script>
-  const toggle=document.querySelector<HTMLButtonElement>('.menu-toggle');
-  const menu=document.querySelector<HTMLElement>('#mobile-nav');
-  toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));if(menu)menu.hidden=!open;});
-  document.addEventListener('keydown',(event)=>{if(event.key==='Escape'&&toggle&&menu){menu.hidden=true;toggle.setAttribute('aria-expanded','false');}});
+ const language=document.querySelector<HTMLAnchorElement>('.language-switch[data-catalogue-language]');
+ if(language){const base=language.href;const syncHash=()=>{language.href=base+location.hash;};syncHash();window.addEventListener('hashchange',syncHash);}
+ const mobileToggle=document.querySelector<HTMLButtonElement>('.menu-toggle')!;
+ const mobileMenu=document.querySelector<HTMLElement>('#mobile-nav')!;
+ const disclosures=Array.from(document.querySelectorAll<HTMLButtonElement>('[data-expertise-toggle]'));
+ function setOpen(button:HTMLButtonElement,open:boolean){button.setAttribute('aria-expanded',String(open));const panel=document.getElementById(button.getAttribute('aria-controls')!);if(panel)panel.hidden=!open;}
+ function closeDisclosures(){disclosures.forEach(button=>setOpen(button,false));}
+ function closeMobile(){mobileMenu.hidden=true;mobileToggle.setAttribute('aria-expanded','false');closeDisclosures();}
+ disclosures.forEach(button=>{button.hidden=false;button.addEventListener('click',()=>{const open=button.getAttribute('aria-expanded')!=='true';closeDisclosures();setOpen(button,open);});});
+ mobileToggle.addEventListener('click',()=>{const open=mobileToggle.getAttribute('aria-expanded')!=='true';mobileToggle.setAttribute('aria-expanded',String(open));mobileMenu.hidden=!open;if(!open)closeDisclosures();});
+ document.addEventListener('click',event=>{const target=event.target as Element;if(!target.closest('.nav-expertise,.mobile-expertise'))closeDisclosures();if(!target.closest('.site-header'))closeMobile();});
+ document.querySelectorAll('#expertise-dropdown a,#mobile-nav a').forEach(link=>link.addEventListener('click',()=>{closeDisclosures();closeMobile();}));
+ document.addEventListener('keydown',event=>{if(event.key!=='Escape')return;const opened=disclosures.find(button=>button.getAttribute('aria-expanded')==='true');if(opened){setOpen(opened,false);opened.focus();}else if(!mobileMenu.hidden){closeMobile();mobileToggle.focus();}});
+ const desktop=matchMedia('(min-width:1021px)');desktop.addEventListener('change',()=>closeMobile());
 </script>
+<style>
+ .nav-shell{position:relative}.nav-expertise{display:flex;align-items:center;gap:5px}.expertise-disclosure{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:none;border:0;color:#d5dbe1;border-radius:5px}.expertise-disclosure:hover{background:#ffffff15}.expertise-disclosure[hidden]{display:none}.expertise-disclosure :global(.arrow){width:13px;height:13px;transform:rotate(135deg);transition:transform .15s}.expertise-disclosure[aria-expanded="true"] :global(.arrow){transform:rotate(-45deg)}.expertise-dropdown{position:absolute;left:35px;right:35px;top:calc(100% - 8px);z-index:70;padding:25px 28px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 15px 45px #0003;color:var(--ink)}.expertise-dropdown[hidden]{display:none}.expertise-menu-top{display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:20px;font-size:12px;color:var(--muted)}.expertise-dropdown a{color:var(--ink)!important;white-space:normal;text-decoration:none!important}.expertise-dropdown a:hover{color:var(--brand)!important}.expertise-menu-top a{display:flex;align-items:center;gap:10px;font-size:12px}.expertise-menu-top :global(.arrow){width:15px;height:15px}.expertise-menu-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:35px}.expertise-menu-heading{display:flex;align-items:center;gap:10px;font-size:20px!important;font-family:Georgia,serif;font-style:italic}.expertise-menu-groups ul{list-style:none;padding:0;margin:16px 0 0}.expertise-menu-groups li+li{margin-top:10px}.expertise-menu-groups li a{display:block;font-size:13px;line-height:1.7}.expertise-menu-groups li a[aria-current]{color:var(--brand)!important;text-decoration:underline!important;text-underline-offset:4px}.mobile-nav{max-height:calc(100dvh - 100px);overflow:auto;overscroll-behavior:contain}.mobile-expertise-top{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #495057}.mobile-expertise-top>a{border-top:0;flex:1}.mobile-expertise-top .expertise-disclosure{width:38px;height:38px}.mobile-expertise-links{padding:0 0 20px 18px}.mobile-expertise-links[hidden]{display:none}.mobile-expertise-links a{font-size:13px;padding:11px 0;border-top:0;gap:15px;line-height:1.6}.mobile-expertise-links :global(.arrow){width:15px;height:15px;flex-shrink:0}.mobile-expertise-links .mobile-group-heading{font-family:Georgia,serif;font-style:italic;font-size:20px;color:#85bfee;padding-top:17px}
+ @media(min-width:1360px){.expertise-dropdown{left:56px;right:56px}}
+ @media(prefers-reduced-motion:reduce){.expertise-disclosure :global(.arrow){transition:none}}
+</style>

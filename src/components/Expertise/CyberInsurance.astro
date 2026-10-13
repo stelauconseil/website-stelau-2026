@@ -1,4 +1,5 @@
 ---
+import {expertiseSectionHref} from '@/config/site';
 import {Image} from 'astro:assets';
 import Arrow from '@/components/Arrow.astro';
 import ExpertiseSimulation from './ExpertiseSimulation.astro';
@@ -32,7 +33,7 @@ const questions = fr ? [
 ];
 ---
 <section class="container page-intro insurance-intro">
-  <a class="back-link" href={href(lang,'expertise')+'conseil/'}>← {fr?'Conseil & expertise':'Advice & expertise'}</a>
+  <a class="back-link" href={expertiseSectionHref(lang,'conseil')}>← {fr?'Conseil & expertise':'Advice & expertise'}</a>
   <p class="eyebrow">IXI-Plus / {fr?'Expertise professionnelle':'Professional expertise'}</p>
   <h1>{fr?'Expertise cybersécurité.':'Cybersecurity expertise.'}<br/><em>{fr?'Pour l’assurance.':'For insurance.'}</em></h1>
   <p class="lead">{fr?<Fragment>Établir les faits, comprendre les mécanismes d’une attaque et examiner leur <strong class="insurance-emphasis">lien causal</strong> avec un sinistre. Au sein du réseau IXI-Plus, Stelau apporte une expertise technique guidée par la rigueur, la déontologie et la manifestation de la vérité.</Fragment>:<Fragment>Establish the facts, understand an attack’s mechanisms and examine their <strong class="insurance-emphasis">causal link</strong> to a loss. Within the IXI-Plus network, Stelau provides technical expertise guided by rigour, professional ethics and a commitment to establishing the truth.</Fragment>}</p>
