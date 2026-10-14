@@ -23,12 +23,16 @@ Les builds obsolètes d’une même branche sont annulés ; un déploiement déj
 
 Le site reste entièrement statique. Le workflow ne nécessite ni branche `gh-pages`, ni serveur Node en production. La recherche est livrée dans `dist/pagefind/` ; les animations, photos et la vidéo sont incluses dans le build.
 
+Le fichier vide `public/.nojekyll` est copié par Astro à la racine de `dist/` ; `npm run verify` contrôle sa présence. Le déploiement par artefact GitHub Actions ne passe pas par Jekyll et n’en a pas besoin. Ce marqueur protège néanmoins le build compilé si une publication depuis une branche est introduite plus tard, notamment les fichiers sous `_astro/`. Il ne remplace ni le build Astro ni le choix de la source **GitHub Actions** : publier les sources du dépôt avec Jekyll désactivé ne produit pas le site.
+
 ## Activer le nouveau dépôt
 
 1. Commiter puis pousser les fichiers de cette CI dans le nouveau dépôt.
 2. Dans [Settings → Pages](https://github.com/stelauconseil/website-stelau-2026/settings/pages), choisir **Build and deployment → Source → GitHub Actions**. Ne pas générer un second workflow : celui du dépôt est déjà prêt.
 3. Vérifier que la branche par défaut est `main`. Dans **Settings → Environments → github-pages**, autoriser les déploiements depuis `main` ; conserver les approbations manuelles si vous en souhaitez une avant publication.
 4. Si une politique d’organisation limite les Actions autorisées, autoriser les cinq Actions officielles utilisées dans le workflow (`checkout`, `setup-node`, `configure-pages`, `upload-pages-artifact`, `deploy-pages`).
+
+Si un second workflow automatique **pages build and deployment** lance `actions/jekyll-build-pages` sur les sources et signale des erreurs YAML dans les composants `.astro`, vérifier de nouveau la source Pages et sélectionner **GitHub Actions**, plutôt qu’une publication depuis une branche. Ne pas modifier les délimiteurs de frontmatter Astro ou la syntaxe MDX pour satisfaire Jekyll.
 
 Avant le transfert du domaine, les vérifications du site peuvent réussir puis l’étape **Verify production domain** échouer volontairement. Le site actuel utilise des liens à la racine ; il ne serait pas fonctionnel sous `/website-stelau-2026/` avec cette configuration. La CI attend donc le domaine choisi.
 
@@ -73,5 +77,7 @@ npm run preview
 Après activation, chaque push réussi sur `main` republie le site. Le build quotidien publie les articles dont la date est passée au moment du build ; ce n’est pas une publication à la minute. Pour republier immédiatement ou revenir à une version précédente, lancer le workflow sur `main` après le commit voulu (ou le revert du changement).
 
 Le dossier `dist/` n’est pas à commiter. L’exécution locale ne valide pas encore l’accès à Pages, les règles de l’environnement, les DNS ou le certificat : le premier lancement sur GitHub vérifiera ces éléments.
+
+Après un déploiement réussi, vérifier les accueils `/` et `/en/`, une page du Blog dans chaque langue, les fichiers CSS/JS/images sous `/_astro/`, une recherche Pagefind avec des résultats, `/rss.xml`, `/en/rss.xml` et la vidéo de l’expertise assurance. Les ressources doivent être servies sans erreur HTTP et avec le type de contenu attendu ; tester aussi les médias dans le navigateur. Vérifier la redirection HTTP vers HTTPS après activation de **Enforce HTTPS**. Le site cible la racine de `www.stelau.com` : ne pas ajouter un `base` de dépôt sans adapter également les routes, les ressources, Pagefind et les contrôles du workflow.
 
 Référence du workflow : [publication avec un workflow GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
