@@ -3,4 +3,4 @@ export const iconNames = ['binoculars', 'book-open', 'brackets-curly', 'briefcas
 export type IconName = typeof iconNames[number];
 
 export const expertiseIcons: Record<string,IconName> = {conseil:'lightbulb-on',audit:'microscope',developpement:'brackets-curly'};
-export const caseIcons: Record<string,IconName> = {'services-de-confiance':'file-signature','france-identite':'fingerprint',idfod:'passport','mdl-mdoc':'wallet','nested-vds':'file-check'};
+export const caseIcons: Record<string,IconName> = {'services-de-confiance':'file-signature','france-identite':'fingerprint',idfod:'passport','mdl-mdoc':'wallet','nested-vds':'file-check',rebop:'file-signature'};

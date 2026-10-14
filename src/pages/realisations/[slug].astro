@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Page from '@/components/Cases/CaseDetail.astro';
+import Rebop from '@/components/Cases/Rebop.astro';
 import {caseStudies} from '@/data/cases';
 export function getStaticPaths(){return caseStudies.map(item=>({params:{slug:item.slug},props:{item}}));}
 const {item}=Astro.props;
 ---
-<BaseLayout lang="fr" title={item.fr.title} description={item.fr.description}><Page lang="fr" slug={item.slug}/></BaseLayout>
+<BaseLayout lang="fr" title={item.fr.title} description={item.fr.description}>{item.slug==='rebop'?<Rebop lang="fr"/>:<Page lang="fr" slug={item.slug}/>}</BaseLayout>

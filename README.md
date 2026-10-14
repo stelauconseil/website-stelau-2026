@@ -22,6 +22,8 @@ La CI utilise Node 24, `npm ci`, puis `npm run verify` (Astro, build statique, P
 
 ## Organisation
 
+- reBop : `/realisations/rebop/` et `/en/work/rebop/`. Contenu technique FR/EN dans `src/data/rebop.ts`, page dans `src/components/Cases/Rebop.astro`. Le décodeur ASN.1 / X.509 est une île React locale, chargée à l’approche de sa section ; détails et provenance dans [docs/rebop-page.md](docs/rebop-page.md). `npm run verify` inclut ses tests de parsing.
+
 - `src/pages/` : pages françaises. `src/pages/en/` : pages anglaises distinctes.
 - `src/data/blog/fr/` et `src/data/blog/en/` : les deux articles FullVerify, chacun dans les deux langues, avec leurs médias originaux.
 - `src/data/authors/` : auteurs importés. La mention erronée de cofondateur pour Hector a été corrigée.

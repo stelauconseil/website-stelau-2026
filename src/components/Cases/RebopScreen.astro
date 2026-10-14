@@ -1,0 +1,44 @@
+---
+import {Image} from 'astro:assets';
+import type {ImageMetadata} from 'astro';
+import type {Locale} from '@/config/site';
+import Icon from '@/components/Icon/Icon.astro';
+interface Props {lang:Locale;image:ImageMetadata;title:string;caption:string;alt:string;dark?:boolean}
+const {lang,image,title,caption,alt,dark=false}=Astro.props;
+const fr=lang==='fr';
+---
+<figure class="rebop-screen" data-rebop-screen>
+ <a class:list={['screen-open',{'screen-dark':dark}]} href={image.src} data-screen-open aria-label={`${fr?'Agrandir':'Enlarge'} : ${title}`}>
+  <div class="screen-toolbar"><span class="mono">reBop / {title}</span><span class="screen-zoom"><Icon name="magnifying-glass" size={16}/>{fr?'Agrandir':'Enlarge'}</span></div>
+  <div class="screen-canvas"><Image src={image} alt={alt} widths={[480,800,1200,image.width]} sizes="(max-width: 720px) 90vw, 1000px" format="webp" quality={90} loading="lazy"/></div>
+ </a>
+ <figcaption><strong>{title}</strong><span>{caption}</span></figcaption>
+ <dialog class="screen-dialog" data-screen-dialog data-pagefind-ignore aria-label={title}>
+  <header><span>reBop / {title}</span><button type="button" data-screen-close aria-label={fr?'Fermer la capture':'Close screenshot'}><Icon name="xmark" size={20}/></button></header>
+  <div class="screen-scroll" tabindex="0" aria-label={fr?'Capture agrandie, zone défilante':'Enlarged screenshot, scrollable area'}><Image src={image} alt={alt} width={image.width} format="webp" quality={95}/></div>
+  <p>{fr?'Capture de l’interface reBop · Échap pour fermer.':'reBop interface screenshot · Press Escape to close.'}</p>
+ </dialog>
+</figure>
+<script>
+ document.querySelectorAll<HTMLElement>('[data-rebop-screen]').forEach(el=>{
+  const open=el.querySelector<HTMLAnchorElement>('[data-screen-open]')!;
+  const dialog=el.querySelector<HTMLDialogElement>('[data-screen-dialog]')!;
+  open.setAttribute('aria-haspopup','dialog');
+  open.addEventListener('click',event=>{
+   if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+   event.preventDefault();dialog.showModal();
+  });
+  el.querySelector('[data-screen-close]')!.addEventListener('click',()=>dialog.close());
+  dialog.addEventListener('click',event=>{
+   if(event.target!==dialog)return;
+   const r=dialog.getBoundingClientRect();
+   if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();
+  });
+  dialog.addEventListener('close',()=>open.focus({preventScroll:true}));
+ });
+</script>
+<style>
+ .rebop-screen{margin:38px auto 0;max-width:1000px}.screen-open{display:block;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--soft);cursor:zoom-in;box-shadow:0 12px 40px #1224380a;transition:border-color .2s}.screen-open:hover{border-color:var(--brand)}.screen-toolbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:15px 22px;background:var(--surface);border-bottom:1px solid var(--line)}.screen-toolbar>.mono{font-size:12px;color:var(--muted)}.screen-zoom{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--brand);flex-shrink:0}.screen-canvas{padding:22px;background:radial-gradient(circle at 1px 1px,var(--line) 1px,transparent 0) 0 0/16px 16px,var(--soft)}.screen-canvas :global(img){display:block;width:100%;height:auto;max-height:510px;object-fit:contain;border-radius:7px;background:white}.screen-dark .screen-canvas :global(img){background:#073642}figcaption{display:flex;gap:18px;align-items:baseline;padding:17px 4px 0;line-height:1.8;font-size:13px}figcaption strong{font-weight:500;color:var(--ink);flex-shrink:0}figcaption span{color:var(--muted)}
+ .screen-dialog{margin:auto;padding:0;width:min(1400px,calc(100vw - 48px));max-width:none;max-height:calc(100dvh - 48px);border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);overflow:hidden}.screen-dialog::backdrop{background:#111820c9;backdrop-filter:blur(5px)}.screen-dialog header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 20px;border-bottom:1px solid var(--line);font-size:13px}.screen-dialog header button{display:flex;padding:9px;background:var(--soft);border:1px solid var(--line);border-radius:6px;cursor:pointer}.screen-scroll{overflow:auto;max-height:calc(100dvh - 160px)}.screen-scroll :global(img){display:block;width:100%;min-width:900px;height:auto;max-width:none}.screen-dialog>p{padding:10px 20px;margin:0;color:var(--muted);font-size:11px}
+ @media(max-width:720px){.rebop-screen{margin-top:28px}.screen-toolbar{padding:12px;gap:10px}.screen-toolbar>.mono{font-size:10px}.screen-zoom{font-size:10px;gap:5px}.screen-canvas{padding:10px}figcaption{flex-direction:column;gap:4px;font-size:12px}.screen-dialog{width:calc(100vw - 24px);max-height:calc(100dvh - 24px)}.screen-dialog header{padding:10px 12px;font-size:11px}.screen-scroll{max-height:calc(100dvh - 135px)}.screen-dialog>p{padding:8px 12px}}
+</style>

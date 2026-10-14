@@ -68,5 +68,19 @@ export const caseStudies = [
       "title": "Nested VDS: designing digital proof",
       "description": "Design and specification of TR-23111 for nested optical digital proofs."
     }
+  },
+  {
+    "slug": "rebop",
+    "client": "Stelau / reBop",
+    "year": "CLM",
+    "category": "CLM / PKI",
+    "fr": {
+      "title": "reBop — Le certificat, toute sa vie",
+      "description": "Le CLM pure player de Stelau : découverte, analyse X.509, surveillance et détection des renouvellements. Explorez aussi un certificat dans votre navigateur."
+    },
+    "en": {
+      "title": "reBop — The certificate, its entire lifecycle",
+      "description": "Stelau’s pure-player CLM: discovery, X.509 analysis, monitoring and renewal detection. Explore a certificate directly in your browser."
+    }
   }
 ];

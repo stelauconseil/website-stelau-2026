@@ -11,21 +11,29 @@
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview --host 127.0.0.1",
     "check": "astro check",
-    "verify": "npm run check && npm run build && node scripts/verify-build.mjs"
+    "test:decoder": "node --experimental-strip-types --test scripts/tests/asn1.test.ts",
+    "verify": "npm run check && npm run test:decoder && npm run build && node scripts/verify-build.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.2",
+    "@astrojs/react": "7.0.1",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "3.7.4",
     "@fontsource-variable/inter": "^5.2.8",
+    "@lapo/asn1js": "2.0.0",
     "@pagefind/default-ui": "1.5.2",
     "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-virtual": "3.13.12",
     "astro": "7.3.5",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
     "pagefind": "1.5.2",
     "typescript": "^5.9.3"
   }
