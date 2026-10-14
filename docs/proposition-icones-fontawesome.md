@@ -1,5 +1,27 @@
 # Iconographie Stelau — Font Awesome Duotone Solid
 
+## Sélection du 14 octobre 2026
+
+Les pages FR/EN partagent désormais les repères suivants. Les trois familles d’expertises utilisent la même icône sur l’accueil, dans le catalogue et dans le menu.
+
+| Emplacement | Icônes |
+| --- | --- |
+| Éclairer / Vérifier / Construire | `lightbulb-on` / `microscope` / `brackets-curly` |
+| Collectif, accueil et équipe | `shish-kebab` : un clin d’œil au partage |
+| Travail autour d’un café / Contact | `mug-hot` |
+| Formation EPITA / EGE | `graduation-cap` |
+| Blog et rédaction | `pen-nib` |
+| Approche de l’équipe / standards | `seedling` / `layer-group` |
+| Audits : discernement / écoute / déplacements | `binoculars` / `headphones` / `route` |
+| Exercice de crise : scénario / rédaction / salle de contrôle | `clapperboard` / `pen-nib` / `satellite-dish` |
+| Wallets et interopérabilité | `wallet` / `puzzle-piece` |
+| idFod et cryptographie appliquée | `passport` / `flask-vial` / `fingerprint` |
+| VDS Verify et rapports d’expertise | `file-signature` |
+
+19 SVG officiels supplémentaires du Kit Stelau, version 7.3.1, portent la bibliothèque locale à 54 icônes. Les badges « illustration » ont été retirés des photos FR/EN ; les légendes métier, la confidentialité des missions et l’identification des scènes reconstituées par IA sont conservées. Les formes changent ; la palette reste celle du site, avec une seconde couche à 40 % d’opacité.
+
+La sélection initiale ci-dessous est conservée comme historique de la direction visuelle.
+
 Essai du 6 octobre 2026 : à la demande de Stelau, le Duotone Solid classique (`fad`) remplace Utility Duo Semibold. Abonnement Pro+ confirmé. Les emplacements, cartes et textes sont conservés pour faciliter la comparaison.
 
 ## Direction visuelle

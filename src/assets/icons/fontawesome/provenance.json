@@ -145,6 +145,101 @@
     {
       "name": "circle-info",
       "sha256": "61d9d137081a14d9f81bb2647b552da4dc448b265d36a0cacc40c0bcbc0899f8"
+    },
+    {
+      "name": "binoculars",
+      "sha256": "de241efc499e1c487ccbed1c61c771bea02c91c3b35676998979825704c6692c",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "brackets-curly",
+      "sha256": "9d4b34dda976b4299aab67974b17c80adf86d9572b374966f2936c617c11a5bc",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "clapperboard",
+      "sha256": "ba6544f6e007a95639f436207e8c1c970b902770c2ebca2f6756fe54a5a536f0",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "file-signature",
+      "sha256": "5456304145787e390e9cef38527c3d73eeab3e4c7fc73c495895e9792a35bbe8",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "fingerprint",
+      "sha256": "de11f77fd090ca93573832bbcd60a488e71981c7604a66cbb550ef79bd93476b",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "flask-vial",
+      "sha256": "c8f9be60e1d8dc0ead81deebbb24bcb88a88a01b340c3bef91f8c2c3054a0deb",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "graduation-cap",
+      "sha256": "6c8c9880d7bd1ca6d29ab36ad7219781af139766b2112e14c82619ab06faec2b",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "headphones",
+      "sha256": "c58a841c08676b99c0aacb7a67ad1d9c3a868e1b44f7e5c9fa118ccdfd37ec25",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "layer-group",
+      "sha256": "d6de7bc939c5acce527b6e9ba72fd412a63b5314149006b6a29ceff4238bb43c",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "lightbulb-on",
+      "sha256": "3c4ec97145e6930c8814d0d99bdcc60300d03ae3ff8c1999fca4a07255cf60a1",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "microscope",
+      "sha256": "7f13f09af636648674d669d414034b2f50acc4330053ae40205636a6408853c7",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "mug-hot",
+      "sha256": "23890d9a1aebed5587210a0f1532794c5700da8645cfc1d2cbfac1abb44fe17c",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "passport",
+      "sha256": "1e6bc17ea24114a7ffeaf567d589bd3400f53e8fe20a5f3da22998a819261297",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "pen-nib",
+      "sha256": "d062551682251ea069309b316e0d1c049651a8ddd4eae11ba8a1ff999a10e3d1",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "puzzle-piece",
+      "sha256": "20ff08832bfac1c1d0f76ff98c4367247a698c6113e46769e88e8c33b341ca93",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "route",
+      "sha256": "93a6bc196310b8625e854bea24b218311dc4fa1238e4cdb270f61a8820f46e67",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "satellite-dish",
+      "sha256": "06d1cc5424bc13be7298de2ab3954e26047764f9af41a94c3284bdc3061de961",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "seedling",
+      "sha256": "dad95edaaba36782582837497de44c2813e5a9539f4f10f8e599f5d70195a5f5",
+      "retrievedAt": "2026-10-14"
+    },
+    {
+      "name": "shish-kebab",
+      "sha256": "ee3fb09c073c8d5897585a6eb64b4c27bec38eb8b38798fdad217692ef04f53e",
+      "retrievedAt": "2026-10-14"
     }
   ]
 }

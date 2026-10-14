@@ -71,7 +71,7 @@ Source métier : `../documents/Plaquette_IXI-Plus_Cyber_Risk.pdf`, complétée p
 
 ## Proposition d’icônes Font Awesome
 
-Stelau dispose d’un abonnement Pro+. Toutes les familles de pages FR/EN utilisent le Duotone Solid classique, en bleu Stelau avec une seconde couche de la même couleur à 40 % d’opacité et sous forme de SVG locaux rendus au build Astro. Les 35 SVG officiels du Kit `1daec18b88` sont stockés dans `src/assets/icons/fontawesome/duotone-solid/`, avec licence et provenance ; `src/components/Icon/Icon.astro` les intègre au build. `.font-awesome.md` consigne la version 7.3.1 et la révision 3. Aucun token n’est requis pour construire le site, et aucun script Font Awesome n’est chargé chez le visiteur. Les variantes ont été vérifiées et récupérées avec le CLI officiel. La sélection est décrite dans `docs/proposition-icones-fontawesome.md`.
+Stelau dispose d’un abonnement Pro+. Toutes les familles de pages FR/EN utilisent le Duotone Solid classique, en bleu Stelau avec une seconde couche de la même couleur à 40 % d’opacité et sous forme de SVG locaux rendus au build Astro. Les 54 SVG officiels du Kit `1daec18b88` sont stockés dans `src/assets/icons/fontawesome/duotone-solid/`, avec licence et provenance ; `src/components/Icon/Icon.astro` les intègre au build. `.font-awesome.md` consigne la version 7.3.1 et la révision 3. Aucun token n’est requis pour construire le site, et aucun script Font Awesome n’est chargé chez le visiteur. Les variantes ont été vérifiées et récupérées avec le CLI officiel. La sélection est décrite dans `docs/proposition-icones-fontawesome.md`.
 
 ## Code de l’accueil
 

@@ -13,7 +13,7 @@
   },
   "en": {
     "title": "From a requirement to a documented finding.",
-    "caption": "An educational illustration inspired by ISO 19011:2026 guidance. Each assignment is governed by its scope and scheme rules.",
+    "caption": "An educational diagram inspired by ISO 19011:2026 guidance. Each assignment is governed by its scope and scheme rules.",
     "steps": [
       ["Scope", "Define the audit’s objectives, scope and criteria.", "The assignment’s scope", "Objectives · scope · criteria", "An identified requirement"],
       ["Prepare", "Review documentation and plan the investigations.", "The audit plan", "Documents · activities · team", "Prepared questions"],
