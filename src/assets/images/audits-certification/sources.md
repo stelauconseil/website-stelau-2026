@@ -4,7 +4,7 @@ Visuels fournis par Stelau dans le dossier de ressources Audits LSTI eIDAS PVID 
 
 - `ecoute-reunion-audit.jpg` : source `serious-businessman-working-laptop-online-diverse-group-meeting.jpg`, photographie d’illustration fournie (Freepik).
 - `auditeur-travail-technique.jpg` : source `close-up-system-administrator-transforming-data-into-predictive-models.jpg`, photographie d’illustration fournie (Freepik).
-- `controle-equipements-illustration-ia.png` : source `audit-controle-materiel-scene-reconstituee.png`, reconstitution IA réalisée pour Stelau le 12 octobre 2026. Personnes et lieu fictifs, aucune photographie d’un audit réel n’est publiée.
+- `controle-equipements-illustration-ia.png` : ancien visuel, remplacé sur la page le 14 octobre 2026 par `../stelau-terrain/rencontre-auditeurs.png`, issu de la photographie Stelau `IMG_5106.jpeg` et retouché pour la lumière et les teintes. Ce moment de convivialité n’est pas présenté comme un audit. L’ancien actif reste disponible sans être rendu sur la page.
 
 Les documents métier du dossier ont été consultés localement ; aucun document client, plan d’audit ou proposition commerciale n’est copié dans le site.
 

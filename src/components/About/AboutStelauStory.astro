@@ -4,9 +4,8 @@ import {Image} from 'astro:assets';
 import Arrow from '@/components/Arrow.astro';
 import {cyberInsuranceHref,type Locale} from '@/config/site';
 import {team} from '@/data/team';
-import {group} from '@/data/company';
+import StelauHistory from './StelauHistory.astro';
 import office from '@/assets/images/office-verdure.png';
-import workshop from '@/assets/images/workshop.jpeg';
 const {lang}=Astro.props as {lang:Locale};const fr=lang==='fr';
 ---
 <section class="container page-intro"><p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name="users" size={22}/></span>{fr?'À propos / L’équipe Stelau':'About / The Stelau team'}</p><h1>{fr?'Des expertises pointues.':'Deep expertise.'}<br/><em>{fr?'Des personnes accessibles.':'Approachable people.'}</em></h1><p class="lead">{fr?'Depuis 2002, Stelau réunit des ingénieurs consultants et des experts en cybersécurité pour accompagner les organisations qui construisent la confiance numérique. Notre expertise se nourrit du terrain, de l’expérimentation et du partage des connaissances.':'Since 2002, Stelau has brought together consulting engineers and cybersecurity experts to support organisations building digital trust. Our expertise grows through practical experience, experimentation and sharing knowledge.'}</p></section>
@@ -18,7 +17,7 @@ const {lang}=Astro.props as {lang:Locale};const fr=lang==='fr';
   <div class="team-card-info"><h3>{m.name}</h3><p>{m[lang]}</p></div>
   {m.url&&<span class="team-card-link">{fr?'Profil LinkedIn':'LinkedIn profile'}<Arrow /></span>}
 </Card>})}</div></section>
-<section class="container section-space history-section"><div><p class="eyebrow icon-eyebrow"><span class="section-icon"><Icon name="calendar-days" size={22}/></span>{fr?'Notre histoire':'Our story'}</p><h2>{fr?'Depuis 2002.':'Since 2002.'}<br/><em>{fr?'Et demain, ensemble.':'And a shared future.'}</em></h2><p>{fr?'Stelau a été créé par Nicolas Chalanset et Benoit Leger-Derville. Notre activité relie l’expertise, l’audit et le développement de composants de confiance.':'Stelau was founded by Nicolas Chalanset and Benoit Leger-Derville. Our work connects technical expertise, audits and the development of trust components.'}</p><p class="history-milestone">{fr?'2026 / Un nouveau chapitre':'2026 / A new chapter'}</p><p>{fr?'Mi-juin 2026, Stelau a été acquise par iDAKTO. Nous sommes heureux de rejoindre le groupe et de mettre nos expertises en commun pour faire avancer l’identité numérique de confiance.':'In mid-June 2026, Stelau was acquired by iDAKTO. We are delighted to join the group and bring our expertise together to advance trusted digital identity.'}</p><a class="text-link" href={group[lang].announcement} target="_blank" rel="noopener noreferrer">{group[lang].cta}<Arrow /></a></div><Image src={workshop} alt={fr?'Un atelier de travail collaboratif.':'A collaborative workshop.'} width={900} format="webp"/></section>
+<StelauHistory lang={lang}/>
 <style>
  @media(max-width:720px){.about-story :global(img){height:auto;aspect-ratio:4/3;object-position:center}}
 </style>

@@ -1,0 +1,14 @@
+---
+import {Image} from 'astro:assets';
+import type {Locale} from '@/config/site';
+import workshop from '@/assets/images/france-identite/atelier-collectif.jpeg';
+import discussion from '@/assets/images/france-identite/echanges-equipe.jpeg';
+const {lang,variant='workshop'}=Astro.props as {lang:Locale;variant?:'workshop'|'discussion'};
+const fr=lang==='fr';const overview=variant==='workshop';
+const alt=overview?(fr?'Plusieurs groupes réunis dans un espace de travail, autour de tables, d’ordinateurs et de tableaux de notes.':'Several groups gathered in a workspace around tables, laptops and boards of notes.'):(fr?'Des participants échangent en petit groupe, assis dans un espace de travail partagé.':'Participants talking in a small group in a shared workspace.');
+---
+<figure class="france-identity-photo"><Image src={overview?workshop:discussion} alt={alt} widths={[480,800,1200,1600]} sizes="(max-width:720px) 90vw, (max-width:1360px) 65vw, 900px" width={1600} format="webp" loading="lazy"/><figcaption><span class="mono">STELAU / FRANCE IDENTITÉ</span><span>{overview?(fr?'Un travail collectif, au contact des équipes.':'Working together, alongside the teams.'):(fr?'Échanger, confronter les points de vue, avancer ensemble.':'Exchange ideas, compare perspectives and move forward together.')}</span></figcaption></figure>
+<style>
+ .france-identity-photo{margin:35px 0 40px}.france-identity-photo :global(img){display:block;width:100%;height:auto;border-radius:12px}.france-identity-photo figcaption{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:15px;color:var(--muted);font-size:13px;line-height:1.8}.france-identity-photo .mono{color:var(--brand);font-size:11px}
+ @media(max-width:720px){.france-identity-photo{margin:27px 0 32px}.france-identity-photo figcaption{flex-direction:column;font-size:12px}}
+</style>
