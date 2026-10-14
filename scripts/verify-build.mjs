@@ -22,7 +22,7 @@ for(const file of html){
   }
  }
 }
-for(const route of ['index.html','en/index.html','blog/index.html','en/blog/index.html','a-propos/index.html','en/about/index.html','contact/index.html','rss.xml','en/rss.xml','pagefind/pagefind.js'])assert.ok(files.includes(join(root,route)),`Missing ${route}`);
+for(const route of ['.nojekyll','index.html','en/index.html','blog/index.html','en/blog/index.html','a-propos/index.html','en/about/index.html','contact/index.html','rss.xml','en/rss.xml','pagefind/pagefind.js'])assert.ok(files.includes(join(root,route)),`Missing ${route}`);
 for(const lang of ['', 'en/'])for(const slug of ['mdoc-web-verifier-deep-dive','oid4vp-backend-implementation'])assert.ok(files.includes(join(root,`${lang}blog/${slug}/index.html`)),`Missing imported article ${lang}${slug}`);
 const sitemap=await readFile(join(root,'sitemap-0.xml'),'utf8');
 for(const prefix of ['/expertises/','/en/expertise/'])for(const group of ['conseil','audit','developpement']){
