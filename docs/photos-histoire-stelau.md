@@ -20,6 +20,8 @@ Les deux premières ont fait l’objet d’une retouche avec l’outil intégré
 - Réalisation France Identité existante : 2024. Annonce iDAKTO déjà référencée dans `src/data/company.ts` : mi-juin 2026.
 - Ajouts concernant Nicolas, à la demande de Stelau : invention du Nested VDS et formalisation en norme pour France Identité ; présentations des avancées du wallet en conférences internationales. Le jalon Nested VDS est placé en 2025, année de la version 1.0 de TR-23111 référencée dans la réalisation existante (5 janvier 2025) ; il ne prétend pas dater les premiers travaux de conception ni une adoption ISO. Le jalon conférences est placé en 2026, année du retour de Genève déjà documenté sur le site. Ces années sont retenues en attendant une éventuelle précision de Stelau sur les dates souhaitées.
 
+Les formulations de la timeline sont précisées par Stelau : l’entrée IXI-Plus de 2018 concerne le cabinet Stelau ; l’entrée reBop de 2021 mentionne les deux cofondateurs, Benoit et Nicolas. Ces précisions sont reprises dans les textes FR et EN.
+
 ## Réutilisations photographiques
 
 Contrôle des imports de tous les composants et empreintes SHA-256 des actifs : aucun fichier d’image identique n’est stocké sous deux noms différents. Les réutilisations dans des pages distinctes sont :
