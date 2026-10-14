@@ -14,6 +14,12 @@ npm run preview
 
 Le build est nécessaire pour tester la recherche Pagefind. `npm run dev` suffit pour travailler sur les pages. Aucun déploiement de production n’a été effectué.
 
+## Déployer sur GitHub Pages
+
+Le workflow `.github/workflows/build.yml` vérifie le site sur les pull requests vers `main`, puis vérifie et déploie les pushes sur `main`, les lancements manuels sur cette branche et la reconstruction quotidienne. La cible est **https://www.stelau.com/**, à la racine du domaine. Les instructions d’activation et de transfert depuis l’ancien dépôt sont dans [docs/deploiement-github-pages.md](docs/deploiement-github-pages.md).
+
+La CI utilise Node 24, `npm ci`, puis `npm run verify` (Astro, build statique, Pagefind et contrôle des liens). Seul un build réussi, avec le bon domaine configuré dans GitHub Pages, est publié. Aucun secret personnel ni token Font Awesome n’est requis.
+
 ## Organisation
 
 - `src/pages/` : pages françaises. `src/pages/en/` : pages anglaises distinctes.
@@ -41,7 +47,7 @@ Communiqué iDAKTO du 16 juin 2026 : https://www.idakto.com/blog/idakto-accelera
 
 Un article est publié si `draft: false` et si `pubDate` est passée au moment du build. Conserver le même nom de dossier (slug) et la même `mappingKey` entre les versions FR/EN pour faire correspondre les pages. Les nouveaux articles doivent avoir leur fichier dans chaque langue publiée. Pour une date précise, utiliser une date ISO avec fuseau, par exemple `2026-10-06T09:00:00+02:00`. La date d’affichage utilise Europe/Paris.
 
-Le dossier `site/` est prévu comme racine du futur dépôt et de l’hébergement. Le workflow `.github/workflows/build.yml` construit et conserve un artefact quotidien. Le raccordement de cet artefact à l’hébergement, après validation de la préproduction, est nécessaire pour publier automatiquement les articles programmés.
+La racine de ce dépôt est la racine du projet Astro. Le workflow `.github/workflows/build.yml` reconstruit et déploie le site chaque jour à 05:15 UTC, une fois GitHub Pages activé. Un article programmé devient ainsi visible au premier build réussi suivant sa date de publication. Les horaires des tâches planifiées GitHub peuvent être décalés ; pour une publication immédiate, lancer le workflow manuellement.
 
 ## Points de validation éditoriale avant production
 
