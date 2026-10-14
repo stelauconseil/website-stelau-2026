@@ -18,6 +18,7 @@ Les deux premières ont fait l’objet d’une retouche avec l’outil intégré
 - [Présentation de Benoit à l’EGE](https://www.ege.fr/ecole/corps-professoral/benoit-leger-derville) : enseignement à l’EPITA depuis 2010, IXI-Plus depuis 2018, cofondation de reBop en 2021, cours à l’EGE depuis 2023. La fiche précise le début des audits eIDAS en 2016 : le jalon LSTI de 2017 n’est donc pas présenté comme leur commencement.
 - [Stelau sur LinkedIn](https://fr.linkedin.com/company/stelau-conseil) : création en 2002 et spécialités. Le profil individuel public ne permettait pas de lire toute l’expérience ; aucune date masquée n’a été inventée.
 - Réalisation France Identité existante : 2024. Annonce iDAKTO déjà référencée dans `src/data/company.ts` : mi-juin 2026.
+- Ajouts concernant Nicolas, à la demande de Stelau : invention du Nested VDS et formalisation en norme pour France Identité ; présentations des avancées du wallet en conférences internationales. Le jalon Nested VDS est placé en 2025, année de la version 1.0 de TR-23111 référencée dans la réalisation existante (5 janvier 2025) ; il ne prétend pas dater les premiers travaux de conception ni une adoption ISO. Le jalon conférences est placé en 2026, année du retour de Genève déjà documenté sur le site. Ces années sont retenues en attendant une éventuelle précision de Stelau sur les dates souhaitées.
 
 ## Réutilisations photographiques
 
