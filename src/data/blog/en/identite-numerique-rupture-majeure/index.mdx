@@ -1,0 +1,72 @@
+---
+title: "Digital identity: towards a fundamental shift"
+description: "Your systems collect data. What if their next breakthrough was learning not to keep it? Fewer copies. More evidence."
+authors: [benoit-leger-derville]
+pubDate: 2026-10-18T00:00:00+02:00
+heroImage: ../../../../assets/images/identite-numerique-preuve.png
+categories: [identity, standards]
+mappingKey: identite-numerique-rupture-majeure
+draft: false
+---
+
+import DocumentCollection from '@/components/Blog/Vision/DocumentCollection.astro';
+import PresentationFlow from '@/components/Blog/Vision/PresentationFlow.astro';
+import IdentityRoadmap from '@/components/Blog/Vision/IdentityRoadmap.astro';
+
+**The best customer database might be the one you never built.**
+
+Since 2002, Nicolas Chalanset and I have championed one conviction at Stelau: authenticating people and checking their rights should not require collecting their digital lives.
+
+The wallet opens that door. Information systems now need to step through it.
+
+> Less data to keep. Less data to have stolen.
+
+## Ten documents to teach a class. Seriously?
+
+For a teaching assignment, I received this request. Identity, diplomas, insurance, criminal record, bank details… A complete file, soon scattered across email, applications and backups.
+
+<DocumentCollection lang="en"/>
+
+Every request has a purpose. But **checking a qualification does not require keeping a diploma copy everywhere**. We automated collection. It is time to automate verification.
+
+## Tomorrow’s systems will know how to ask again
+
+**STOP COLLECTING · VERIFY AS NEEDED · KEEP MINIMAL EVIDENCE.**
+
+Request what matters. Verify it. Use it. Delete what no longer needs to be retained. Ask again when the need returns. A one-off use should no longer become a permanent record by default.
+
+**Sending a letter?** Obtain the address for that delivery, then remove it from the business workflow. Or delegate dispatch to an authorised provider without copying the address into every application.
+
+**Sending an email later?** Arrange a bounded contact channel: a relationship-specific alias, relay or notification. One purpose, an expiry, revocation. Without a channel or mandate arranged in advance, a new interaction with the person will be needed.
+
+**The hotel invoice?** Ask for the necessary details at the right moment. Keep the invoice under applicable obligations. Remove unnecessary working copies.
+
+These architectures still need to be built and integrated. An alias or relay reference may remain personal data; sharing approval does not replace a lawful basis for processing. **Storing less does not mean losing the ability to operate. It means designing differently.**
+
+## Useful evidence, not your entire life
+
+A purpose-built qualification credential makes the principle clear. The issuer signs a credential bound to your key. The RP requests the necessary attributes; you approve sharing; the wallet produces proof for this exchange.
+
+<PresentationFlow lang="en"/>
+
+The issuer’s signature protects the attested attributes. The holder’s proof binds the presentation to its recipient and the exchange’s challenge. **Another service cannot simply replay it as a valid response to its own request.** This does not stop the first recipient copying information it received: share less in the first place.
+
+A retained record must support a specific decision, for a defined period. It is not automatically anonymous or re-auditable cryptographic evidence. Replacing a file of copies with a vault of complete presentations would miss the point.
+
+## 2026–2031: stop collecting by default
+
+Five moves for the next five years. A direction for work, not a regulatory timetable.
+
+<IdentityRoadmap lang="en"/>
+
+We do not need to wait for “ZKP everywhere”. Focused credentials and data obtained when needed already offer a starting point. Outages, lost phones and accessible alternatives must also be designed in: data minimisation has to work in real life.
+
+## The wallet is only the beginning
+
+Issuers and wallets will continue to retain data. The shift is to **stop copying it into every information system**.
+
+At Stelau, our work on [wallets](/en/expertise/wallets-identite-numerique/), applied cryptography and [Nested VDS](/en/work/nested-vds/) pursues that target: **from data to evidence, from storage to verification**.
+
+### Further reading
+
+[OID4VCI 1.0](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-final.html) · [OID4VP 1.0](https://openid.net/specs/openid-4-verifiable-presentations-1_0-final.html) · [SD-JWT and key binding — RFC 9901](https://www.rfc-editor.org/rfc/rfc9901.html#section-4.3) · [EUDI architecture](https://eudi.dev/latest/main/04-high-level-architecture/) · [CNIL: retention](https://www.cnil.fr/fr/passer-laction/les-durees-de-conservation-des-donnees) · [Consent](https://www.cnil.fr/les-bases-legales/consentement) · [Anonymisation](https://www.cnil.fr/fr/technologies/lanonymisation-de-donnees-personnelles).

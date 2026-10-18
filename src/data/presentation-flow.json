@@ -1,0 +1,240 @@
+{
+  "fr": {
+    "title": "Un credential. Trois acteurs. Deux signatures.",
+    "subtitle": "De l’émission à la présentation : suivre le VC, choisir les attributs et éprouver le lien à la clé du détenteur.",
+    "roles": [
+      "Issuer / Émetteur",
+      "Wallet / Détenteur",
+      "RP / Vérificateur"
+    ],
+    "roleNotes": [
+      "Organisme de qualification",
+      "Vos attributs, votre choix",
+      "Service d’enseignement"
+    ],
+    "steps": [
+      [
+        "Émettre",
+        "L’émetteur signe un VC lié à la clé H.",
+        "Le wallet prouve la possession de H. L’émetteur inscrit sa clé publique dans cnf.jwk et signe le credential.",
+        "OID4VCI · credential_endpoint"
+      ],
+      [
+        "Demander",
+        "Le RP demande une qualification, pas un dossier.",
+        "Comparez une demande minimale et une demande nominative. Chaque requête porte un destinataire (client_id) et un défi (nonce).",
+        "OID4VP · DCQL"
+      ],
+      [
+        "Sélectionner",
+        "Autorisez les attributs demandés. Les autres restent locaux.",
+        "La sélection respecte la requête DCQL. Vous pouvez refuser le partage ; le wallet ne transmet pas les attributs non demandés.",
+        "SD-JWT · selective disclosure"
+      ],
+      [
+        "Lier",
+        "La clé privée H signe la preuve de cette présentation.",
+        "Le KB-JWT lie les attributs sélectionnés au destinataire, au défi et au moment de l’échange.",
+        "SD-JWT+KB · ES256"
+      ],
+      [
+        "Vérifier",
+        "Le RP contrôle les deux signatures et le contexte.",
+        "Le VC copié sans la clé H échoue. Une présentation signée pour RP-A ne répond pas à la demande de RP-B. Testez-le.",
+        "OID4VP · vp_token"
+      ]
+    ],
+    "issuerSeal": "Signature de l’émetteur",
+    "holderSeal": "Signature du détenteur",
+    "keyPublic": "Clé publique H",
+    "keyPrivate": "Clé privée H",
+    "keyStays": "La clé privée reste dans le wallet de démonstration.",
+    "vcLabel": "VC · SD-JWT signé",
+    "decoded": "Attributs remis au wallet (disclosures)",
+    "attrs": [
+      "Qualification",
+      "Nom",
+      "Naissance",
+      "Adresse"
+    ],
+    "required": "requis",
+    "optional": "non demandé",
+    "notShared": "Non partagé",
+    "selected": "partagé(s)",
+    "ready": "VC disponible",
+    "waiting": "Présentation attendue",
+    "requestLabel": "Requête OID4VP",
+    "received": "Attributs reçus par le RP",
+    "consent": "Choix de partage simulé",
+    "accept": "Présenter ces attributs",
+    "refuse": "Refuser",
+    "denied": "Partage refusé. Aucune présentation transmise.",
+    "headerVc": "Ce que signe l’émetteur",
+    "claimsNote": "Ces valeurs sont dans les disclosures remises au wallet. Le JWT signé en contient les empreintes salées, pas ces valeurs en clair.",
+    "selectionTitle": "Ce qui part dans la présentation",
+    "selectionNote": "Les disclosures des attributs non demandés restent dans le wallet. Une requête partiellement satisfaite ne sera pas envoyée.",
+    "bindingTitle": "Le lien cryptographique, en deux temps",
+    "bindingFrom": "Dans le VC signé par l’émetteur",
+    "bindingTo": "Dans la preuve signée par le détenteur",
+    "bindingNote": "La signature du KB-JWT est contrôlée avec la clé H de cnf.jwk. sd_hash lie la preuve au SD-JWT et aux disclosures effectivement présentées.",
+    "checks": [
+      "Signature de l’émetteur",
+      "Empreintes des disclosures",
+      "Signature avec la clé H",
+      "Destinataire + défi + date",
+      "Empreinte de la présentation"
+    ],
+    "verified": "Présentation vérifiée",
+    "loading": "Préparation des clés de démonstration…",
+    "copyTest": "Copier le VC sans la clé H",
+    "replayTest": "Rejouer chez RP-B",
+    "resetTest": "Retour à RP-A",
+    "copyRejected": "Refusé : le VC est authentique, mais la signature ne correspond pas à la clé H liée par l’émetteur.",
+    "replayRejected": "Refusé : les signatures restent valides, mais aud et nonce ne correspondent pas à la requête de RP-B.",
+    "limit": "Ce lien ne bloque pas la copie des informations reçues. Il empêche de produire une nouvelle présentation valide sans la clé H, ou de rejouer celle-ci dans un autre contexte.",
+    "play": "Lire la séquence",
+    "pause": "Pause",
+    "replay": "Rejouer",
+    "next": "Étape suivante",
+    "technical": "Inspecter les messages et les signatures",
+    "technicalNote": "Extraits de payloads. Le Request Object signé du RP et la confiance X.509, OAuth, les métadonnées, le statut et les attestations matérielles ne sont pas déroulés. Aucun appel à un service externe.",
+    "localNote": "Clés privées éphémères non exportables via WebCrypto. Dans un wallet réel, la signature peut être protégée par une WSCA/WSCD locale ou distante (HSM).",
+    "caption": "Données fictives · signatures ES256 et empreintes SHA-256 calculées dans votre navigateur · cette preuve de possession n’est pas une signature de contrat.",
+    "unavailable": "Les calculs cryptographiques ne sont pas disponibles dans ce navigateur. Les étapes et messages pédagogiques restent consultables.",
+    "payloads": [
+      "VC : payload signé",
+      "OID4VCI : preuve de possession de H",
+      "OID4VCI : Credential Request",
+      "OID4VCI : Credential Response",
+      "OID4VP : requête (extrait des paramètres)",
+      "KB-JWT : payload signé",
+      "OID4VP : Authorization Response (vp_token décodé)"
+    ],
+    "transcript": "Les cinq étapes en texte",
+    "profileLabel": "Comparer les demandes du RP",
+    "profiles": [
+      "Qualification seule",
+      "Qualification + nom"
+    ],
+    "missing": "La requête n’est pas satisfaite. Autorisez les attributs demandés, ou refusez le partage."
+  },
+  "en": {
+    "title": "One credential. Three actors. Two signatures.",
+    "subtitle": "From issuance to presentation: follow the VC, select attributes and test its binding to the holder’s key.",
+    "roles": [
+      "Issuer / Provider",
+      "Wallet / Holder",
+      "RP / Verifier"
+    ],
+    "roleNotes": [
+      "Qualification body",
+      "Your attributes, your choice",
+      "Teaching service"
+    ],
+    "steps": [
+      [
+        "Issue",
+        "The issuer signs a VC bound to key H.",
+        "The wallet proves possession of H. The issuer records its public key in cnf.jwk and signs the credential.",
+        "OID4VCI · credential_endpoint"
+      ],
+      [
+        "Request",
+        "The RP requests a qualification, not a file.",
+        "Compare a minimal and a named request. Each carries a recipient (client_id) and a challenge (nonce).",
+        "OID4VP · DCQL"
+      ],
+      [
+        "Select",
+        "Approve the requested attributes. The others stay local.",
+        "Selection follows the DCQL request. You can refuse sharing; the wallet does not send unrequested attributes.",
+        "SD-JWT · selective disclosure"
+      ],
+      [
+        "Bind",
+        "Private key H signs proof for this presentation.",
+        "The KB-JWT binds the selected attributes to the recipient, challenge and time of the exchange.",
+        "SD-JWT+KB · ES256"
+      ],
+      [
+        "Verify",
+        "The RP checks both signatures and the context.",
+        "A copied VC without key H fails. A presentation signed for RP-A does not answer RP-B’s request. Try it.",
+        "OID4VP · vp_token"
+      ]
+    ],
+    "issuerSeal": "Issuer signature",
+    "holderSeal": "Holder signature",
+    "keyPublic": "Public key H",
+    "keyPrivate": "Private key H",
+    "keyStays": "The private key stays in the demo wallet.",
+    "vcLabel": "VC · signed SD-JWT",
+    "decoded": "Attributes delivered to the wallet (disclosures)",
+    "attrs": [
+      "Qualification",
+      "Name",
+      "Birth date",
+      "Address"
+    ],
+    "required": "required",
+    "optional": "not requested",
+    "notShared": "Not shared",
+    "selected": "shared",
+    "ready": "VC available",
+    "waiting": "Awaiting presentation",
+    "requestLabel": "OID4VP request",
+    "received": "Attributes received by the RP",
+    "consent": "Simulated sharing choice",
+    "accept": "Present these attributes",
+    "refuse": "Refuse",
+    "denied": "Sharing refused. No presentation sent.",
+    "headerVc": "What the issuer signs",
+    "claimsNote": "The values below are in the wallet’s disclosures. The signed JWT holds their salted digests, not these values in clear text.",
+    "selectionTitle": "What goes into the presentation",
+    "selectionNote": "Disclosures for unrequested attributes stay in the wallet. An incomplete response to the request will not be sent.",
+    "bindingTitle": "Cryptographic binding, in two stages",
+    "bindingFrom": "In the issuer-signed VC",
+    "bindingTo": "In the holder-signed proof",
+    "bindingNote": "The KB-JWT signature is checked with key H from cnf.jwk. sd_hash binds the proof to the SD-JWT and disclosures actually presented.",
+    "checks": [
+      "Issuer signature",
+      "Disclosure digests",
+      "Signature with key H",
+      "Recipient + challenge + time",
+      "Presentation digest"
+    ],
+    "verified": "Presentation verified",
+    "loading": "Preparing the demo keys…",
+    "copyTest": "Copy the VC without key H",
+    "replayTest": "Replay at RP-B",
+    "resetTest": "Back to RP-A",
+    "copyRejected": "Rejected: the VC is authentic, but the signature does not match key H bound by the issuer.",
+    "replayRejected": "Rejected: the signatures remain valid, but aud and nonce do not match RP-B’s request.",
+    "limit": "This binding does not stop copying received information. It prevents a new valid presentation without key H, or replaying this one in a different context.",
+    "play": "Play sequence",
+    "pause": "Pause",
+    "replay": "Replay",
+    "next": "Next step",
+    "technical": "Inspect messages and signatures",
+    "technicalNote": "Payload excerpts. The RP’s signed Request Object and X.509 trust, OAuth, metadata, status and hardware attestation are not walked through. No external service calls.",
+    "localNote": "Ephemeral private keys, non-exportable through WebCrypto. In a real wallet, signing can be protected by a local or remote WSCA/WSCD (HSM).",
+    "caption": "Fictional data · ES256 signatures and SHA-256 digests computed in your browser · this proof of possession is not a contract signature.",
+    "unavailable": "Cryptographic operations are unavailable in this browser. The educational steps and messages remain readable.",
+    "payloads": [
+      "VC: signed payload",
+      "OID4VCI: proof of possession of H",
+      "OID4VCI: Credential Request",
+      "OID4VCI: Credential Response",
+      "OID4VP: request (parameter excerpt)",
+      "KB-JWT: signed payload",
+      "OID4VP: Authorization Response (decoded vp_token)"
+    ],
+    "transcript": "The five steps in text",
+    "profileLabel": "Compare RP requests",
+    "profiles": [
+      "Qualification only",
+      "Qualification + name"
+    ],
+    "missing": "The request is not satisfied. Approve the requested attributes, or refuse sharing."
+  }
+}

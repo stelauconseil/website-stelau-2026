@@ -1,0 +1,72 @@
+---
+title: "Identité numérique : vers une rupture majeure"
+description: "Vos systèmes collectionnent les données. Et si leur prochain progrès consistait à ne plus les garder ? Moins de copies. Plus de preuves."
+authors: [benoit-leger-derville]
+pubDate: 2026-10-18T00:00:00+02:00
+heroImage: ../../../../assets/images/identite-numerique-preuve.png
+categories: [identity, standards]
+mappingKey: identite-numerique-rupture-majeure
+draft: false
+---
+
+import DocumentCollection from '@/components/Blog/Vision/DocumentCollection.astro';
+import PresentationFlow from '@/components/Blog/Vision/PresentationFlow.astro';
+import IdentityRoadmap from '@/components/Blog/Vision/IdentityRoadmap.astro';
+
+**Le meilleur fichier client est peut-être celui que vous n’avez jamais constitué.**
+
+Depuis 2002, Nicolas Chalanset et moi portons chez Stelau une conviction : authentifier une personne et vérifier ses droits ne devraient pas obliger à collectionner sa vie numérique.
+
+Le wallet ouvre cette porte. Aux systèmes d’information de franchir le seuil.
+
+> Moins de données à garder. Moins de données à se faire voler.
+
+## Dix pièces pour donner un cours. Sérieusement ?
+
+Pour une intervention d’enseignement, j’ai reçu cette demande. Identité, diplômes, assurance, casier judiciaire, RIB… Un dossier complet, bientôt dispersé entre mails, applications et sauvegardes.
+
+<DocumentCollection lang="fr"/>
+
+Chaque demande a sa finalité. Mais **vérifier une qualification n’exige pas de conserver une copie du diplôme partout**. Nous avons automatisé la collecte. Il est temps d’automatiser la vérification.
+
+## Le SI de demain saura redemander
+
+**STOP COLLECTING · VERIFY AS NEEDED · KEEP MINIMAL EVIDENCE.**
+
+Demander ce qui est utile. Vérifier. Traiter. Effacer ce qui n’a plus à être conservé. Et redemander lorsque le besoin revient. Un usage ponctuel ne doit plus devenir, par réflexe, un fichier permanent.
+
+**Le courrier postal ?** Obtenir l’adresse pour cet envoi, puis la sortir du circuit métier. Ou confier l’acheminement à un prestataire autorisé, sans recopier l’adresse dans chaque application.
+
+**Le courriel envoyé plus tard ?** Prévoir un canal de contact limité : alias propre à la relation, relais ou notification. Une finalité, une échéance, une révocation. Sans canal ni mandat prévus, il faudra une nouvelle interaction avec la personne.
+
+**La facture de l’hôtel ?** Redemander les informations nécessaires au bon moment. Conserver la facture selon les obligations applicables. Supprimer les copies de travail inutiles.
+
+Ces architectures restent à construire et à intégrer. Un relais ou un alias reste potentiellement personnel ; l’accord de partage ne remplace pas la base légale du traitement. **Moins stocker ne signifie pas perdre le droit de fonctionner. Cela signifie concevoir autrement.**
+
+## Une preuve utile, pas votre vie entière
+
+Une attestation de qualification adaptée au besoin suffit à expliquer le principe. L’émetteur signe un credential lié à votre clé. Le RP demande les attributs nécessaires ; vous autorisez le partage ; le wallet produit une preuve pour cet échange.
+
+<PresentationFlow lang="fr"/>
+
+La signature de l’émetteur garantit les attributs attestés. La preuve du détenteur lie la présentation au destinataire et au défi de l’échange. **Un autre service ne peut pas simplement la rejouer comme réponse valide à sa propre demande.** Cela n’empêche pas le premier destinataire de copier les informations reçues : il faut donc en transmettre moins.
+
+La trace conservée doit servir une décision précise, avec une durée définie. Elle n’est pas automatiquement anonyme, ni une preuve cryptographique réauditable. Pas question de remplacer le dossier de copies par un coffre de présentations intégrales.
+
+## 2026–2031 : sortir de la collection
+
+Cinq mouvements pour les cinq prochaines années. Une direction de travail, pas un calendrier réglementaire.
+
+<IdentityRoadmap lang="fr"/>
+
+Pas besoin d’attendre le « tout ZKP ». Des attestations ciblées et des données obtenues au moment utile permettent déjà de commencer. Il faut aussi prévoir les pannes, le téléphone perdu et les alternatives accessibles : la sobriété des données doit fonctionner dans la vraie vie.
+
+## Le wallet n’est que le début
+
+Les émetteurs et les wallets continueront à conserver des données. La rupture consiste à **cesser de les recopier dans tous les SI**.
+
+Chez Stelau, nos travaux sur les [wallets](/expertises/wallets-identite-numerique/), la cryptographie appliquée et les [Nested VDS](/realisations/nested-vds/) poursuivent cette cible : **passer de la donnée à la preuve, du stockage à la vérification**.
+
+### Pour aller plus loin
+
+[OID4VCI 1.0](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-final.html) · [OID4VP 1.0](https://openid.net/specs/openid-4-verifiable-presentations-1_0-final.html) · [SD-JWT et key binding — RFC 9901](https://www.rfc-editor.org/rfc/rfc9901.html#section-4.3) · [Architecture EUDI](https://eudi.dev/latest/main/04-high-level-architecture/) · [CNIL : conservation](https://www.cnil.fr/fr/passer-laction/les-durees-de-conservation-des-donnees) · [Consentement](https://www.cnil.fr/les-bases-legales/consentement) · [Anonymisation](https://www.cnil.fr/fr/technologies/lanonymisation-de-donnees-personnelles).

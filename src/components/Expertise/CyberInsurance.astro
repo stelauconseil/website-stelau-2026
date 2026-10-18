@@ -18,6 +18,7 @@ const sections = [
   { id: 'materialite', fr: 'Matérialité et mécanismes', en: 'Evidence and mechanisms' },
   { id: 'causalite', fr: 'Causalité et sinistre', en: 'Causation and loss' },
   { id: 'missions', fr: 'Nos missions avec IXI-Plus', en: 'Our work with IXI-Plus' },
+  { id: 'sapiteur', fr: 'Qu’est-ce qu’un sapiteur ?', en: 'What is a sapiteur?' },
   { id: 'dire', fr: 'Du constat au dire', en: 'From findings to a submission' },
   { id: 'transmission', fr: 'Transmettre le métier', en: 'Passing on the profession' },
 ];
@@ -95,6 +96,14 @@ const questions = fr ? [
       <p>{fr?<Fragment>Stelau apporte ses compétences en cybersécurité aux missions du réseau IXI-Plus auprès des acteurs de l’assurance. Les interventions peuvent porter sur la prévention des risques, la <strong class="insurance-emphasis">recherche des causes d’un sinistre</strong>, l’analyse de ses conséquences et les mesures de réparation ou de prévention adaptées.</Fragment>:<Fragment>Stelau contributes its cybersecurity skills to IXI-Plus network assignments for the insurance sector. Work may cover risk prevention, <strong class="insurance-emphasis">investigation of the causes of a loss</strong>, analysis of its consequences and appropriate recovery or preventive measures.</Fragment>}</p>
       <p>{fr?'Les dimensions techniques sont mises en relation avec les autres compétences nécessaires à la mission, notamment financières, industrielles et de gestion de crise. Le rapport expose le périmètre, les éléments examinés, les constats, le raisonnement causal, les limites et les recommandations. Il éclaire les décisions des acteurs de l’assurance.':'Technical findings are considered alongside other expertise needed for the assignment, including financial, industrial and crisis management skills. The report sets out the scope, material examined, findings, causal reasoning, limitations and recommendations. It informs decisions by participants in the insurance sector.'}</p>
     </section>
+    <section id="sapiteur" class="sapiteur-callout" aria-labelledby="sapiteur-title">
+      <div class="sapiteur-heading"><span class="sapiteur-icon"><Icon name="puzzle-piece" size={38}/></span><p class="eyebrow">IXI-Plus / {fr?'L’expertise de spécialité':'Specialist expertise'}</p></div>
+      <h2 id="sapiteur-title">{fr?<Fragment>Qu’est-ce qu’un <em>sapiteur</em> ?</Fragment>:<Fragment>What is a <em>sapiteur</em>?</Fragment>}</h2>
+      <blockquote><p>{fr?'« Le spécialiste que l’expert appelle à ses côtés. »':'“The specialist an expert calls on for support.”'}</p></blockquote>
+      <p>{fr?<Fragment>Au sein d’IXI-Plus, les experts Stelau deviennent des <strong>sapiteurs</strong> lorsqu’ils apportent leur spécialité cyber à une expertise qui mobilise plusieurs métiers. Ils éclairent l’expert chargé du dossier sur les points techniques qui nécessitent leur savoir-faire.</Fragment>:<Fragment>Within IXI-Plus, Stelau’s experts act as <strong>sapiteurs</strong> when they contribute their cybersecurity specialism to a multidisciplinary expert assessment. A French term for a specialist called on by another expert, it describes their role in clarifying technical matters that require their particular expertise.</Fragment>}</p>
+      <p>{fr?'Examiner les traces, matérialiser une attaque, analyser ses mécanismes et son lien avec le sinistre : leur avis technique est documenté, argumenté et délimité. Il nourrit les conclusions de l’expert chargé de la mission.':'Examining evidence, establishing whether an attack occurred, analysing its mechanisms and its link to the loss: their technical opinion is documented, reasoned and clearly scoped. It informs the conclusions of the expert leading the assignment.'}</p>
+      <p class="sapiteur-note">{fr?<Fragment>Ce rôle ne vaut pas désignation par un tribunal. En expertise judiciaire civile, le recours à l’avis d’un technicien d’une spécialité distincte est prévu par l’<a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000006410417" target="_blank" rel="noopener noreferrer">article 278 du Code de procédure civile ↗</a>.</Fragment>:<Fragment>This role does not amount to appointment by a court. In French civil judicial expert assessments, seeking the opinion of a technician in a distinct specialism is provided for by <a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000006410417" target="_blank" rel="noopener noreferrer">Article 278 of the Code of Civil Procedure ↗</a>.</Fragment>}</p>
+    </section>
     <ExpertiseSimulation lang={lang} kind="rapport"/>
     <section id="dire">
      <h2 class="insurance-section-title"><span class="insurance-heading-icon"><Icon name="comments" size={28}/></span><span>{fr?'Du constat technique au dire argumenté.':'From technical findings to a reasoned submission.'}</span></h2>
@@ -118,6 +127,19 @@ const questions = fr ? [
   :global(.dark) .insurance-intro,:global(.dark) .insurance-copy{--editorial-saffron:#d8ad48;--editorial-annotation:#d8ad4870;--editorial-wash:#d8ad4817}
   .insurance-emphasis{color:var(--ink);font-weight:600;background:linear-gradient(transparent 67%,var(--editorial-annotation) 67%,var(--editorial-annotation) 95%,transparent 95%);box-decoration-break:clone;-webkit-box-decoration-break:clone}
   .insurance-copy .insurance-principle{border-left:3px solid var(--editorial-saffron);padding:16px 22px;background:var(--editorial-wash);margin:24px 0 28px}
+  .insurance-copy .sapiteur-callout{--sapiteur-red:#ad303e;--sapiteur-tint:#ad303e09;--fa-primary-color:var(--sapiteur-red);margin:38px 0;padding:30px 32px;border:1px solid color-mix(in srgb,var(--sapiteur-red) 24%,var(--line));border-left:4px solid var(--sapiteur-red);border-radius:0 16px 16px 0;background:linear-gradient(125deg,var(--sapiteur-tint),var(--surface));position:relative}
+  :global(.dark) .insurance-copy .sapiteur-callout{--sapiteur-red:#ff929c;--sapiteur-tint:#ff929c0a}
+  .sapiteur-heading{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+  .sapiteur-icon{display:flex;align-items:center;justify-content:center;width:62px;height:62px;flex-shrink:0;border:1px solid color-mix(in srgb,var(--sapiteur-red) 24%,transparent);border-radius:16px;background:var(--surface);transform:rotate(-6deg)}
+  .insurance-copy .sapiteur-heading p{margin:0;color:var(--sapiteur-red);font-size:12px;line-height:1.6}
+  .insurance-copy .sapiteur-callout h2{margin:0 0 20px;font-size:clamp(27px,3vw,36px)}
+  .sapiteur-callout h2 em{font-style:normal;color:var(--sapiteur-red)}
+  .insurance-copy .sapiteur-callout blockquote{margin:0 0 24px;padding:0;border:0}
+  .insurance-copy .sapiteur-callout blockquote p{font-size:clamp(23px,2.5vw,31px);line-height:1.4;letter-spacing:-.025em;font-weight:500;color:var(--sapiteur-red);margin:0;max-width:620px}
+  .insurance-copy .sapiteur-callout strong{color:var(--sapiteur-red)}
+  .insurance-copy .sapiteur-note{font-size:13px;line-height:1.75;border-top:1px solid color-mix(in srgb,var(--sapiteur-red) 20%,transparent);padding-top:18px;margin:24px 0 0}
+  .sapiteur-note a{color:var(--sapiteur-red)}
+  @media(max-width:720px){.insurance-copy .sapiteur-callout{padding:24px 20px}.sapiteur-heading{gap:12px}.sapiteur-icon{width:52px;height:52px}}
   .insurance-interview{padding-bottom:42px;scroll-margin-top:120px}
   .interview-card{display:grid;grid-template-columns:1.7fr 1fr;align-items:center;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
   .interview-player{background:#212529;min-width:0}

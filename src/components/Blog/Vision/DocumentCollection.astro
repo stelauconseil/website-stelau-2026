@@ -1,0 +1,35 @@
+---
+import Icon from '@/components/Icon/Icon.astro';
+import copy from '@/data/vision-documents.json';
+import type {Locale} from '@/config/site';
+const {lang} = Astro.props as {lang:Locale};
+const c=copy[lang], fr=lang==='fr';
+const icons=['clipboard-check','building','file-check','briefcase','graduation-cap','id-card','passport','scale-balanced','file-signature','database'] as const;
+const stem=`/media/vision-identite/documents-${lang}`;
+---
+<figure id="pieces-enseignant" class="document-collection" data-document-collection data-lang={lang}>
+  <header><span class="collection-kicker">STELAU / {fr?'LE RÉFLEXE DU DOSSIER':'THE FILE-COLLECTION REFLEX'}</span><span class="collection-count" aria-hidden="true"><b data-document-count>10</b> / 10</span></header>
+  <h3>{c.title}</h3><p class="collection-deadline">{c.intro}</p>
+  <ol class="document-cards" aria-label={fr?'Les pièces demandées':'The requested documents'}>
+    {c.items.map((item,i)=><li data-document-card><span class="document-number">{String(i+1).padStart(2,'0')}</span><Icon name={icons[i]} size={24}/><strong>{item[0]}</strong><span class="document-copy-lines" aria-hidden="true"><i/><i/><i/></span></li>)}
+  </ol>
+  <div class="collection-bottom"><span>{fr?'Une demande. Dix familles de pièces. Combien de copies ensuite ?':'One request. Ten document categories. How many copies afterwards?'}</span><div class="collection-controls" data-document-controls hidden><button type="button" data-document-play aria-pressed="false">{fr?'Lire l’animation':'Play animation'}</button><button type="button" data-document-all>{fr?'Tout afficher':'Show all'}</button><button type="button" data-document-replay>{fr?'Rejouer':'Replay'}</button></div></div>
+  <details><summary>{fr?'Les pièces et leurs conditions, en détail':'The documents and their conditions, in full'}</summary><ol>{c.items.map(item=><li><strong>{item[0]}.</strong> {item[1]}</li>)}</ol></details>
+  <figcaption><p>{c.caption}</p><a class="collection-gif-light" href={stem+'-light.gif'} download>{fr?'Télécharger le GIF':'Download GIF'} ↓</a><a class="collection-gif-dark" href={stem+'-dark.gif'} download>{fr?'Télécharger le GIF':'Download GIF'} ↓</a></figcaption>
+</figure>
+<script>
+  import {initDocumentCollections} from './documents';
+  initDocumentCollections();
+</script>
+<style>
+ .document-collection{margin:32px 0 38px;padding:28px;border:1px solid var(--line);border-radius:20px;background:var(--soft);overflow:hidden}
+ .document-collection header{display:flex;justify-content:space-between;align-items:center;gap:12px}.collection-kicker{font:10px/1.6 var(--font-mono);letter-spacing:.04em;color:var(--brand)}.collection-count{font:12px var(--font-mono);color:var(--muted);white-space:nowrap}.collection-count b{color:var(--brand)}
+ .document-collection h3{font-size:26px!important;line-height:1.25!important;margin:14px 0 8px!important;letter-spacing:-.035em}.document-collection .collection-deadline{font-size:13px!important;margin:0 0 24px!important;color:var(--muted)}
+ .document-collection .document-cards{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0;margin:0}
+ .document-cards li{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 16px 15px 52px;min-width:0;min-height:78px;margin:0!important;transform-origin:50% 100%}.document-cards li>:global(.fa-icon){position:absolute;left:16px;top:18px;color:var(--brand)}.document-cards strong{display:block;font-size:14px;line-height:1.45;padding-right:10px;letter-spacing:-.01em}.document-number{position:absolute;right:10px;top:7px;font:9px var(--font-mono);color:var(--muted)}
+ .document-copy-lines{display:none;gap:4px;flex-direction:column;margin-top:13px}.document-copy-lines i{height:3px;border-radius:3px;background:var(--line);max-width:90%}.document-copy-lines i:nth-child(2){max-width:70%}.document-copy-lines i:nth-child(3){max-width:38%;background:var(--brand);opacity:.35}
+ .collection-bottom{display:flex;flex-direction:column;gap:16px;margin:22px 0;color:var(--muted);font-size:13px;line-height:1.6}.collection-controls{display:flex;gap:8px;flex-wrap:wrap}.collection-controls[hidden]{display:none}.collection-controls button{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--ink)}.collection-controls button:hover{border-color:var(--brand)}
+ .document-collection details{border-top:1px solid var(--line);padding-top:17px;font-size:13px}.document-collection summary{cursor:pointer;font-weight:600;color:var(--brand)}.document-collection details ol{padding-left:22px;margin:18px 0;font-size:13px;line-height:1.7}.document-collection details li{margin-bottom:10px}
+ .document-collection figcaption{margin-top:22px;border-top:1px solid var(--line);padding-top:16px}.document-collection figcaption p{font-size:12px!important;line-height:1.7!important;margin:0 0 10px!important;color:var(--muted)}.document-collection figcaption a{font-size:12px}.collection-gif-dark{display:none}:global(.dark) .collection-gif-dark{display:inline}:global(.dark) .collection-gif-light{display:none}
+ @media(max-width:520px){.document-collection{padding:19px}.document-collection h3{font-size:23px!important}.document-cards li{padding:16px 13px 13px 42px;min-height:92px}.document-cards li>:global(.fa-icon){left:12px;width:20px}.document-cards strong{font-size:12px;padding-right:0}.collection-kicker{font-size:8px}.document-collection .document-cards{gap:9px}}
+</style>

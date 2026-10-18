@@ -1,0 +1,36 @@
+---
+import Icon from '@/components/Icon/Icon.astro';
+import type {IconName} from '@/data/icons';
+import type {Locale} from '@/config/site';
+const {lang}=Astro.props as {lang:Locale};
+const fr=lang==='fr';
+const steps=fr?[
+ ['2026','2027','Repérer le trop-plein','Les copies sans raison de rester : on les identifie, on les supprime.'],
+ ['2027','2028','Passer à la preuve','Une qualification vérifiée plutôt qu’un diplôme dupliqué.'],
+ ['2028','2029','Redemander, juste à temps','Des données ponctuelles. Des canaux de contact autorisés.'],
+ ['2029','2030','Casser la chaîne des copies','CRM, logs, exports, sauvegardes : fini les copies en série.'],
+ ['2030','2031','Changer d’échelle','Étendre, mesurer ce qui reste, tester les pannes et les alternatives.'],
+]:[
+ ['2026','2027','Find the excess','Identify and remove copies with no reason to remain.'],
+ ['2027','2028','Switch to evidence','A verified qualification instead of a duplicated diploma.'],
+ ['2028','2029','Ask again, just in time','One-off data. Authorised contact channels.'],
+ ['2029','2030','Break the chain of copies','CRM, logs, exports, backups: stop copying by default.'],
+ ['2030','2031','Scale it up','Extend, measure what remains, test failures and alternatives.'],
+];
+const icons:IconName[]=['binoculars','file-check','paper-plane','shish-kebab','seedling'];
+const tones=['blue','violet','amber','rose','teal'];
+---
+<div class="identity-roadmap" data-identity-roadmap>
+ <ol aria-label={fr?'Cinq étapes vers un SI qui collecte moins':'Five steps towards systems that collect less'}>
+  {steps.map((s,i)=><li class={`roadmap-${tones[i]}`}><span class="roadmap-years"><time datetime={s[0]}>{s[0]}</time><span>— {s[1]}</span></span><span class="roadmap-symbol"><Icon name={icons[i]} size={30}/></span><div><h3>{s[2]}</h3><p>{s[3]}</p></div><span class="roadmap-number" aria-hidden="true">0{i+1}</span></li>)}
+ </ol>
+</div>
+<style>
+ .identity-roadmap{--roadmap-blue:#0069b4;--roadmap-violet:#7951a9;--roadmap-amber:#a96d15;--roadmap-rose:#b94f67;--roadmap-teal:#19806c;margin:28px 0 34px;container:roadmap/inline-size}
+ :global(.dark) .identity-roadmap{--roadmap-blue:#75baf0;--roadmap-violet:#ba9ce7;--roadmap-amber:#ebba69;--roadmap-rose:#ef9eb0;--roadmap-teal:#77d6b6}
+ .identity-roadmap ol{padding:0;margin:0;list-style:none;display:grid;gap:11px}.identity-roadmap li{--tone:var(--roadmap-blue);position:relative;display:grid;grid-template-columns:78px 52px minmax(0,1fr);align-items:center;gap:18px;padding:21px 32px 21px 21px;margin:0;border-radius:14px;border:1px solid color-mix(in srgb,var(--tone) 24%,var(--line));border-left:3px solid var(--tone);background:linear-gradient(110deg,color-mix(in srgb,var(--tone) 7%,var(--surface)),var(--surface));overflow:hidden}
+ .identity-roadmap .roadmap-violet{--tone:var(--roadmap-violet)}.identity-roadmap .roadmap-amber{--tone:var(--roadmap-amber)}.identity-roadmap .roadmap-rose{--tone:var(--roadmap-rose)}.identity-roadmap .roadmap-teal{--tone:var(--roadmap-teal)}
+ .roadmap-years{color:var(--tone);font:12px/1.5 var(--font-mono)}.roadmap-years time{display:block;font-size:23px;letter-spacing:-.06em;font-weight:600}.roadmap-years>span{font-size:10px;white-space:nowrap}.roadmap-symbol{--fa-primary-color:var(--tone);display:flex;align-items:center;justify-content:center;width:52px;height:52px;background:color-mix(in srgb,var(--tone) 11%,var(--surface));border-radius:15px;transform:rotate(-5deg)}
+ .identity-roadmap h3{font-size:20px!important;letter-spacing:-.025em;line-height:1.3!important;margin:0 0 5px!important}.identity-roadmap p{font-size:13px!important;line-height:1.65!important;color:var(--muted);margin:0!important}.roadmap-number{position:absolute;right:12px;top:10px;color:var(--tone);opacity:.5;font:9px var(--font-mono)}
+ @container roadmap (max-width:490px){.identity-roadmap li{grid-template-columns:58px minmax(0,1fr);gap:12px;padding:19px 18px}.roadmap-years{grid-column:1;grid-row:1;font-size:10px}.roadmap-years time{font-size:20px}.roadmap-symbol{grid-column:1;grid-row:2;width:40px;height:40px;border-radius:11px}.roadmap-symbol :global(.fa-icon){width:24px;height:24px}.identity-roadmap li>div{grid-column:2;grid-row:1 / 3}.identity-roadmap h3{font-size:18px!important}.identity-roadmap p{font-size:12px!important}}
+</style>

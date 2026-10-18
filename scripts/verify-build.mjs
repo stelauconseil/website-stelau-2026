@@ -25,6 +25,30 @@ for(const file of html){
 for(const route of ['.nojekyll','index.html','en/index.html','blog/index.html','en/blog/index.html','a-propos/index.html','en/about/index.html','contact/index.html','rss.xml','en/rss.xml','pagefind/pagefind.js'])assert.ok(files.includes(join(root,route)),`Missing ${route}`);
 for(const lang of ['', 'en/'])for(const slug of ['mdoc-web-verifier-deep-dive','oid4vp-backend-implementation'])assert.ok(files.includes(join(root,`${lang}blog/${slug}/index.html`)),`Missing imported article ${lang}${slug}`);
 const sitemap=await readFile(join(root,'sitemap-0.xml'),'utf8');
+// The vision article must remain complete and discoverable in both languages,
+// including when its optional animations have not loaded.
+for(const lang of ['fr','en']){
+ const prefix=lang==='fr'?'':'en/';
+ const route=`${prefix}blog/identite-numerique-rupture-majeure/`;
+ const page=documents.get(join(root,route,'index.html'));
+ assert.ok(page,`Missing vision article (${lang})`);
+ assert.match(page,/"author":\[\{"@type":"Person","name":"Benoit Leger-Derville"/,`Wrong vision author (${lang})`);
+ assert.equal([...page.matchAll(/data-document-card(?:\s|>)/g)].length,10,`Incomplete document collection (${lang})`);
+ assert.ok(page.includes('id="presentation-oid4vp"')&&page.includes('flow-transcript'),`Missing accessible presentation (${lang})`);
+ assert.equal([...page.matchAll(/data-flow-select="\d"/g)].length,5,`Presentation should have five protocol steps (${lang})`);
+ assert.equal([...page.matchAll(/data-flow-actor="\d"/g)].length,3,`Presentation should show issuer, wallet and RP (${lang})`);
+ assert.ok(page.includes('cnf.jwk')&&page.includes('sd_hash')&&page.includes('OID4VCI'),`Missing key binding and issuance protocol (${lang})`);
+ assert.ok(page.includes('data-identity-roadmap')&&page.includes('data-icon="shish-kebab"'),`Missing illustrated roadmap (${lang})`);
+ assert.ok(page.includes('hreflang="fr"')&&page.includes('hreflang="en"'),`Missing language alternatives (${lang})`);
+ assert.ok(sitemap.includes('/'+route+'</loc>'),`Vision article missing from sitemap (${lang})`);
+ const rss=await readFile(join(root,prefix,'rss.xml'),'utf8');
+ assert.ok(rss.includes('/'+route),`Vision article missing from RSS (${lang})`);
+ for(const theme of ['light','dark']){
+  const gif=await readFile(join(root,`media/vision-identite/documents-${lang}-${theme}.gif`));
+  assert.equal(gif.subarray(0,6).toString(),'GIF89a',`Invalid document GIF (${lang}, ${theme})`);
+ }
+}
+assert.ok(!documents.get(join(root,'index.html')).includes('gsap.'),'GSAP should not load on the homepage');
 for(const prefix of ['realisations/','en/work/']){
  const page=documents.get(join(root,prefix,'rebop/index.html'));
  assert.ok(page?.includes('id="decodeur"'),'Missing reBop decoder section');

@@ -12,7 +12,8 @@
     "preview": "astro preview --host 127.0.0.1",
     "check": "astro check",
     "test:decoder": "node --experimental-strip-types --test scripts/tests/asn1.test.ts",
-    "verify": "npm run check && npm run test:decoder && npm run build && node scripts/verify-build.mjs"
+    "test:identity": "node --experimental-strip-types --test scripts/tests/identity-demo.test.ts",
+    "verify": "npm run check && npm run test:decoder && npm run test:identity && npm run build && node scripts/verify-build.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.2",
@@ -25,6 +26,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-virtual": "3.13.12",
     "astro": "7.3.5",
+    "gsap": "3.15.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "sharp": "^0.35.5",
