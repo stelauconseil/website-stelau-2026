@@ -10,6 +10,7 @@
     "dev": "astro dev --host 127.0.0.1",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview --host 127.0.0.1",
+    "stop": "astro preview stop --host 127.0.0.1",
     "check": "astro check",
     "test:decoder": "node --experimental-strip-types --test scripts/tests/asn1.test.ts",
     "test:identity": "node --experimental-strip-types --test scripts/tests/identity-demo.test.ts",
