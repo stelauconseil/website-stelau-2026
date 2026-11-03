@@ -1,5 +1,6 @@
 import {useEffect,useState} from 'react';
 import {bytesToBase64Url,computeCodeChallenge,generateCodeVerifier,generateES256KeyPair,exportPublicJwk,sha256Hex,signES256,verifyES256} from '@/lib/training/oidapp/crypto';
+import {compareHashBits} from '@/lib/training/hash-comparison';
 import './crypto-lab.css';
 type Mode='signature'|'pkce'|'hash';
 export default function CryptoLab({lang='fr'}:{lang:'fr'|'en'}){
@@ -8,9 +9,12 @@ export default function CryptoLab({lang='fr'}:{lang:'fr'|'en'}){
  const [keys,setKeys]=useState<CryptoKeyPair|null>(null),[signature,setSignature]=useState<Uint8Array|null>(null),[jwk,setJwk]=useState<JsonWebKey|null>(null);
  const [verdict,setVerdict]=useState<boolean|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState('');
  const [verifier,setVerifier]=useState(''),[challenge,setChallenge]=useState('');
- const [input,setInput]=useState('Stelau'),[digest,setDigest]=useState(''),[reference,setReference]=useState('');
- useEffect(()=>{let active=true;void sha256Hex('Stelau').then(v=>{if(active)setReference(v);}).catch(()=>{});return()=>{active=false;};},[]);
- useEffect(()=>{let active=true;void sha256Hex(input).then(v=>{if(active)setDigest(v);}).catch(()=>{if(active)setError(fr?'WebCrypto est indisponible.':'WebCrypto is unavailable.');});return()=>{active=false;};},[input,fr]);
+ const [input,setInput]=useState('Stelau'),[baseline,setBaseline]=useState('Stelau');
+ const [hashes,setHashes]=useState({digest:'',reference:'',source:'',baseline:''});
+ useEffect(()=>{let active=true;void Promise.all([sha256Hex(input),sha256Hex(baseline)]).then(([digest,reference])=>{if(active)setHashes({digest,reference,source:input,baseline});}).catch(()=>{if(active)setError(fr?'WebCrypto est indisponible.':'WebCrypto is unavailable.');});return()=>{active=false;};},[input,baseline,fr]);
+ const hashReady=hashes.source===input&&hashes.baseline===baseline&&!!hashes.digest;
+ const comparison=hashReady?compareHashBits(hashes.reference,hashes.digest):null;
+ const percentage=comparison?new Intl.NumberFormat(fr?'fr-FR':'en-GB',{maximumFractionDigits:1}).format(comparison.percent):'…';
  const run=async(fn:()=>Promise<void>)=>{setBusy(true);setError('');try{await fn();}catch{setError(fr?'Le calcul n’a pas pu aboutir. Utilisez un navigateur récent sur une connexion HTTPS.':'The calculation could not complete. Use a recent browser over HTTPS.');}finally{setBusy(false);}};
  const sign=()=>run(async()=>{const pair=await generateES256KeyPair();const sig=await signES256(pair.privateKey,message);setKeys(pair);setSignature(sig);setJwk(await exportPublicJwk(pair.publicKey));setVerdict(null);});
  const verify=()=>run(async()=>{if(keys&&signature)setVerdict(await verifyES256(keys.publicKey,signature,message));});
@@ -25,7 +29,30 @@ export default function CryptoLab({lang='fr'}:{lang:'fr'|'en'}){
    <p className="lab-note">{fr?'Cette manipulation isole la signature d’un message, une des briques des jetons signés. Elle ne constitue pas une validation complète de JWT ou d’OpenID. Les clés restent en mémoire et disparaissent au rechargement.':'This experiment isolates a message signature, one building block of signed tokens. It is not complete JWT or OpenID validation. Keys remain in memory and disappear on reload.'}</p>
   </section>
   <section role="tabpanel" id="lab-panel-pkce" aria-labelledby="lab-tab-pkce" hidden={mode!=='pkce'} className="lab-panel"><div className="lab-instructions"><h3>{fr?'Un secret côté client. Son empreinte dans la requête.':'A secret at the client. Its digest in the request.'}</h3><p>{fr?'Générez un code_verifier et son code_challenge S256. Le client doit ensuite présenter le verifier pour échanger le code d’autorisation.':'Generate a code_verifier and its S256 code_challenge. The client must later present the verifier to exchange the authorization code.'}</p></div><button className="lab-primary" onClick={()=>void roll()} disabled={busy}>{fr?'Générer une paire PKCE':'Generate a PKCE pair'}</button><div className="lab-pkce"><div><span className="lab-label">code_verifier / {fr?'secret client':'client secret'}</span><output data-lab-verifier>{verifier||'…'}</output></div><div><span className="lab-label">code_challenge / S256</span><output data-lab-challenge>{challenge||'…'}</output></div></div><p className="lab-equation">BASE64URL(SHA-256(code_verifier))</p><p className="lab-note">{fr?'Le challenge n’est pas le secret. PKCE lie la demande initiale à l’échange du code ; il complète les autres contrôles du protocole.':'The challenge is not the secret. PKCE binds the initial request to the code exchange; it complements the protocol’s other controls.'}</p></section>
-  <section role="tabpanel" id="lab-panel-hash" aria-labelledby="lab-tab-hash" hidden={mode!=='hash'} className="lab-panel"><div className="lab-instructions"><h3>{fr?'Un point suffit pour changer l’empreinte.':'One full stop changes the digest.'}</h3><p>{fr?'Modifiez le texte. Les caractères colorés indiquent les différences avec l’empreinte du mot « Stelau ».':'Change the text. Coloured characters show differences from the digest of the word “Stelau”.'}</p></div><label className="lab-label" htmlFor="lab-hash-input">{fr?'Texte à hacher':'Text to hash'}</label><input id="lab-hash-input" value={input} onChange={e=>setInput(e.target.value)} spellCheck={false}/><div className="lab-hash-output" data-lab-hash aria-label={fr?'Empreinte SHA-256':'SHA-256 digest'}>{digest.split('').map((c,i)=><span key={i} className={reference[i]!==c?'is-changed':''}>{c}</span>)}</div><button className="lab-primary" onClick={()=>setInput(v=>v==='Stelau'?'Stelau.':'Stelau')}>{fr?'Ajouter / retirer le point':'Add / remove the full stop'}</button><p className="lab-note">{fr?'Un hachage n’est pas un chiffrement. Une entrée prévisible peut être retrouvée par essais, même si l’empreinte ne permet pas une inversion directe.':'A hash is not encryption. A predictable input can be found by guessing, even though the digest cannot be directly reversed.'}</p></section>
+  <section role="tabpanel" id="lab-panel-hash" aria-labelledby="lab-tab-hash" hidden={mode!=='hash'} className="lab-panel lab-hash-panel">
+   <div className="lab-instructions"><h3>{fr?'Un bit change. L’empreinte bascule.':'One bit changes. The digest transforms.'}</h3><p>{fr?'Modifiez le texte et observez l’effet avalanche : environ la moitié des 256 bits du condensat changent.':'Edit the text and watch the avalanche effect: roughly half of the digest’s 256 bits change.'}</p></div>
+   <label className="lab-label" htmlFor="lab-hash-input">{fr?'Texte à hacher':'Text to hash'}</label>
+   <input id="lab-hash-input" value={input} onChange={e=>setInput(e.target.value)} spellCheck={false}/>
+   <div className="lab-buttons lab-hash-actions">
+    <button onClick={()=>{setBaseline('Stelau');setInput('Rtelau');}}>{fr?'Changer 1 bit : S → R':'Flip 1 bit: S → R'}</button>
+    <button onClick={()=>setBaseline(input)} disabled={!hashReady||input===baseline}>{fr?'Prendre ce texte comme référence':'Use this text as reference'}</button>
+    <button className="lab-tamper" onClick={()=>{setBaseline('Stelau');setInput('Stelau');}}>{fr?'Réinitialiser':'Reset'}</button>
+   </div>
+   <div className="lab-hash-digest"><span className="lab-label">SHA-256 / {fr?'64 caractères hexadécimaux · 256 bits':'64 hexadecimal characters · 256 bits'}</span>
+    <div className="lab-hash-scroll" tabIndex={0} role="region" aria-label={fr?'Condensat SHA-256, défilement horizontal si nécessaire':'SHA-256 digest, scroll horizontally if needed'}><output className="lab-hash-output" data-lab-hash>{comparison?comparison.bytes.map((byte,i)=><span className="lab-hash-byte" key={i} data-lab-byte data-changed-bits={byte.changed} title={fr?`Octet ${i+1} : ${byte.hex} · ${byte.changed} bit${byte.changed>1?'s':''} modifié${byte.changed>1?'s':''} sur 8`:`Byte ${i+1}: ${byte.hex} · ${byte.changed} of 8 bits changed`}><span>{byte.hex}</span><small aria-hidden="true">{byte.changed||'\u00a0'}</small></span>):'…'}</output></div>
+    <span className="lab-byte-legend">{fr?'Sous chaque octet : nombre de bits modifiés sur 8. Vide = octet identique à la référence.':'Below each byte: number of changed bits out of 8. Blank = identical to the reference.'}</span>
+    <span className="lab-hash-hint">{fr?'Glissez pour lire le condensat complet →':'Swipe to read the full digest →'}</span>
+   </div>
+   <div className="lab-avalanche">
+    <div className="lab-avalanche-top"><div><span className="lab-label">{fr?'Effet avalanche / distance de Hamming':'Avalanche effect / Hamming distance'}</span><p className="lab-bit-count" role="status" data-lab-bit-count><strong>{comparison?comparison.changed:'…'}</strong><span> / 256 {fr?'bits modifiés':'bits changed'}</span></p></div><div className="lab-bit-percent">{percentage}<span> %</span></div></div>
+    <div className="lab-bit-meter" aria-hidden="true"><span style={{width:`${comparison?.percent??0}%`}}/><i/><small>50 %</small></div>
+    <p className="lab-bit-reference">{fr?'Comparaison avec le texte de référence :':'Compared with reference text:'} <q>{baseline|| (fr?'texte vide':'empty text')}</q></p>
+    <div className="lab-bits" data-lab-bits aria-hidden="true">{comparison?.bits.map((bit,i)=><span key={i} className={bit.changed?'is-changed':''}>{bit.value}</span>)}</div>
+    <div className="lab-bit-legend"><span><i className="is-changed"/>{fr?'Bit inversé (0 ↔ 1)':'Flipped bit (0 ↔ 1)'}</span><span><i/>{fr?'Bit inchangé':'Unchanged bit'}</span><span>256 bits · {fr?'lecture de gauche à droite':'read left to right'}</span></div>
+    <p className="lab-avalanche-note">{fr?'Orange = bit inversé par rapport à la référence. En moyenne : 50 % sur de nombreux essais, pas exactement 128 bits à chaque modification.':'Orange = bit flipped compared with the reference. The average is 50% over many trials, not exactly 128 bits on every edit.'}</p>
+   </div>
+   <p className="lab-note">{fr?'Un hachage n’est pas un chiffrement. Une entrée prévisible peut être retrouvée par essais, même si l’empreinte ne permet pas une inversion directe.':'A hash is not encryption. A predictable input can be found by guessing, even though the digest cannot be directly reversed.'}</p>
+  </section>
   {error&&<p className="lab-error" role="alert">{error}</p>}
  </div>;
 }

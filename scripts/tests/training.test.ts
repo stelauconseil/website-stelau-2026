@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {encrypt,fromHex} from '../../src/lib/training/course/lib/aes.js';
 import {totp,toHex} from '../../src/lib/training/course/lib/hash.js';
 import {computeCodeChallenge,generateCodeVerifier,generateES256KeyPair,exportPublicJwk,signES256,verifyES256,sha256Hex} from '../../src/lib/training/oidapp/crypto.ts';
+import {compareHashBits} from '../../src/lib/training/hash-comparison.ts';
 
 test('course AES engine matches the FIPS-197 Appendix B ciphertext',()=>{
  assert.equal(toHex(encrypt(fromHex('3243f6a8885a308d313198a2e0370734'),fromHex('2b7e151628aed2a6abf7158809cf4f3c'))),'3925841d02dc09fbdc118597196a0b32');
@@ -26,4 +27,22 @@ test('embedded signature verifies, rejects an altered message, and keeps the pri
 });
 test('embedded SHA-256 matches the standard abc vector',async()=>{
  assert.equal(await sha256Hex('abc'),'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad');
+});
+test('avalanche display counts changed bits, including leading zeros, rather than changed hex digits',()=>{
+ const result=compareHashBits('00','81')!;
+ assert.equal(result.changed,2);assert.equal(result.percent,25);
+ assert.deepEqual(result.bits.map(bit=>bit.value),[1,0,0,0,0,0,0,1]);
+ assert.deepEqual(result.bits.map(bit=>bit.changed),[true,false,false,false,false,false,false,true]);
+ assert.deepEqual(result.bytes,[{hex:'81',changed:2}]);
+ assert.deepEqual(compareHashBits('00ff7e','81ff81')!.bytes,[{hex:'81',changed:2},{hex:'ff',changed:0},{hex:'81',changed:8}]);
+ assert.equal(compareHashBits('ff','FF')!.changed,0);
+ assert.equal(compareHashBits('00','ff')!.percent,100);
+ assert.equal(compareHashBits('',''),null);assert.equal(compareHashBits('00','0'),null);assert.equal(compareHashBits('zz','00'),null);
+});
+test('one input bit flipped in Stelau produces 123 changed SHA-256 output bits',async()=>{
+ const original=new TextEncoder().encode('Stelau'),altered=new TextEncoder().encode('Rtelau');
+ assert.equal(original[0]^altered[0],1);assert.deepEqual(original.slice(1),altered.slice(1));
+ const result=compareHashBits(await sha256Hex('Stelau'),await sha256Hex('Rtelau'))!;
+ assert.equal(result.bits.length,256);assert.equal(result.changed,123);assert.equal(result.percent,123/256*100);
+ assert.equal(result.bytes.length,32);assert.equal(result.bytes.reduce((sum,byte)=>sum+byte.changed,0),123);
 });
