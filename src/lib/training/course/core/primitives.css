@@ -1,0 +1,58 @@
+/* Badges des primitives et icônes Duotone (voir core/primitives.js). Couleurs identiques en clair et en sombre. */
+.prim {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 0;
+}
+.prim-b {
+  position: relative;
+  display: inline-block;
+}
+.prim-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.prim-i {
+  position: absolute;
+  display: block;
+}
+.prim-i svg,
+.prim-ico svg,
+.duo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+.prim-f {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  border-color: #ffffff;
+  color: #ffffff;
+  font-family: "Helvetica Neue", Helvetica, var(--sans);
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+.prim-ico,
+.duo {
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.2em;
+}
+.prim-ico.multi {
+  position: relative;
+}
+.prim-ico.multi > span {
+  position: absolute;
+}
+.prim-err {
+  color: var(--ark);
+  font-family: var(--mono);
+}

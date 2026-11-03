@@ -1,0 +1,138 @@
+<section class="pl ct">
+  <div class="wrap">
+    <div class="pl-head">
+      <div>
+        <div class="eyebrow">Assemblage cryptographique</div>
+        <h2>Certificat électronique</h2>
+      </div>
+      <span class="prim" data-prim="cert" data-h="58"></span>
+    </div>
+
+    <div class="ct-left">
+      <ul class="ct-lead">
+        <li>Ce n'est pas une primitive cryptographique</li>
+        <li>C'est un <b>assemblage</b></li>
+        <li>C'est un fichier comme un autre</li>
+      </ul>
+      <ol class="ct-steps">
+        <li data-on="1"><b>identité</b><small>qui ?</small></li>
+        <li data-on="2"><b>clé publique</b><small>du titulaire</small></li>
+        <li data-on="3">
+          <b>signature de l'identité par un tiers</b><small>l'autorité de certification</small>
+        </li>
+      </ol>
+    </div>
+
+    <div class="ct-stage">
+      <!-- Fils tracés par slide.js d'après la position réelle des éléments (aucun croisement) -->
+      <svg class="ct-wires" aria-hidden="true">
+        <defs>
+          <marker
+            id="ct-ah-sha"
+            viewBox="0 0 12 12"
+            refX="10"
+            refY="6"
+            markerWidth="12"
+            markerHeight="12"
+            markerUnits="userSpaceOnUse"
+            orient="auto"
+          >
+            <path d="M2 2L10 6L2 10" class="ct-ah ct-ah-sha" />
+          </marker>
+          <marker
+            id="ct-ah-rsa"
+            viewBox="0 0 12 12"
+            refX="10"
+            refY="6"
+            markerWidth="12"
+            markerHeight="12"
+            markerUnits="userSpaceOnUse"
+            orient="auto"
+          >
+            <path d="M2 2L10 6L2 10" class="ct-ah ct-ah-rsa" />
+          </marker>
+          <marker
+            id="ct-ah-mut"
+            viewBox="0 0 12 12"
+            refX="10"
+            refY="6"
+            markerWidth="12"
+            markerHeight="12"
+            markerUnits="userSpaceOnUse"
+            orient="auto"
+          >
+            <path d="M2 2L10 6L2 10" class="ct-ah ct-ah-mut" />
+          </marker>
+        </defs>
+      </svg>
+
+      <!-- Le certificat : un fichier, trois champs -->
+      <div class="ct-card" data-s="0">
+        <i class="duo ct-seal" data-icon="file-certificate" data-tight></i>
+        <span class="prim ct-cert" data-prim="cert" data-h="44" data-s="5"></span>
+        <div class="ct-slot ct-id" data-s="1">
+          <small>Sujet</small>
+          <pre class="ct-val" id="ct-ident">
+Benoit Leger-Derville
+Stelau
+valide 3 ans</pre>
+        </div>
+        <div class="ct-slot ct-pk" data-s="2">
+          <small>Clé publique <i class="duo ct-k ct-kpub" data-icon="key" data-tight></i></small>
+          <pre class="ct-val mono" id="ct-pk">…</pre>
+        </div>
+        <div class="ct-slot ct-sig" data-s="4">
+          <small
+            >Signature de l'AC <i class="duo ct-k ct-kac" data-icon="file-signature" data-tight></i
+          ></small>
+          <pre class="ct-val mono" id="ct-sig">…</pre>
+        </div>
+        <div class="ct-caption" data-s="5">identité + clé publique + signature d'un tiers</div>
+      </div>
+
+      <!-- Empreinte SHA-256 de (identité + clé publique) -->
+      <span class="prim ct-sha" data-prim="sha" data-label="SHA256" data-h="40" data-s="3"></span>
+      <div class="ct-hashbox" data-s="3">
+        <small>Empreinte · id ‖ clé</small>
+        <pre class="ct-hash mono" id="ct-hash">…</pre>
+      </div>
+      <!-- L'autorité signe l'empreinte avec SA clé privée -->
+      <span class="prim ct-rsa" data-prim="rsa-priv" data-h="40" data-s="4"></span>
+      <small class="ct-rsacap" data-s="4">clé privée de l'AC</small>
+
+      <!-- Le titulaire et sa bi-clé -->
+      <div class="ct-actor ct-owner" data-s="1">
+        <span class="prim-ico" data-prim="bob"></span>
+        <div><b>Titulaire</b><small>génère sa bi-clé</small></div>
+        <span class="ct-keys" data-s="2"
+          ><i class="duo ct-kpub" data-icon="key" data-tight></i
+          ><i class="duo ct-kpriv" data-icon="key" data-tight></i
+        ></span>
+      </div>
+      <!-- Vérification de l'identité, en face à face -->
+      <div class="ct-actor ct-check" data-s="4">
+        <i class="duo ct-meet" data-icon="users" data-tight></i>
+        <i class="duo ct-card-id" data-icon="id-card" data-tight></i>
+        <div><b>Vérification</b><small>pièce d'identité, face à face</small></div>
+      </div>
+      <!-- L'autorité de certification signe -->
+      <div class="ct-actor ct-ac" data-s="4">
+        <span class="prim-ico" data-prim="alice"></span>
+        <div><b>Autorité de certification</b><small>le tiers de confiance</small></div>
+        <span class="ct-keys"
+          ><i class="duo ct-kacpub" data-icon="key" data-tight></i
+          ><i class="duo ct-kacpriv" data-icon="key" data-tight></i
+        ></span>
+      </div>
+    </div>
+
+    <span class="fragment ct-tick" data-fragment-index="1"></span>
+    <span class="fragment ct-tick" data-fragment-index="2"></span>
+    <span class="fragment ct-tick" data-fragment-index="3"></span>
+    <span class="fragment ct-tick" data-fragment-index="4"></span>
+    <span class="fragment ct-tick" data-fragment-index="5"></span>
+
+    <div class="foot"></div>
+  </div>
+  
+</section>

@@ -62,3 +62,24 @@ for(const prefix of ['/expertises/','/en/expertise/'])for(const group of ['conse
 }
 const articles=html.filter(f=>/\/blog\/[^/]+\/index.html$/.test(f)).length;
 console.log(`Verified ${html.length} HTML pages, ${links} internal references, ${anchors} anchors, catalogue redirects, ${articles} article pages and both RSS feeds.`);
+
+// Training content remains useful without loading the optional animation frames or React island.
+for(const [lang,course,openid] of [
+ ['fr','formations/cryptographie-moderne/','formations/openid-cryptolab/'],
+ ['en','en/training/modern-cryptography/','en/training/openid-cryptolab/'],
+]){
+ const page=documents.get(join(root,course,'index.html'));
+ const lab=documents.get(join(root,openid,'index.html'));
+ assert.ok(page&&lab,`Missing training pages (${lang})`);
+ assert.equal([...page.matchAll(/data-course-scene /g)].length,5,`Missing native course scenes (${lang})`);
+ assert.ok(page.includes('EPITA')&&page.includes('EGE')&&page.includes('ESG'),`Missing teaching schools (${lang})`);
+ assert.ok(lab.includes('data-training-lab')&&lab.includes('client="visible"'),`Missing deferred CryptoLab (${lang})`);
+ for(const route of [course,openid])assert.ok(sitemap.includes('/'+route+'</loc>'),`Training sitemap missing ${route}`);
+ for(const content of [page,lab])assert.ok(content.includes('hreflang="fr"')&&content.includes('hreflang="en"'),'Missing training language alternatives');
+ for(const scene of ['primitives','certificate','tls','aes','totp']){
+  const route=`course-scenes/${lang}/${scene}/`;
+  assert.ok(documents.get(join(root,route,'index.html'))?.includes('noindex,nofollow'),`Missing isolated course scene ${route}`);
+  assert.ok(!sitemap.includes('/'+route+'</loc>'),`Internal scene in sitemap ${route}`);
+ }
+}
+console.log('Verified bilingual training routes, five isolated scenes per language and deferred CryptoLab.');

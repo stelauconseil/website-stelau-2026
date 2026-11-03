@@ -1,0 +1,221 @@
+/* Assemblage crypto, TLS (EPITA 15) : la suite décortiquée, segment par segment (slide.js). */
+.reveal .tl {
+  --tl-dh: #7030a0;
+  --tl-rsa: #b22600;
+  --tl-aes: #000000;
+  --tl-sha: #0070c0;
+  --tl-prng: #ff9900;
+  --tl-box: #f1f3f5;
+}
+:root[data-theme="dark"] .reveal .tl {
+  --tl-dh: #b384e0;
+  --tl-rsa: #ff6b4a;
+  --tl-aes: #e6ebf0;
+  --tl-sha: #5aa9e6;
+  --tl-prng: #ffad33;
+  --tl-box: #16232c;
+}
+
+/* La suite */
+.reveal .tl-suite {
+  position: absolute;
+  left: 72px;
+  top: 158px;
+  width: 690px;
+  padding: 14px 18px 16px;
+  box-sizing: border-box;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 8px 22px -14px var(--shadow);
+}
+.reveal .tl-name {
+  font-size: 27px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.reveal .tl-seg {
+  padding: 2px 3px;
+  border-radius: 5px;
+  border-bottom: 3px solid var(--line-2);
+  transition:
+    background 0.35s,
+    color 0.35s,
+    border-color 0.35s;
+}
+.reveal .tl-row {
+  position: relative;
+  height: 24px;
+  font-size: 15px;
+  color: var(--faint);
+}
+.reveal .tl-l {
+  position: absolute;
+  white-space: nowrap;
+  transition: color 0.35s;
+}
+.reveal .tl-up .tl-l[data-k="rsa"] {
+  left: 110px;
+}
+.reveal .tl-up .tl-l[data-k="aes"] {
+  left: 300px;
+}
+.reveal .tl-down .tl-l[data-k="dh"] {
+  left: 52px;
+  top: 4px;
+}
+.reveal .tl-down .tl-l[data-k="aes"] {
+  left: 368px;
+  top: 4px;
+}
+.reveal .tl-down .tl-l[data-k="sha"] {
+  left: 535px;
+  top: 4px;
+}
+.reveal .tl-prims {
+  position: relative;
+  height: 46px;
+  margin-top: 12px;
+}
+.reveal .tl-p {
+  position: absolute;
+  top: 0;
+  display: flex;
+  gap: 8px;
+  opacity: 0.18;
+  transition: opacity 0.35s;
+}
+.reveal .tl-p[data-k="dh"] {
+  left: 62px;
+}
+.reveal .tl-p[data-k="rsa"] {
+  left: 172px;
+}
+.reveal .tl-p[data-k="aes"] {
+  left: 372px;
+}
+.reveal .tl-p[data-k="sha"] {
+  left: 540px;
+}
+
+/* Le tableau des suites */
+.reveal .tl-table {
+  position: absolute;
+  left: 72px;
+  top: 392px;
+  width: 690px;
+  border-collapse: collapse;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+.reveal .tl-table th {
+  padding: 9px 6px;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 700;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+}
+.reveal .tl-table td {
+  padding: 9px 6px;
+  white-space: nowrap;
+}
+.reveal .tl-table tbody tr:last-child td {
+  border-bottom: 2px solid var(--ink);
+}
+.reveal .tl-table td,
+.reveal .tl-table th {
+  transition:
+    background 0.35s,
+    color 0.35s;
+}
+.reveal .tl-table .tl-old td {
+  color: var(--faint);
+}
+.reveal .tl-note {
+  position: absolute;
+  left: 72px;
+  top: 680px;
+  width: 690px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.reveal .tl-note .mono {
+  font-size: 15px;
+  color: var(--ink);
+}
+
+/* Chaque rôle reste aligné avec sa primitive dans la suite à gauche. */
+.reveal .tl-hs{position:absolute;left:820px;top:150px;width:708px}
+.reveal .tl-hs-t{font-size:24px;font-weight:600;color:var(--ink);margin-bottom:20px}
+.reveal .tl-role{--role-accent:var(--tl-dh);display:grid;grid-template-columns:116px minmax(0,1fr);align-items:center;gap:18px;min-height:134px;margin-bottom:14px;padding:18px 22px;border:2px solid var(--line);border-left:6px solid var(--role-accent);border-radius:12px;background:var(--card);opacity:.62;transition:opacity .35s,border-color .35s,background .35s,transform .35s}
+.reveal .tl-role[data-k="rsa"]{--role-accent:var(--tl-rsa)}
+.reveal .tl-role[data-k="aes"]{--role-accent:var(--tl-aes)}
+.reveal .tl-role[data-k="sha"]{--role-accent:var(--tl-sha)}
+.reveal .tl-role-body{min-width:0}
+.reveal .tl-role h3{font-size:22px;line-height:1.2;margin-bottom:9px;color:var(--ink);text-wrap:initial}
+.reveal .tl-flow{display:grid;grid-template-columns:1fr 28px 1fr;align-items:center;gap:9px;font:16px/1.3 var(--sans);color:var(--ink)}
+.reveal .tl-flow>span:last-child{text-align:right}
+.reveal .tl-flow>i{font-style:normal;text-align:center;font-size:26px;line-height:1;color:var(--role-accent)}
+.reveal .tl-role p{font-size:15px;line-height:1.4;color:var(--muted);margin-top:9px}
+.reveal .tl[data-hl=""] .tl-role,.reveal .tl-role[data-active="true"]{opacity:1}
+.reveal .tl-role[data-active="true"]{border-color:var(--role-accent);background:color-mix(in srgb,var(--role-accent) 8%,var(--card));transform:translateX(-5px)}
+.reveal .tl-role[data-active="true"] h3{color:var(--role-accent)}
+
+.reveal .tl[data-hl~="dh"] .tl-p[data-k="dh"],
+.reveal .tl[data-hl~="rsa"] .tl-p[data-k="rsa"],
+.reveal .tl[data-hl~="aes"] .tl-p[data-k="aes"],
+.reveal .tl[data-hl~="sha"] .tl-p[data-k="sha"] {
+  opacity: 1;
+}
+.reveal .tl[data-hl~="dh"] [data-k="dh"].tl-seg {
+  color: #fff;
+  background: #7030a0;
+  border-color: #7030a0;
+}
+.reveal .tl[data-hl~="rsa"] [data-k="rsa"].tl-seg {
+  color: #fff;
+  background: #b22600;
+  border-color: #b22600;
+}
+.reveal .tl[data-hl~="aes"] [data-k="aes"].tl-seg {
+  color: #fff;
+  background: #000;
+  border-color: #000;
+}
+.reveal .tl[data-hl~="sha"] [data-k="sha"].tl-seg {
+  color: #fff;
+  background: #0070c0;
+  border-color: #0070c0;
+}
+.reveal .tl[data-hl~="dh"] .tl-l[data-k="dh"] {
+  color: var(--tl-dh);
+}
+.reveal .tl[data-hl~="rsa"] .tl-l[data-k="rsa"] {
+  color: var(--tl-rsa);
+}
+.reveal .tl[data-hl~="aes"] .tl-l[data-k="aes"] {
+  color: var(--tl-aes);
+}
+.reveal .tl[data-hl~="sha"] .tl-l[data-k="sha"] {
+  color: var(--tl-sha);
+}
+.reveal .tl[data-hl~="dh"] .tl-table [data-k="dh"] {
+  background: color-mix(in srgb, var(--tl-dh) 14%, transparent);
+}
+.reveal .tl[data-hl~="rsa"] .tl-table [data-k="rsa"] {
+  background: color-mix(in srgb, var(--tl-rsa) 13%, transparent);
+}
+.reveal .tl[data-hl~="aes"] .tl-table [data-k="aes"] {
+  background: color-mix(in srgb, var(--tl-aes) 10%, transparent);
+}
+.reveal .tl[data-hl~="sha"] .tl-table [data-k="sha"] {
+  background: color-mix(in srgb, var(--tl-sha) 13%, transparent);
+}
+.reveal .tl-tick {
+  display: none;
+}

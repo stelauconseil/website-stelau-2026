@@ -1,0 +1,291 @@
+/* Un tour d'AES : confusion et diffusion aujourd'hui (planche ajoutée, après pptx EPITA 28).
+   Mêmes couleurs que histoire/confusion-diffusion. */
+.reveal .hv-acd {
+  --ac-conf: #c00000;
+  --ac-subst: #7030a0;
+  --ac-diff: #009051;
+  --ac-permu: #006ab1;
+  --ac-key: #b8860b;
+}
+:root[data-theme="dark"] .reveal .hv-acd {
+  --ac-conf: #ff5c5c;
+  --ac-subst: #b384e0;
+  --ac-diff: #3cc488;
+  --ac-permu: #5aa9e6;
+  --ac-key: #e0b84a;
+}
+.reveal .hv-acd .ac-conf {
+  color: var(--ac-conf);
+}
+.reveal .hv-acd .ac-subst {
+  color: var(--ac-subst);
+}
+.reveal .hv-acd .ac-diff {
+  color: var(--ac-diff);
+}
+.reveal .hv-acd .ac-permu {
+  color: var(--ac-permu);
+}
+.reveal .hv-acd .ac-tick {
+  display: none;
+}
+.reveal .hv-acd .ac-main {
+  display: grid;
+  grid-template-columns: 420px 540px 1fr;
+  gap: 40px;
+  margin-top: 14px;
+}
+
+/* Les 4 opérations */
+.reveal .hv-acd .ac-ops {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.reveal .hv-acd .ac-ops li {
+  --c: var(--line-2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 20px;
+  border: 1.5px solid var(--line);
+  border-left: 6px solid var(--c);
+  border-radius: 10px;
+  background: var(--card);
+  transition:
+    transform 0.35s,
+    box-shadow 0.35s,
+    opacity 0.35s;
+  opacity: 0.55;
+}
+.reveal .hv-acd .ac-ops li b {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.reveal .hv-acd .ac-ops li span {
+  font-size: 20px;
+  color: var(--muted);
+}
+.reveal .hv-acd .ac-ops em {
+  font-style: normal;
+  font-weight: 600;
+}
+.reveal .hv-acd .ac-key {
+  --c: var(--ac-key);
+}
+.reveal .hv-acd .ac-key em {
+  color: var(--ac-key);
+}
+.reveal .hv-acd .ac-sub {
+  --c: var(--ac-conf);
+}
+.reveal .hv-acd .ac-shift,
+.reveal .hv-acd .ac-mix {
+  --c: var(--ac-diff);
+}
+.reveal .hv-acd .ac-loop {
+  --c: var(--ink);
+  border-style: dashed;
+  border-left-style: solid;
+}
+.reveal .hv-acd .ac-ops li.on {
+  opacity: 1;
+  transform: translateX(14px);
+  box-shadow: 0 10px 24px -14px var(--c);
+}
+
+/* L'état 4 × 4 */
+.reveal .hv-acd .ac-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.reveal .hv-acd .ac-status {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  height: 40px;
+  font-family: var(--mono);
+}
+.reveal .hv-acd .ac-round {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.reveal .hv-acd .ac-step {
+  font-size: 20px;
+  color: var(--muted);
+}
+.reveal .hv-acd .ac-grid {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  margin-top: 10px;
+  perspective: 600px;
+}
+.reveal .hv-acd .ac-cell {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 116px;
+  height: 116px;
+  border-radius: 14px;
+  border: 1.5px solid var(--line-2);
+  background: var(--card);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 44px;
+  font-weight: 600;
+  box-shadow: 0 6px 14px -10px var(--shadow);
+  transition:
+    background 0.3s,
+    border-color 0.3s,
+    color 0.3s;
+}
+.reveal .hv-acd .ac-cell.ac-keyed {
+  border-color: var(--ac-key);
+  background: color-mix(in srgb, var(--ac-key) 16%, var(--card));
+}
+.reveal .hv-acd .ac-cell.ac-subst {
+  border-color: var(--ac-subst);
+  background: color-mix(in srgb, var(--ac-subst) 16%, var(--card));
+  color: var(--ac-subst);
+}
+.reveal .hv-acd .ac-cell.ac-mixing {
+  border-color: var(--ac-diff);
+  background: color-mix(in srgb, var(--ac-diff) 18%, var(--card));
+}
+.reveal .hv-acd .ac-cell.ac-flash {
+  border-color: var(--ac-permu);
+}
+.reveal .hv-acd .ac-cell.ac-done {
+  background: #000000;
+  border-color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 0 0 2px #000000;
+}
+.reveal .hv-acd .ac-cell.ac-chg {
+  border-color: var(--ac-conf);
+  background: color-mix(in srgb, var(--ac-conf) 14%, var(--card));
+  color: var(--ac-conf);
+}
+.reveal .hv-acd .ac-legend {
+  margin-top: 12px;
+  font-size: 17px;
+  color: var(--muted);
+}
+
+/* Panneau de droite : un par étape */
+.reveal .hv-acd .ac-side {
+  position: relative;
+}
+.reveal .hv-acd .ac-panel {
+  position: absolute;
+  inset: 0 0 auto 0;
+  padding: 18px 22px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.4s,
+    transform 0.4s;
+  font-size: 22px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.reveal .hv-acd .ac-panel.on {
+  opacity: 1;
+  transform: none;
+}
+.reveal .hv-acd .ac-panel h3 {
+  margin: 0 0 10px;
+  font-size: 26px;
+  font-weight: 600;
+}
+.reveal .hv-acd .ac-panel p {
+  margin: 8px 0;
+}
+.reveal .hv-acd .ac-hex {
+  display: flex;
+  flex-direction: column;
+}
+.reveal .hv-acd .ac-hex small {
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.reveal .hv-acd .ac-hex code,
+.reveal .hv-acd .ac-eq code {
+  font-family: var(--mono);
+  font-size: 22px;
+  white-space: pre;
+}
+.reveal .hv-acd .ac-eq code {
+  font-size: 26px;
+  font-weight: 600;
+}
+.reveal .hv-acd mark {
+  background: color-mix(in srgb, var(--ac-conf) 22%, transparent);
+  color: var(--ac-conf);
+  border-radius: 3px;
+}
+.reveal .hv-acd .ac-src {
+  font-size: 15px;
+  color: var(--muted);
+}
+.reveal .hv-acd .ac-sbox {
+  display: grid;
+  grid-template-columns: repeat(16, 16px);
+  gap: 2px;
+  margin: 10px 0;
+}
+.reveal .hv-acd .ac-sbox i {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--ac-subst) 14%, var(--card));
+}
+.reveal .hv-acd .ac-sbox i.ac-row,
+.reveal .hv-acd .ac-sbox i.ac-col {
+  background: color-mix(in srgb, var(--ac-subst) 45%, var(--card));
+}
+.reveal .hv-acd .ac-sbox i.ac-hit {
+  background: var(--ac-subst);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac-subst) 40%, transparent);
+}
+.reveal .hv-acd .ac-mat {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: 24px;
+  line-height: 1.15;
+  color: var(--ac-diff);
+}
+.reveal .hv-acd .ac-av {
+  margin-top: 14px !important;
+  font-size: 24px;
+}
+.reveal .hv-acd .ac-nb {
+  font-size: 34px;
+  color: var(--ac-conf);
+}
+.reveal .hv-acd .ac-cell.ac-moving {
+  border-color: var(--ac-permu);
+  background: color-mix(in srgb, var(--ac-permu) 14%, var(--card));
+  box-shadow: 0 16px 26px -12px var(--shadow);
+}
+.reveal .hv-acd .ac-mline code {
+  font-size: 21px;
+  color: var(--ac-diff);
+}

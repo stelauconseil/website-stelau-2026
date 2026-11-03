@@ -1,0 +1,19 @@
+---
+import {sceneHtml} from '@/lib/training/scene-html';
+import {scenes,sceneIds} from '@/lib/training/scenes';
+import '@fontsource-variable/inter';
+import '@/lib/training/course/core/theme.css';
+import '@/lib/training/course/core/primitives.css';
+import '@/lib/training/course/core/planche.css';
+import '@/lib/training/course/slides/primitives/animation/slide.css';
+import '@/lib/training/course/slides/assemblage/certificat/slide.css';
+import '@/lib/training/course/slides/assemblage/tls/slide.css';
+import '@/lib/training/course/slides/histoire/aes-confusion-diffusion/slide.css';
+import '@/lib/training/course/slides/hachage/totp/slide.css';
+export function getStaticPaths(){return ['fr','en'].flatMap(lang=>sceneIds.map(scene=>({params:{lang,scene},props:{lang,scene}})));}
+const {lang,scene}=Astro.props;const spec=scenes[scene as keyof typeof scenes];
+---
+<!doctype html><html lang={lang} data-theme="light"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/><meta name="robots" content="noindex,nofollow"/><title>{spec[lang as 'fr'|'en']} — Stelau</title><script is:inline>try{document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')==='dark'?'dark':'light';}catch{}</script></head><body><main data-scene-root data-scene={scene}><div class="reveal"><div class="slides" set:html={sceneHtml[scene as keyof typeof sceneHtml]}/></div></main><p data-scene-error hidden>{lang==='fr'?'Cette animation ne peut pas démarrer dans ce navigateur. Le cours complet reste accessible depuis la page.':'This animation could not start in this browser. You can still open the full course from the page.'}</p><script>import '@/components/Training/scene-frame';</script></body></html>
+<style is:global>
+ *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--paper);--sans:'Inter Variable',Inter,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}body{font-family:var(--sans)}[data-scene-root]{position:absolute;inset:0}.reveal{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0}.reveal .slides{position:relative;width:1600px;height:900px}.reveal .slides>section{position:relative;display:block;width:1600px;height:900px;margin:0;padding:0}.notes,.foot{display:none!important}.reveal .fragment{opacity:0;visibility:hidden;transition:opacity .5s}.reveal .fragment.visible{opacity:1;visibility:visible}.reveal .slides>section.cpa{width:1600px;height:900px}.reveal pre{white-space:pre-wrap}.reveal h2{line-height:1.2}.reveal .pl-head h2{max-width:1320px}[data-scene-error]{position:absolute;inset:auto 20px 20px;margin:0;padding:14px;background:var(--card);color:var(--ink);font:16px/1.5 var(--sans)}.totp-authenticator{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:24px 30px;display:grid;gap:13px;min-width:300px;color:var(--ink)}.totp-authenticator small{font-size:13px;letter-spacing:.12em;color:var(--muted)}.totp-authenticator strong{font:30px var(--mono);color:var(--navy)}.totp-authenticator span{font-size:18px}.totp-authenticator b{font:22px var(--mono)}[hidden]{display:none!important}@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+</style>

@@ -1,0 +1,131 @@
+/* Composants communs des planches de contenu (voir slides/README.md) :
+   en-tête avec le badge de la primitive en haut à droite, figure (image d'origine du pptx, gardée
+   sur fond blanc dans les deux thèmes), empreinte en pointillés, flèche, source. */
+.reveal .pl .wrap {
+  padding: 40px 72px 0;
+  text-align: left; /* reveal.js centre le texte par défaut : on centre explicitement là où il le faut */
+}
+.reveal .pl-head {
+  text-align: left; /* reveal.js centre le texte par défaut */
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  min-height: 96px;
+}
+.reveal .pl-head h2 {
+  margin-top: 6px;
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.reveal .pl-head > .prim {
+  flex: none;
+  margin-top: 2px;
+}
+
+/* Couleur d'encre de chaque primitive (texte sur fond de planche) */
+.reveal .pl {
+  --sha: #0070c0;
+  --sha-tint: #e3f0fa;
+  --sha-line: #9cc8ea;
+}
+:root[data-theme="dark"] .reveal .pl {
+  --sha: #5aa9e6;
+  --sha-tint: #12283b;
+  --sha-line: #2b5578;
+}
+
+/* Figure : image reprise du pptx */
+.reveal .fig {
+  display: block;
+  box-sizing: border-box;
+  padding: 12px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.reveal .fig img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+:root[data-theme="dark"] .reveal .fig {
+  border-color: var(--line-2);
+  box-shadow: 0 0 0 4px var(--card);
+}
+
+/* Empreinte (valeur hexadécimale) en pointillés, badge éventuel posé sur le coin */
+.reveal .hv {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 12px 18px;
+  font-family: var(--mono);
+  font-size: 22px;
+  line-height: 1.25;
+  color: var(--ink);
+  word-break: break-all;
+  background: var(--card);
+  border: 2px dotted var(--line-2);
+  border-radius: 8px;
+}
+.reveal .hv > .prim {
+  position: absolute;
+  top: -16px;
+  right: -14px;
+}
+.reveal .hv b {
+  font-weight: 700;
+}
+.reveal .hv .dim {
+  color: var(--faint);
+}
+
+/* Flèche horizontale : <i class="arr"></i>, sa longueur suit son conteneur flex */
+.reveal .arr {
+  position: relative;
+  flex: 1 1 40px;
+  min-width: 28px;
+  height: 2px;
+  background: var(--faint);
+}
+.reveal .arr::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -6px;
+  border: 7px solid transparent;
+  border-left: 11px solid var(--faint);
+  border-right: 0;
+}
+
+/* Source d'une planche, au-dessus du pied de page */
+.reveal .src {
+  position: absolute;
+  left: 72px;
+  bottom: 44px;
+  font-size: 14px;
+  color: var(--faint);
+}
+
+/* Planche « telle quelle » : l'image du pptx (montage photo…) en plein cadre, sur fond blanc ;
+   en sombre, posée en retrait avec un léger arrondi. <section class="shot"><img class="shot-img" …> */
+.reveal .shot {
+  padding: 0 !important;
+}
+.reveal .shot .shot-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #ffffff;
+}
+:root[data-theme="dark"] .reveal .shot .shot-img {
+  inset: 22px 30px;
+  width: calc(100% - 60px);
+  height: calc(100% - 44px);
+  border-radius: 14px;
+}

@@ -1,0 +1,29 @@
+---
+import type {Locale} from '@/config/site';
+const {lang}=Astro.props as {lang:Locale};
+const fr=lang==='fr';
+---
+<a class="workshop-teaser" href="#ateliers-jeux">
+ <span class="teaser-copy">
+  <span class="teaser-label">{fr?'2 ateliers / jeux crypto':'2 cryptography games'}</span>
+  <strong>{fr?'Essayez-nous !':'Give us a try!'}</strong>
+  <span class="teaser-games">DH War · WannaCry</span>
+ </span>
+ <svg class="teaser-arrow" viewBox="0 0 52 64" fill="none" aria-hidden="true" focusable="false">
+  <path d="M7 9C34 1 49 18 40 36C36 44 29 48 22 53M20 40L21 55L36 51" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+ </svg>
+</a>
+<style>
+ .workshop-teaser{--teaser-paper:#fff0bd;--teaser-ink:#543b15;--teaser-edge:#c99a42;position:relative;display:flex;align-items:center;justify-content:space-between;gap:18px;flex:0 1 318px;max-width:100%;margin-left:auto;padding:17px 22px;border:1px solid var(--teaser-edge);border-radius:12px 12px 12px 3px;background:var(--teaser-paper);color:var(--teaser-ink);box-shadow:4px 5px 0 color-mix(in srgb,var(--teaser-edge) 22%,transparent);transform:rotate(-3deg);animation:workshop-invitation 6s ease-in-out infinite;text-decoration:none;isolation:isolate}
+ .workshop-teaser::before{content:'';position:absolute;inset:5px;border:1px dashed var(--teaser-edge);border-radius:7px 7px 7px 2px;opacity:.55;pointer-events:none}
+ .teaser-copy{display:grid;gap:6px;min-width:0}.teaser-label{font:10px/1.5 var(--font-mono);text-transform:uppercase;letter-spacing:.07em}.teaser-copy strong{font-size:23px;line-height:1.15;font-weight:650;letter-spacing:-.035em}.teaser-games{font:11px/1.5 var(--font-mono);opacity:.8}
+ .teaser-arrow{width:44px;height:57px;flex-shrink:0;overflow:visible;animation:workshop-arrow 2.4s ease-in-out infinite}
+ .workshop-teaser:hover,.workshop-teaser:focus-visible{animation:none;transform:translateY(-2px) rotate(0);box-shadow:2px 7px 0 color-mix(in srgb,var(--teaser-edge) 24%,transparent)}
+ .workshop-teaser:focus-visible{outline:3px solid var(--brand);outline-offset:6px}
+ :global(.dark) .workshop-teaser{--teaser-paper:#352b1a;--teaser-ink:#ffe0a0;--teaser-edge:#a68142}
+ @keyframes workshop-invitation{0%,55%,100%{transform:translateY(0) rotate(-3deg)}67%{transform:translateY(-4px) rotate(-4deg)}78%{transform:translateY(-1px) rotate(-1deg)}89%{transform:translateY(-2px) rotate(-3deg)}}
+ @keyframes workshop-arrow{0%,45%,100%{transform:translateY(0)}68%{transform:translateY(5px)}82%{transform:translateY(2px)}}
+ @media(max-width:1000px){.workshop-teaser{flex-basis:294px;padding:16px 19px}.teaser-copy strong{font-size:22px}}
+ @media(max-width:720px){.workshop-teaser{flex:0 1 318px;margin-left:0;margin-top:8px;margin-bottom:6px;transform:rotate(-2deg)}}
+ @media(prefers-reduced-motion:reduce){.workshop-teaser,.teaser-arrow{animation:none!important;transform:none!important}}
+</style>

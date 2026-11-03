@@ -14,7 +14,8 @@
     "check": "astro check",
     "test:decoder": "node --experimental-strip-types --test scripts/tests/asn1.test.ts",
     "test:identity": "node --experimental-strip-types --test scripts/tests/identity-demo.test.ts",
-    "verify": "npm run check && npm run test:decoder && npm run test:identity && npm run build && node scripts/verify-build.mjs"
+    "verify": "npm run check && npm run test:decoder && npm run test:identity && npm run test:training && npm run build && node scripts/verify-build.mjs",
+    "test:training": "node --experimental-strip-types --test scripts/tests/training.test.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.2",

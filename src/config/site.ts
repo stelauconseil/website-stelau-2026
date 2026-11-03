@@ -1,8 +1,8 @@
 export type Locale = 'fr' | 'en';
-export type Route = 'home' | 'expertise' | 'cases' | 'about' | 'blog' | 'contact' | 'notice' | 'privacy' | 'cookies' | 'terms';
+export type Route = 'training' | 'openidTraining' | 'home' | 'expertise' | 'cases' | 'about' | 'blog' | 'contact' | 'notice' | 'privacy' | 'cookies' | 'terms';
 const paths: Record<Locale, Record<Route, string>> = {
-  fr: {home:'/', expertise:'/expertises/', cases:'/realisations/', about:'/a-propos/', blog:'/blog/', contact:'/contact/', notice:'/legal/mentions-legales/', privacy:'/legal/confidentialite/', cookies:'/legal/cookies/', terms:'/legal/conditions/'},
-  en: {home:'/en/', expertise:'/en/expertise/', cases:'/en/work/', about:'/en/about/', blog:'/en/blog/', contact:'/en/contact/', notice:'/en/legal/notice/', privacy:'/en/legal/privacy/', cookies:'/en/legal/cookies/', terms:'/en/legal/terms/'},
+  fr: {training:'/formations/cryptographie-moderne/', openidTraining:'/formations/openid-cryptolab/', home:'/', expertise:'/expertises/', cases:'/realisations/', about:'/a-propos/', blog:'/blog/', contact:'/contact/', notice:'/legal/mentions-legales/', privacy:'/legal/confidentialite/', cookies:'/legal/cookies/', terms:'/legal/conditions/'},
+  en: {training:'/en/training/modern-cryptography/', openidTraining:'/en/training/openid-cryptolab/', home:'/en/', expertise:'/en/expertise/', cases:'/en/work/', about:'/en/about/', blog:'/en/blog/', contact:'/en/contact/', notice:'/en/legal/notice/', privacy:'/en/legal/privacy/', cookies:'/en/legal/cookies/', terms:'/en/legal/terms/'},
 };
 export const href = (lang: Locale, key: Route) => paths[lang][key];
 export const localeFromUrl = (url: URL): Locale => url.pathname.startsWith('/en/') ? 'en' : 'fr';
@@ -26,4 +26,7 @@ export const certificationAuditHref = (lang: Locale) => href(lang,'expertise') +
 export const crisisExerciseHref = (lang: Locale) => href(lang,'expertise') + 'audit/exercices-crise-cyber/';
 export type ExpertiseSection = 'conseil' | 'audit' | 'developpement';
 export const expertiseSectionHref = (lang: Locale, section: ExpertiseSection) => href(lang,'expertise') + '#' + section;
-export const formationHref = (lang: Locale) => href(lang,'expertise') + '#formation';
+export const formationHref = (lang: Locale) => href(lang,'training');
+
+export const openidTrainingHref = (lang: Locale) => href(lang,'openidTraining');
+export const externalLearning = {course:'https://cours.stelau.com/cours.html',oidapp:'https://le-du6.github.io/OIDApp/'} as const;

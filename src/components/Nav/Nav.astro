@@ -10,7 +10,7 @@ import {activitiesFor} from '@/data/expertise-catalogue';
 import {expertiseIcons} from '@/data/icons';
 const {lang}=Astro.props as {lang:Locale};const fr=lang==='fr';
 const isHome=Astro.url.pathname==='/'||Astro.url.pathname==='/en/';
-const links=[{url:href(lang,'cases'),label:fr?'Réalisations':'Our work',current:Astro.url.pathname.startsWith(href(lang,'cases'))},{url:formationHref(lang),label:fr?'Formation':'Training',current:false},{url:href(lang,'about'),label:fr?'L’équipe':'Our team',current:Astro.url.pathname.startsWith(href(lang,'about'))},{url:href(lang,'blog'),label:fr?'Le Blog':'Journal',current:Astro.url.pathname.startsWith(href(lang,'blog'))}];
+const links=[{url:href(lang,'cases'),label:fr?'Réalisations':'Our work',current:Astro.url.pathname.startsWith(href(lang,'cases'))},{url:formationHref(lang),label:fr?'Formation':'Training',current:Astro.url.pathname.startsWith(fr?'/formations/':'/en/training/')},{url:href(lang,'about'),label:fr?'L’équipe':'Our team',current:Astro.url.pathname.startsWith(href(lang,'about'))},{url:href(lang,'blog'),label:fr?'Le Blog':'Journal',current:Astro.url.pathname.startsWith(href(lang,'blog'))}];
 ---
 <header class:list={['site-header',{'home-header':isHome}]} data-pagefind-ignore>
  {isHome&&<BandTexture/>}

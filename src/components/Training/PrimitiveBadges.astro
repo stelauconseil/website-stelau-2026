@@ -1,0 +1,20 @@
+---
+import {badgeHTML} from '@/lib/training/course/core/primitives.js';
+import '@/lib/training/course/core/primitives.css';
+import type {Locale} from '@/config/site';
+const {lang}=Astro.props as {lang:Locale};
+const fr=lang==='fr';
+const badges=[
+ ['aes','AES',fr?'Chiffrement symétrique':'Symmetric encryption'],
+ ['rsa','RSA',fr?'Chiffrement asymétrique':'Asymmetric cryptography'],
+ ['sha','SHA',fr?'Fonctions de hachage':'Hash functions'],
+ ['dh','DH',fr?'Établissement de clés':'Key agreement'],
+ ['prng','PRNG',fr?'Génération d’aléa':'Random generation'],
+];
+---
+<ul class="primitive-badges" aria-label={fr?'Les cinq primitives cryptographiques':'The five cryptographic primitives'}>
+ {badges.map(([key,label,family])=><li><span class="prim" role="img" aria-label={`${label} · ${family}`} title={`${label} · ${family}`} set:html={badgeHTML(key,20,undefined)}/></li>)}
+</ul>
+<style>
+ .primitive-badges{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:flex-start;gap:12px 9px;list-style:none;margin:0;padding:0;flex-shrink:0;max-width:100%}.primitive-badges li{display:flex;padding:0;margin:0;line-height:0}.primitive-badges .prim{display:block;line-height:0}@media(max-width:720px){.primitive-badges{justify-content:flex-start;gap:12px 4px}}
+</style>

@@ -1,0 +1,147 @@
+<section class="pl tl" data-hl="">
+  <div class="wrap">
+    <div class="pl-head">
+      <div>
+        <div class="eyebrow">Assemblage cryptographique · TLS</div>
+        <h2>Une suite de chiffrement, quatre primitives</h2>
+      </div>
+    </div>
+
+    <!-- La suite décortiquée -->
+    <div class="tl-suite">
+      <div class="tl-row tl-up">
+        <span class="tl-l" data-k="rsa">Authentication</span>
+        <span class="tl-l" data-k="aes">Algorithm · Strength · Mode</span>
+      </div>
+      <div class="tl-name mono">
+        <span>TLS_</span><span class="tl-seg" data-k="dh">ECDHE</span><span>_</span
+        ><span class="tl-seg" data-k="rsa">RSA</span><span>_WITH_</span
+        ><span class="tl-seg" data-k="aes">AES_128_GCM</span><span>_</span
+        ><span class="tl-seg" data-k="sha">SHA256</span>
+      </div>
+      <div class="tl-row tl-down">
+        <span class="tl-l" data-k="dh">Key exchange</span>
+        <span class="tl-l" data-k="aes">Cipher</span>
+        <span class="tl-l" data-k="sha">MAC or PRF</span>
+      </div>
+      <div class="tl-prims">
+        <span class="tl-p" data-k="dh"><span class="prim" data-prim="dh" data-h="34"></span></span>
+        <span class="tl-p" data-k="rsa"
+          ><span class="prim" data-prim="rsa" data-h="34"></span
+        ></span>
+        <span class="tl-p" data-k="aes"
+          ><span class="prim" data-prim="aes" data-h="34"></span
+        ></span>
+        <span class="tl-p" data-k="sha"
+          ><span class="prim" data-prim="sha" data-h="34"></span
+        ></span>
+      </div>
+    </div>
+
+    <!-- Quelques suites -->
+    <table class="tl-table mono">
+      <thead>
+        <tr>
+          <th>Cipher Suite Name</th>
+          <th data-k="rsa">Auth</th>
+          <th data-k="dh">KX</th>
+          <th data-k="aes">Cipher</th>
+          <th data-k="sha">MAC</th>
+          <th data-k="sha">PRF</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256</td>
+          <td data-k="rsa">RSA</td>
+          <td data-k="dh">ECDHE</td>
+          <td data-k="aes">AES-128-GCM</td>
+          <td data-k="sha">-</td>
+          <td data-k="sha">SHA256</td>
+        </tr>
+        <tr>
+          <td>TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384</td>
+          <td data-k="rsa">ECDSA</td>
+          <td data-k="dh">ECDHE</td>
+          <td data-k="aes">AES-256-GCM</td>
+          <td data-k="sha">-</td>
+          <td data-k="sha">SHA384</td>
+        </tr>
+        <tr class="tl-old">
+          <td>TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA</td>
+          <td data-k="rsa">RSA</td>
+          <td data-k="dh">DHE</td>
+          <td data-k="aes">3DES-EDE-CBC</td>
+          <td data-k="sha">SHA1</td>
+          <td data-k="sha">Protocol</td>
+        </tr>
+        <tr class="tl-old">
+          <td>TLS_RSA_WITH_AES_128_CBC_SHA</td>
+          <td data-k="rsa">RSA</td>
+          <td data-k="dh">RSA</td>
+          <td data-k="aes">AES-128-CBC</td>
+          <td data-k="sha">SHA1</td>
+          <td data-k="sha">Protocol</td>
+        </tr>
+        <tr>
+          <td>TLS_ECDHE_ECDSA_WITH_AES_128_CCM</td>
+          <td data-k="rsa">ECDSA</td>
+          <td data-k="dh">ECDHE</td>
+          <td data-k="aes">AES-128-CCM</td>
+          <td data-k="sha">-</td>
+          <td data-k="sha">SHA256</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="tl-note">
+      TLS 1.3 ne nomme plus que le chiffrement et le hachage (<span class="mono"
+        >TLS_AES_128_GCM_SHA256</span
+      >) : l'échange de clés (ECDHE) et la signature (RSA, ECDSA) se négocient à part.
+    </p>
+
+    <!-- Quatre rôles pour la suite TLS 1.2 affichée à gauche. -->
+    <div class="tl-hs">
+      <div class="tl-hs-t">TLS 1.2 · quatre rôles complémentaires</div>
+      <div class="tl-role" data-tls-role data-k="dh" data-active="false">
+        <span class="prim" data-prim="dh" data-h="38"></span>
+        <div class="tl-role-body">
+          <h3>Établir un secret partagé</h3>
+          <div class="tl-flow"><span>Clé publique client</span><i aria-hidden="true">⇄</i><span>Clé publique serveur</span></div>
+          <p>ECDHE · les clés privées restent locales</p>
+        </div>
+      </div>
+      <div class="tl-role" data-tls-role data-k="rsa" data-active="false">
+        <span class="prim" data-prim="rsa" data-h="38"></span>
+        <div class="tl-role-body">
+          <h3>Authentifier le serveur</h3>
+          <div class="tl-flow"><span>Client vérifie</span><i aria-hidden="true">←</i><span>Serveur signe</span></div>
+          <p>Certificat + signature des paramètres ECDHE</p>
+        </div>
+      </div>
+      <div class="tl-role" data-tls-role data-k="aes" data-active="false">
+        <span class="prim" data-prim="aes" data-h="38"></span>
+        <div class="tl-role-body">
+          <h3>Protéger les échanges</h3>
+          <div class="tl-flow"><span>Client</span><i aria-hidden="true">⇄</i><span>Serveur</span></div>
+          <p>AES-128-GCM · chiffrement authentifié</p>
+        </div>
+      </div>
+      <div class="tl-role" data-tls-role data-k="sha" data-active="false">
+        <span class="prim" data-prim="sha" data-label="SHA256" data-h="38"></span>
+        <div class="tl-role-body">
+          <h3>Dériver les clés et confirmer l’échange</h3>
+          <div class="tl-flow"><span>Secret + aléas</span><i aria-hidden="true">→</i><span>PRF / Finished</span></div>
+          <p>HMAC-SHA256 · clés et empreinte du transcript</p>
+        </div>
+      </div>
+    </div>
+
+    <span class="fragment tl-tick" data-fragment-index="1"></span>
+    <span class="fragment tl-tick" data-fragment-index="2"></span>
+    <span class="fragment tl-tick" data-fragment-index="3"></span>
+    <span class="fragment tl-tick" data-fragment-index="4"></span>
+
+    <div class="foot"></div>
+  </div>
+  
+</section>

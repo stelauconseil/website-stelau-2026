@@ -1,0 +1,28 @@
+/* Les 5 primitives en action : la scène GSAP (lib/crypto-primitives, 1920 × 1080) occupe toute la
+   planche ; ses couleurs d'interface suivent le thème du cours. */
+.reveal .cpa {
+  --cp-card: var(--card);
+  --cp-card-border: var(--line);
+  --cp-rail: var(--track-dash);
+  --cp-ink: var(--ink);
+  --cp-ink-soft: var(--muted);
+  --cp-muted: color-mix(in srgb, var(--muted) 75%, var(--card));
+  --cp-faint: var(--faint);
+  --cp-hash-box: var(--paper);
+  --cp-rsa-pub: #4e9a1e; /* chiffré sorti de la clé publique (vert lisible sur fond clair) */
+  padding: 0 !important;
+}
+.reveal .cpa .cpa-host {
+  position: absolute;
+  inset: 0;
+}
+.reveal .cpa .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+:root[data-theme="dark"] .reveal .cpa {
+  --cp-rsa-pub: #92d050;
+}

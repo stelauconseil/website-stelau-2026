@@ -1,0 +1,108 @@
+<section class="pl hv-acd">
+  <div class="wrap">
+    <div class="pl-head">
+      <div>
+        <div class="eyebrow">
+          Toujours au cœur du chiffrement symétrique moderne · <b class="ac-conf">Confusion</b> et
+          <b class="ac-diff">Diffusion</b>
+        </div>
+        <h2>Un tour d'AES : substitution, permutation, mélange, clé</h2>
+      </div>
+      <span class="prim" data-prim="aes" data-h="58"></span>
+    </div>
+
+    <div class="ac-main">
+      <ol class="ac-ops">
+        <li data-op="addRoundKey" class="ac-op ac-key">
+          <b>AddRoundKey</b><span>⊕ clé de tour : seule la <em>clé</em> est secrète</span>
+        </li>
+        <li data-op="subBytes" class="ac-op ac-sub">
+          <b>SubBytes</b
+          ><span
+            ><em class="ac-conf">Confusion</em> par <em class="ac-subst">substitution</em> (boîte
+            S)</span
+          >
+        </li>
+        <li data-op="shiftRows" class="ac-op ac-shift">
+          <b>ShiftRows</b
+          ><span><em class="ac-diff">Diffusion</em> par <em class="ac-permu">permutation</em></span>
+        </li>
+        <li data-op="mixColumns" class="ac-op ac-mix">
+          <b>MixColumns</b><span><em class="ac-diff">Diffusion</em> par mélange des colonnes</span>
+        </li>
+        <li class="ac-loop"><b>× 10 tours</b><span>les 4 opérations, encore et encore</span></li>
+      </ol>
+
+      <div class="ac-center">
+        <div class="ac-status">
+          <span class="ac-round">Clair</span><span class="ac-step"></span>
+        </div>
+        <div class="ac-grid" aria-label="État AES : 16 octets"></div>
+        <div class="ac-legend">état : 16 octets, 4 lignes × 4 colonnes</div>
+      </div>
+
+      <div class="ac-side">
+        <div class="ac-panel" data-p="0">
+          <h3>Bloc clair et clé</h3>
+          <p class="ac-hex"><small>clair</small><code class="ac-pt"></code></p>
+          <p class="ac-hex"><small>clé</small><code class="ac-k"></code></p>
+          <p class="ac-src">Exemple de la norme FIPS-197, annexe B</p>
+        </div>
+        <div class="ac-panel" data-p="1">
+          <h3>AddRoundKey</h3>
+          <p>Chaque octet est combiné (⊕, XOR) avec l'octet de la clé de tour.</p>
+          <p class="ac-eq"><code class="ac-x1"></code></p>
+        </div>
+        <div class="ac-panel" data-p="2">
+          <h3><span class="ac-conf">Confusion</span> : la boîte S</h3>
+          <p>Chaque octet est remplacé par un autre, lu dans une table de 256 cases.</p>
+          <div class="ac-sbox"></div>
+          <p class="ac-eq"><code class="ac-s1"></code></p>
+        </div>
+        <div class="ac-panel" data-p="3">
+          <h3><span class="ac-diff">Diffusion</span> : la permutation</h3>
+          <p>
+            La ligne <i>r</i> tourne de <i>r</i> cases vers la gauche : les octets d'une colonne se
+            dispersent dans les 4 colonnes.
+          </p>
+        </div>
+        <div class="ac-panel" data-p="4">
+          <h3><span class="ac-diff">Diffusion</span> : le mélange</h3>
+          <p>
+            Chaque colonne est multipliée par une matrice :
+            <b>chaque octet de sortie dépend des 4 octets</b> de la colonne.
+          </p>
+          <pre class="ac-mat">
+⎡2 3 1 1⎤
+⎢1 2 3 1⎥
+⎢1 1 2 3⎥
+⎣3 1 1 2⎦</pre>
+          <p class="ac-eq ac-mline"><code class="ac-m1"></code></p>
+        </div>
+        <div class="ac-panel" data-p="5">
+          <h3>10 tours plus tard</h3>
+          <p class="ac-hex"><small>chiffré</small><code class="ac-ct"></code></p>
+          <p>Identique au vecteur de test de la norme.</p>
+        </div>
+        <div class="ac-panel" data-p="6">
+          <h3>Effet avalanche</h3>
+          <p>On change <b>1 seul bit</b> du clair :</p>
+          <p class="ac-hex"><small>clair′</small><code class="ac-pt2"></code></p>
+          <p class="ac-hex"><small>chiffré</small><code class="ac-c1"></code></p>
+          <p class="ac-hex"><small>chiffré′</small><code class="ac-c2"></code></p>
+          <p class="ac-av"><b class="ac-nb"></b> bits sur 128 ont changé</p>
+        </div>
+      </div>
+    </div>
+
+    <span class="fragment ac-tick" data-fragment-index="1"></span>
+    <span class="fragment ac-tick" data-fragment-index="2"></span>
+    <span class="fragment ac-tick" data-fragment-index="3"></span>
+    <span class="fragment ac-tick" data-fragment-index="4"></span>
+    <span class="fragment ac-tick" data-fragment-index="5"></span>
+    <span class="fragment ac-tick" data-fragment-index="6"></span>
+
+    <div class="foot"></div>
+  </div>
+  
+</section>

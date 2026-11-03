@@ -1,0 +1,39 @@
+{
+  "course": {
+    "repository": "modern-cryptography",
+    "commit": "b20ec51f0cf14e16b6099ca4ec71b727591f5fcc",
+    "scenes": [
+      "primitives/animation",
+      "assemblage/certificat",
+      "assemblage/tls",
+      "histoire/aes-confusion-diffusion",
+      "hachage/totp"
+    ],
+    "sharedStyles": [
+      "core/theme.css",
+      "core/primitives.css",
+      "core/planche.css"
+    ],
+    "workshopImages": [
+      "slides/tp/ateliers/fiches.webp",
+      "slides/tp/ateliers/puzzle.webp"
+    ]
+  },
+  "oidapp": {
+    "repository": "OIDApp",
+    "commit": "0e9f0771d9e175346aba4bb7a60b6abab1d41b44",
+    "files": [
+      "src/lib/crypto.ts"
+    ]
+  },
+  "adaptations": [
+    "Standalone iframe host, without Reveal runtime.",
+    "GSAP lifecycle automatically driven by the website.",
+    "Theme and English text adaptation.",
+    "Course notes excluded.",
+    "TOTP SMS image replaced by a local authenticator diagram; simplified hash rows explicitly distinguished from RFC 6238 computation.",
+    "Private P-256 key made non-exportable in the embedded WebCrypto sample.",
+    "TLS role diagram follows the displayed TLS 1.2 cipher suite; each role has an explicit highlight target.",
+    "Five original primitive badges rendered as static HTML in the course page header."
+  ]
+}

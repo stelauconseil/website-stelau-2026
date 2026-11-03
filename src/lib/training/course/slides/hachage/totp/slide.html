@@ -1,0 +1,92 @@
+<section class="pl ha-totp">
+  <div class="wrap">
+    <div class="pl-head">
+      <div>
+        <div class="eyebrow">Hachage cryptographique · Secure Hash Algorithm</div>
+        <h2>Du secret partagé au code à 6 chiffres : TOTP</h2>
+      </div>
+      <span class="prim" data-prim="sha" data-h="58"></span>
+    </div>
+
+    <!-- 1. Le secret seul : toujours la même empreinte -->
+    <div class="to-row">
+      <div class="to-end">
+        <i class="duo to-alice" data-icon="user-tie-hair-long" data-tight></i>
+        <span class="to-sec">les carottes sont cuites</span>
+      </div>
+      <i class="arr"></i>
+      <span class="hv to-h" id="to-h1"
+        >…<span class="prim" data-prim="sha" data-label="SHA1" data-h="24"></span
+      ></span>
+      <i class="arr"></i>
+      <div class="to-end">
+        <i class="duo to-bob" data-icon="user-tie-hair" data-tight></i>
+        <span class="to-sec">les carottes sont cuites</span>
+      </div>
+    </div>
+
+    <!-- 2. Le secret et l'heure : l'empreinte change chaque minute -->
+    <div class="to-row fragment" data-fragment-index="1">
+      <div class="to-end">
+        <i class="duo to-cal to-cal-a" data-icon="calendar-clock" data-tight></i>
+        <i class="duo to-alice" data-icon="user-tie-hair-long" data-tight></i>
+        <span class="to-sec">les carottes sont cuites<b class="to-now">…</b></span>
+      </div>
+      <i class="arr"></i>
+      <span class="hv to-h" id="to-h2"
+        >…<span class="prim" data-prim="sha" data-label="SHA1" data-h="24"></span
+      ></span>
+      <i class="arr"></i>
+      <div class="to-end">
+        <i class="duo to-bob" data-icon="user-tie-hair" data-tight></i>
+        <span class="to-sec">les carottes sont cuites<b class="to-now">…</b></span>
+        <i class="duo to-cal to-cal-b" data-icon="calendar-clock" data-tight></i>
+      </div>
+    </div>
+
+    <!-- 3. Le code envoyé -->
+    <div class="to-code fragment" data-fragment-index="2">
+      <i class="to-elbow"></i>
+      <div class="to-otp">
+        <b id="to-otp">……</b>
+        <span>TOTP · HMAC</span>
+      </div>
+      <div class="to-sms">
+        <div class="totp-authenticator"><small>AUTHENTICATOR</small><strong>HMAC(K, T)</strong><span>Un code calculé localement</span><b>30 s</b></div>
+      </div>
+    </div>
+
+    <!-- 4. Le calcul réel (RFC 6238) -->
+    <div class="to-rfc fragment" data-fragment-index="3">
+      <div class="to-clock">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="to-track" cx="50" cy="50" r="44" />
+          <circle class="to-left" id="to-ring" cx="50" cy="50" r="44" pathLength="30" />
+        </svg>
+        <div><b id="to-sec">30</b><small>s</small></div>
+      </div>
+      <div class="to-steps">
+        <div class="to-step">
+          <small>T = ⌊ heure Unix / 30 ⌋</small><b class="mono" id="to-T">…</b>
+        </div>
+        <div class="to-step to-macline">
+          <small>HMAC-SHA1(K, T) · 20 octets</small>
+          <div class="to-mac mono" id="to-mac"></div>
+        </div>
+        <div class="to-step to-trunc">
+          <small>4 octets à partir de l'offset, bit de poids fort à 0</small>
+          <b class="mono" id="to-bin">…</b>
+          <span class="to-mod">mod 10<sup>6</sup></span>
+          <b class="mono to-final" id="to-otp2">…</b>
+        </div>
+      </div>
+      <div class="to-key">
+        <small>Secret K à saisir dans votre application (Base32)</small>
+        <code id="to-b32">…</code>
+      </div>
+    </div>
+
+    <div class="foot"></div>
+  </div>
+  
+</section>

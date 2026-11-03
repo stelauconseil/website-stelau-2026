@@ -1,0 +1,15 @@
+---
+import {scenes,courseUrl,type SceneId} from '@/lib/training/scenes';
+import type {Locale} from '@/config/site';
+const {scene,lang,id=scene}=Astro.props as {scene:SceneId;lang:Locale;id?:string};const fr=lang==='fr';
+---
+<div class="course-scene" data-course-scene data-scene={scene} data-lang={lang} id={id}>
+ <div class="scene-toolbar"><span class="mono scene-name">{scenes[scene][lang]}</span><div class="scene-actions"><button type="button" data-course-play aria-pressed="true">{fr?'Pause':'Pause'}</button><button type="button" data-course-restart>{fr?'Rejouer':'Replay'}</button><button type="button" data-course-zoom aria-pressed="false">{fr?'Agrandir':'Enlarge'}</button></div></div>
+ <div class="scene-scroll"><div class="scene-canvas"><iframe title={scenes[scene][lang]} data-course-frame data-src={`/course-scenes/${lang}/${scene}/`} loading="lazy" width="1600" height="900" tabindex="-1" aria-label={scenes[scene][lang]}></iframe></div></div>
+ <div class="scene-caption"><span data-course-status aria-live="off">{fr?'Animation du cours · lecture automatique':'Course animation · automatic playback'}</span><a href={courseUrl(scene)} target="_blank" rel="noopener noreferrer">{fr?'Voir la planche dans le cours':'Open this slide in the course'} ↗</a></div>
+ <noscript><p>{fr?'Ouvrez le cours pour voir les animations.':'Open the course to view the animations.'}</p></noscript>
+</div>
+<script>import './course-player';</script>
+<style>
+ .course-scene{border:1px solid var(--line);border-radius:17px;background:var(--surface);overflow:hidden;min-width:0;scroll-margin-top:35px}.scene-toolbar{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:17px 22px;border-bottom:1px solid var(--line)}.scene-name{font-size:12px;color:var(--muted)}.scene-actions{display:flex;gap:6px;flex-shrink:0}.scene-actions button{background:var(--soft);color:var(--ink);border:1px solid var(--line);border-radius:6px;font-size:12px;padding:7px 11px;line-height:1.4}.scene-actions button:hover{border-color:var(--brand)}.scene-scroll{overflow:auto;overscroll-behavior-x:contain}.scene-canvas{width:100%;aspect-ratio:16/9;position:relative;background:var(--paper)}iframe{display:block;position:absolute;inset:0;width:100%;height:100%;border:0}.course-scene[data-zoom="true"] .scene-canvas{min-width:1100px}.scene-caption{display:flex;justify-content:space-between;gap:22px;padding:14px 22px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);line-height:1.7}.scene-caption a{color:var(--brand);flex-shrink:0}.course-scene[data-ready="false"] .scene-canvas::after{content:'Stelau / Crypto';position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font:12px var(--font-mono);pointer-events:none}@media(max-width:720px){.scene-toolbar{align-items:flex-start;flex-direction:column;gap:12px;padding:16px}.scene-name{font-size:12px}.scene-actions{width:100%}.scene-actions button{flex:1;padding:10px}.scene-caption{flex-direction:column;gap:6px;padding:12px 16px;font-size:11px}.course-scene{border-radius:12px}.course-scene[data-zoom="true"] .scene-canvas{min-width:900px}}
+</style>

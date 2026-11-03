@@ -1,0 +1,338 @@
+/* Certificat électronique (EPITA 14) : l'assemblage construit pas à pas (slide.js). */
+.reveal .ct {
+  --ct-file: #9fd6d6;
+  --ct-file-ink: #0f6d6d;
+  --ct-slot: #f4f6f8;
+  --ct-wire: #8a96a3;
+  --ct-ok: #00b050;
+  --ct-rsa: #b22600;
+}
+:root[data-theme="dark"] .reveal .ct {
+  --ct-file: #1d4747;
+  --ct-file-ink: #7fd0d0;
+  --ct-slot: #0f1d24;
+  --ct-wire: #6d7b89;
+  --ct-rsa: #ff6a4d;
+}
+.reveal .ct-left {
+  position: absolute;
+  left: 72px;
+  top: 168px;
+  width: 400px;
+}
+.reveal .ct-lead {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 25px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.reveal .ct-lead b {
+  color: var(--ink);
+}
+.reveal .ct-steps {
+  margin: 56px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: ct;
+}
+.reveal .ct-steps li {
+  counter-increment: ct;
+  position: relative;
+  margin-bottom: 34px;
+  padding-left: 58px;
+  font-size: 28px;
+  line-height: 1.2;
+  color: var(--faint);
+  transition: color 0.4s;
+}
+.reveal .ct-steps li::before {
+  content: counter(ct);
+  position: absolute;
+  left: 0;
+  top: -2px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  font: 600 22px/1 var(--mono);
+  color: var(--paper);
+  background: var(--faint);
+  transition: background 0.4s;
+}
+.reveal .ct-steps li small {
+  display: block;
+  margin-top: 4px;
+  font-size: 18px;
+  color: var(--faint);
+}
+.reveal .ct-steps li.on {
+  color: var(--ink);
+}
+.reveal .ct-steps li.on::before {
+  background: var(--ct-file-ink);
+}
+.reveal .ct-steps li.on small {
+  color: var(--muted);
+}
+
+.reveal .ct-stage {
+  position: absolute;
+  left: 72px;
+  top: 150px;
+  width: 1456px;
+  height: 700px;
+}
+.reveal .ct-wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.reveal .ct-wires .ct-w {
+  fill: none;
+  stroke: var(--ct-wire);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.reveal .ct-wires .ct-w.sha {
+  stroke: var(--sha);
+}
+.reveal .ct-wires .ct-w.rsa {
+  stroke: var(--ct-rsa);
+}
+.reveal .ct-wires .ct-w.dash {
+  stroke-dasharray: 2 7;
+}
+.reveal .ct-wires .ct-w.brace {
+  stroke-width: 3;
+}
+.reveal .ct-ah {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.reveal .ct-ah-sha {
+  stroke: var(--sha);
+}
+.reveal .ct-ah-rsa {
+  stroke: var(--ct-rsa);
+}
+.reveal .ct-ah-mut {
+  stroke: var(--ct-wire);
+}
+
+/* Le fichier certificat, coin replié */
+.reveal .ct-card {
+  position: absolute;
+  left: 450px;
+  top: 20px;
+  width: 420px;
+  height: 580px;
+  box-sizing: border-box;
+  padding: 82px 30px 0 70px;
+  background: linear-gradient(225deg, transparent 0 46px, var(--ct-file) 46px);
+  border-radius: 26px;
+  transition: box-shadow 0.5s;
+}
+.reveal .ct-card::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 66px;
+  height: 66px;
+  background: linear-gradient(225deg, transparent 50%, var(--ct-file-ink) 50%);
+  border-bottom-left-radius: 14px;
+  opacity: 0.85;
+}
+.reveal .ct-card.done {
+  box-shadow:
+    0 0 0 4px var(--ct-ok),
+    0 18px 50px -12px color-mix(in srgb, var(--ct-ok) 60%, transparent);
+}
+.reveal .ct-seal {
+  position: absolute;
+  left: -34px;
+  top: 470px;
+  width: 92px;
+  height: 92px;
+  color: var(--ct-file-ink);
+}
+.reveal .ct-cert {
+  position: absolute;
+  right: -40px;
+  top: -24px;
+}
+.reveal .ct-slot {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 10px 14px 12px;
+  background: var(--ct-slot);
+  border: 2px dotted var(--line-2);
+  border-radius: 8px;
+}
+.reveal .ct-slot {
+  transition: border-color 0.5s;
+}
+.reveal .ct.hashed .ct-id,
+.reveal .ct.hashed .ct-pk {
+  border-color: var(--sha);
+  border-style: solid;
+}
+.reveal .ct.signed .ct-sig {
+  border-color: var(--ct-rsa);
+  border-style: solid;
+}
+.reveal .ct-slot small {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.reveal .ct-slot small .duo {
+  width: 22px;
+  height: 22px;
+}
+.reveal .ct-val {
+  margin: 0;
+  font: 400 19px/1.3 var(--mono);
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.reveal .ct-id .ct-val {
+  font-family: var(--mono);
+}
+.reveal .ct-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -46px;
+  text-align: center;
+  font-size: 19px;
+  color: var(--muted);
+}
+
+.reveal .ct-sha,
+.reveal .ct-rsa,
+.reveal .ct-hashbox,
+.reveal .ct-rsacap {
+  position: absolute; /* placés par slide.js */
+  left: 0;
+  top: 0;
+}
+.reveal .ct-hashbox {
+  width: 180px;
+  box-sizing: border-box;
+  padding: 8px 12px 10px;
+  background: var(--card);
+  border: 2px solid var(--sha);
+  border-radius: 10px;
+  box-shadow: 0 8px 22px -14px var(--sha);
+}
+.reveal .ct-hashbox small {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sha);
+}
+.reveal .ct-hash {
+  min-height: 5.2em; /* 4 lignes réservées avant le calcul de l'empreinte */
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.3;
+  color: var(--sha);
+  white-space: pre;
+}
+.reveal .ct-rsacap {
+  font-size: 14px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.reveal .ct-actor {
+  position: absolute;
+  left: 1190px;
+  width: 270px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+.reveal .ct-actor .prim-ico {
+  font-size: 66px;
+}
+.reveal .ct-actor b {
+  display: block;
+  font-size: 19px;
+  color: var(--ink);
+}
+.reveal .ct-actor small {
+  display: block;
+  font-size: 15px;
+  color: var(--muted);
+}
+.reveal .ct-owner {
+  top: 64px;
+}
+.reveal .ct-check {
+  top: 262px;
+}
+.reveal .ct-ac {
+  top: 432px;
+}
+.reveal .ct-meet,
+.reveal .ct-card-id {
+  width: 54px;
+  height: 54px;
+  color: #b07d3c;
+}
+.reveal .ct-keys {
+  display: inline-flex;
+  gap: 2px;
+}
+.reveal .ct-keys .duo,
+.reveal .ct-k {
+  width: 34px;
+  height: 34px;
+}
+.reveal .ct-kpub {
+  color: #00b050;
+}
+.reveal .ct-kpriv {
+  color: #c00000;
+}
+.reveal .ct-kacpub {
+  color: #00b0f0;
+}
+.reveal .ct-kacpriv,
+.reveal .ct-kac {
+  color: #7030a0;
+}
+.reveal .ct-tick {
+  display: none;
+}
+/* Hauteur réservée (3 lignes) avant le calcul des valeurs : les fils sont tracés d'après elle */
+.reveal .ct-pk .ct-val,
+.reveal .ct-sig .ct-val {
+  min-height: 3.9em;
+}
+/* La clé privée de l'AC (badge RSA de signature) : violette, comme les clés de l'AC */
+.reveal .ct-rsa .prim-i {
+  color: #7030a0 !important;
+}
