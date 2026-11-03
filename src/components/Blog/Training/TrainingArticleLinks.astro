@@ -1,0 +1,20 @@
+---
+import PrimitiveBadges from '@/components/Training/PrimitiveBadges.astro';
+import Arrow from '@/components/Arrow.astro';
+import {formationHref,openidTrainingHref,type Locale} from '@/config/site';
+const {lang}=Astro.props as {lang:Locale};const fr=lang==='fr';
+---
+<nav class="training-article-links" aria-label={fr?'Explorer les deux formations Stelau':'Explore both Stelau training pages'} data-training-article-links>
+ <a href={formationHref(lang)} class="training-article-course"><span class="training-link-eyebrow">01 / {fr?'Comprendre les assemblages':'Understand the constructions'}</span><h3>{fr?'La cryptographie prend forme.':'Cryptography takes shape.'}</h3><p>{fr?'Cinq primitives, des montages animés et deux ateliers pour apprendre en jouant.':'Five primitives, animated constructions and two workshops to learn through play.'}</p><PrimitiveBadges lang={lang}/><span class="training-link-cta">{fr?'Découvrir le cours':'Explore the course'}<Arrow/></span></a>
+ <a href={openidTrainingHref(lang)} class="training-article-openid"><span class="training-link-eyebrow">02 / {fr?'Éprouver les protocoles':'Put protocols to the test'}</span><h3>OpenID / CryptoLab</h3><p>{fr?'Signer. Altérer. Vérifier. Mettre les garanties cryptographiques à l’épreuve.':'Sign. Tamper. Verify. Put cryptographic guarantees to the test.'}</p><div class="training-link-tokens" aria-hidden="true"><span>ES256</span><span>PKCE</span><span>SHA-256</span></div><span class="training-link-cta">{fr?'Entrer dans le laboratoire':'Enter the laboratory'}<Arrow/></span></a>
+</nav>
+<style>
+ .training-article-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:30px 0 36px;container-type:inline-size}
+ .training-article-links>a{display:flex;flex-direction:column;min-width:0;padding:26px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);text-decoration:none;transition:border-color .2s,transform .2s}
+ .training-article-links>a:hover{border-color:var(--brand);transform:translateY(-3px)}.training-article-links>a:focus-visible{outline:2px solid var(--brand);outline-offset:4px}
+ .training-link-eyebrow{font:11px/1.7 var(--font-mono);color:var(--muted)}.training-article-links h3{font-size:27px;line-height:1.2;margin:20px 0 15px}.training-article-links p{font-size:15px;line-height:1.8;margin:0 0 22px}
+ .training-article-links :global(.primitive-badges){justify-content:flex-start;gap:10px 4px;margin:0 0 26px}.training-article-links :global(.primitive-badges svg){max-width:100%}
+ .training-link-tokens{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 26px}.training-link-tokens span{font:11px/1 var(--font-mono);padding:10px 9px;border:1px solid var(--line);border-radius:5px;color:var(--brand);background:var(--soft)}
+ .training-link-cta{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:auto;font-size:14px;color:var(--brand)}.training-link-cta :global(.arrow){width:21px;height:21px}
+ @media(max-width:1000px){.training-article-links{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){.training-article-links>a{transition:none}}
+</style>

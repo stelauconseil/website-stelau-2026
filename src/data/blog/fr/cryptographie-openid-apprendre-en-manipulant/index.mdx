@@ -1,0 +1,63 @@
+---
+title: "L’art délicat d’assembler les primitives cryptographiques"
+description: "Cryptographie et OpenID : comprendre les assemblages, là où se cachent souvent les vulnérabilités. Le cours Stelau reprend à l’EPITA."
+authors: [benoit-leger-derville]
+pubDate: 2026-11-03T09:00:00+01:00
+heroImage: ../../../../assets/images/training/ouverture-cours-quatre-affiches.webp
+categories: [training, standards]
+mappingKey: cryptographie-openid-apprendre-en-manipulant
+draft: false
+---
+
+import CourseScene from '@/components/Training/CourseScene.astro';
+import TrainingArticleLinks from '@/components/Blog/Training/TrainingArticleLinks.astro';
+
+**Le cours de cryptographie moderne reprend à l’EPITA. Et cette fois, une partie du tableau s’invite sur le web.**
+
+Depuis plus de quinze ans, nous transmettons avec Stelau une conviction : la cryptographie devient passionnante lorsqu’on cesse de réciter des acronymes pour regarder ce qu’ils font ensemble. Nos interventions à l’EPITA, à l’EGE et à l’ESG se nourrissent des mêmes questions que nos missions de terrain.
+
+Deux nouvelles pages ouvrent ce parcours à tous : **le cours de cryptographie moderne** et **l’auto-formation OpenID / CryptoLab**. Des schémas qui bougent, des jeux qui bousculent et des calculs qu’on peut mettre à l’épreuve.
+
+## Le vrai sujet : l’assemblage
+
+AES, RSA, SHA, Diffie–Hellman, génération d’aléa : connaître leurs noms ne dit pas encore comment construire un système sûr.
+
+**Qui possède quelle clé ? Que signe-t-on exactement ? Qu’est-ce qui protège cet échange contre un rejeu ?** C’est là que commence le travail.
+
+Assembler ces briques est un art délicat. Une clé associée au mauvais acteur, un message mal lié à son contexte ou une vérification oubliée peuvent fragiliser l’ensemble. **Les vulnérabilités se cachent souvent dans ces liaisons.**
+
+D’un certificat X.509, fichier statique, aux protocoles qui contrôlent l’accès aux empreintes biométriques d’un passeport électronique, la sécurité dépend des assemblages et de leurs conditions d’utilisation.
+
+<CourseScene scene="primitives" id="article-primitives" lang="fr"/>
+
+La [page du cours](/formations/cryptographie-moderne/) permet de suivre ces montages : certificat, TLS, transformations d’AES et calcul d’un code TOTP. Les animations rendent les rôles visibles ; les exemples simplifiés servent à comprendre les mécanismes.
+
+> La solidité des briques ne garantit pas celle de l’assemblage.
+
+## Apprendre avec un adversaire
+
+Dans **DH War — Enemy in the Middle**, les équipes font vivre un échange de clés. Communiquer, intercepter, prendre la place d’un interlocuteur : chaque rôle fait apparaître ce que Diffie–Hellman apporte… et ce qu’il faut ajouter pour authentifier les participants.
+
+Dans **WannaCry Nightmare Puzzle**, on remonte une autre histoire : un rançongiciel redoutable, un assemblage cryptographique à reconstituer et des traces de clés privées retrouvées en mémoire sur certains systèmes. Comment une porte de sortie a-t-elle pu subsister ?
+
+Les [deux ateliers et leurs ressources](/formations/cryptographie-moderne/#ateliers-jeux) prolongent le cours. On discute, on confronte ses hypothèses et on doit expliquer ce qui tient — ou ce qui casse.
+
+## Puis mettre les protocoles à l’épreuve
+
+La seconde page passe des briques aux échanges **OAuth 2.0, OpenID Connect, OID4VCI et OID4VP**, avec OIDApp et son CryptoLab.
+
+Dans le [laboratoire intégré](/formations/openid-cryptolab/#cryptolab), on peut déjà :
+
+- **Signer, altérer, vérifier** : modifier un message et voir la vérification de sa signature échouer.
+- **Manipuler PKCE** : générer un `code_verifier` et son `code_challenge` S256.
+- **Voir l’effet avalanche** : changer un seul bit de « Stelau » en « Rtelau » et observer **123 bits modifiés sur 256**, soit environ 48 %. Octets, écarts et bits sont visibles.
+
+Ces calculs se font localement dans le navigateur. Le laboratoire complet prolonge l’exploration : jetons signés, preuve de possession, divulgation sélective et liaison d’un credential à la clé de son détenteur.
+
+## Deux pages. Une même exigence.
+
+Comprendre assez pour **expliquer, construire et vérifier**. Étudiants, développeurs, architectes ou simplement curieux : commencez par les primitives ou entrez directement dans le laboratoire. Les deux pages se répondent, en français et en anglais.
+
+<TrainingArticleLinks lang="fr"/>
+
+Vous souhaitez faire vivre ce cours dans votre école ou votre équipe ? [Parlons-en avec Stelau](/contact/).

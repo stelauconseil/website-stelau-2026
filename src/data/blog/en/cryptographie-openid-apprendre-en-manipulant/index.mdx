@@ -1,0 +1,63 @@
+---
+title: "The delicate art of combining cryptographic primitives"
+description: "Cryptography and OpenID: understanding how components fit together, where vulnerabilities often hide. Stelau’s course returns to EPITA."
+authors: [benoit-leger-derville]
+pubDate: 2026-11-03T09:00:00+01:00
+heroImage: ../../../../assets/images/training/ouverture-cours-quatre-affiches.webp
+categories: [training, standards]
+mappingKey: cryptographie-openid-apprendre-en-manipulant
+draft: false
+---
+
+import CourseScene from '@/components/Training/CourseScene.astro';
+import TrainingArticleLinks from '@/components/Blog/Training/TrainingArticleLinks.astro';
+
+**The modern cryptography course returns to EPITA. This time, part of the whiteboard is coming to the web.**
+
+For over fifteen years, we have been teaching a conviction shared at Stelau: cryptography becomes fascinating when we stop reciting acronyms and start exploring how they work together. Our teaching at EPITA, EGE and ESG draws on the same questions we encounter in the field.
+
+Two new pages open up that journey: **the modern cryptography course** and **OpenID / CryptoLab self-study**. Moving diagrams, challenging games and calculations you can put to the test.
+
+## The real subject: putting the pieces together
+
+AES, RSA, SHA, Diffie–Hellman and randomness: knowing their names does not yet tell you how to build a secure system.
+
+**Who holds which key? What exactly is signed? What protects this exchange against replay?** That is where the work begins.
+
+Combining these building blocks is a delicate art. A key associated with the wrong actor, a message not properly bound to its context or a missing verification can weaken the whole construction. **Vulnerabilities often hide in these connections.**
+
+From an X.509 certificate, a static file, to the protocols controlling access to an electronic passport’s biometric fingerprints, security depends on how components fit together and the conditions in which they operate.
+
+<CourseScene scene="primitives" id="article-primitives" lang="en"/>
+
+The [course page](/en/training/modern-cryptography/) lets you follow these constructions: certificates, TLS, AES transformations and TOTP code generation. Animations make each role visible; simplified examples help explain the mechanisms.
+
+> Strong building blocks do not guarantee a strong construction.
+
+## Learn with an adversary
+
+In **DH War — Enemy in the Middle**, teams bring a key exchange to life. Communicating, intercepting and impersonating a participant: each role reveals what Diffie–Hellman provides… and what must be added to authenticate the participants.
+
+**WannaCry Nightmare Puzzle** follows another trail: formidable ransomware, a cryptographic design to reconstruct and traces of private keys recovered from memory on some systems. How could a way out have survived?
+
+The [two workshops and their resources](/en/training/modern-cryptography/#ateliers-jeux) extend the course. Discuss, challenge your assumptions and explain what holds up — or breaks. The linked game materials are in French.
+
+## Then put the protocols to the test
+
+The second page moves from building blocks to **OAuth 2.0, OpenID Connect, OID4VCI and OID4VP** exchanges, with OIDApp and its CryptoLab.
+
+In the [embedded laboratory](/en/training/openid-cryptolab/#cryptolab), you can already:
+
+- **Sign, tamper, verify**: change a message and watch its signature verification fail.
+- **Experiment with PKCE**: generate a `code_verifier` and its S256 `code_challenge`.
+- **See the avalanche effect**: flip one bit from “Stelau” to “Rtelau” and observe **123 of 256 output bits change**, roughly 48%. Bytes, differences and individual bits are visible.
+
+These calculations run locally in the browser. The full laboratory takes the exploration further: signed tokens, proof of possession, selective disclosure and binding a credential to its holder’s key. The full OIDApp application is currently in French.
+
+## Two pages. One shared ambition.
+
+Understand enough to **explain, build and verify**. Students, developers, architects or curious minds: start with the primitives or head straight into the lab. The two pages connect, in French and English.
+
+<TrainingArticleLinks lang="en"/>
+
+Would you like to bring this course to your school or team? [Talk to Stelau](/en/contact/).

@@ -17,7 +17,7 @@ export function alternate(path: string, lang: Locale) {
 }
 export const categoriesHref = (lang: Locale, category?: string) => `${lang === 'en' ? '/en' : ''}/categories/${category ? slugify(category) + '/' : ''}`;
 export const dateLabel = (date: Date, lang: Locale) => date.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', {day:'numeric', month:'long', year:'numeric', timeZone:'Europe/Paris'});
-export const categoryLabel = (c: string, lang: Locale) => ({ identity: lang === 'fr' ? 'Identité numérique' : 'Digital identity', 'open-source': 'Open source', standards: lang === 'fr' ? 'Standards & protocoles' : 'Standards & protocols' }[c] || c);
+export const categoryLabel = (c: string, lang: Locale) => ({ identity: lang === 'fr' ? 'Identité numérique' : 'Digital identity', 'open-source': 'Open source', standards: lang === 'fr' ? 'Standards & protocoles' : 'Standards & protocols', training:lang==='fr'?'Formation & transmission':'Training & teaching' }[c] || c);
 
 export const cyberInsuranceHref = (lang: Locale) => href(lang,'expertise') + 'expertise-cyber-assurance/';
 export const walletExpertiseHref = (lang: Locale) => href(lang,'expertise') + 'wallets-identite-numerique/';
