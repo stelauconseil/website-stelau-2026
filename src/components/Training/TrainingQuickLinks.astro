@@ -1,0 +1,34 @@
+---
+import {Image} from 'astro:assets';
+import PrimitiveBadges from './PrimitiveBadges.astro';
+import Arrow from '@/components/Arrow.astro';
+import {externalLearning,type Locale} from '@/config/site';
+import coursePoster from '@/assets/images/training/ouverture-cours-quatre-affiches.webp';
+import workshopLogo from '@/assets/images/training/atelier-crypto-logo.svg?raw';
+const {lang}=Astro.props as {lang:Locale};const fr=lang==='fr';
+---
+<nav class="training-quicklinks" aria-label={fr?'Trois portes d’entrée dans le cours':'Three ways into the course'} data-training-quicklinks>
+ <a class="training-quicklink training-quicklink-course" href={externalLearning.courseHome} target="_blank" rel="noopener noreferrer" aria-labelledby="course-quicklink-title" aria-describedby="course-quicklink-description">
+  <span class="training-quicklink-poster"><Image src={coursePoster} alt="" width={160} widths={[96,160,240]} sizes="(max-width:720px) 80px, 104px" format="webp"/></span>
+  <div class="training-quicklink-copy"><strong id="course-quicklink-title">{fr?'Le cours complet':'The complete course'}</strong><span id="course-quicklink-description">{fr?'Les supports, les séances et les ressources.':'Slides, sessions and learning resources.'}</span><span class="training-quicklink-domain" aria-hidden="true">cours.stelau.com</span></div><Arrow/>
+ </a>
+ <a class="training-quicklink training-quicklink-primitives" href="#primitives" aria-labelledby="primitives-quicklink-title" aria-describedby="primitives-quicklink-description">
+  <div class="training-quicklink-copy"><strong id="primitives-quicklink-title">{fr?'Les cinq primitives':'The five primitives'}</strong><span id="primitives-quicklink-description">{fr?'Voir les briques prendre vie.':'Watch the building blocks come to life.'}</span><div class="training-quicklink-badges" aria-hidden="true"><PrimitiveBadges lang={lang} height={16}/></div></div><Arrow direction="right"/>
+ </a>
+ <a class="training-quicklink training-quicklink-workshop" href="#atelier-crypto" aria-labelledby="workshop-quicklink-title" aria-describedby="workshop-quicklink-description">
+  <span class="training-quicklink-logo-tile" aria-hidden="true"><span class="training-quicklink-logo" set:html={workshopLogo}/></span><div class="training-quicklink-copy"><strong id="workshop-quicklink-title">{fr?'L’Atelier crypto':'Atelier crypto'}</strong><span id="workshop-quicklink-description">{fr?'Chiffrer, signer, voir les octets et le code.':'Encrypt, sign, inspect bytes and code.'}</span><span class="training-quicklink-domain" aria-hidden="true">crypto.stelau.com</span></div><Arrow direction="right"/>
+ </a>
+</nav>
+<style>
+ .training-quicklinks{display:grid;gap:12px;min-width:0;width:100%}
+ .training-quicklink{display:grid;grid-template-columns:104px minmax(0,1fr) 21px;align-items:center;gap:18px;min-width:0;padding:16px;border:1px solid var(--line);border-radius:13px;background:var(--surface);color:var(--ink);text-decoration:none;transition:border-color .2s,background-color .2s,transform .2s}
+ .training-quicklink:hover{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 3%,var(--surface));transform:translateX(3px)}.training-quicklink:focus-visible{outline:2px solid var(--brand);outline-offset:4px}
+ .training-quicklink-poster{display:block;border-radius:7px;overflow:hidden;aspect-ratio:4/3;background:var(--soft)}.training-quicklink-poster :global(img){width:100%;height:100%;object-fit:cover}
+ .training-quicklink-copy{display:grid;gap:6px;min-width:0}.training-quicklink-copy>strong{font-size:19px;line-height:1.25;font-weight:550;letter-spacing:-.03em}.training-quicklink-copy>span:not(.training-quicklink-domain){font-size:12px;line-height:1.6;color:var(--muted)}.training-quicklink-copy>.training-quicklink-domain{font:10px/1.5 var(--font-mono);color:var(--brand);margin-top:1px}
+ .training-quicklink :global(.arrow){display:block;width:21px;height:21px;color:var(--brand)}
+ .training-quicklink-primitives{grid-template-columns:minmax(0,1fr) 21px}.training-quicklink-badges{display:block;margin-top:5px;min-width:0}.training-quicklink-badges :global(.primitive-badges){justify-content:flex-start;gap:9px 5px}
+ .training-quicklink-logo-tile{display:grid;place-items:center;align-self:stretch;min-height:78px;border-radius:8px;background:var(--soft)}.training-quicklink-logo{display:grid;place-items:center;width:59px;height:59px;border-radius:16px;background:linear-gradient(135deg,#3b5ea8,#6d8fd6);color:#fff;box-shadow:0 5px 16px #3b5ea81c}.training-quicklink-logo :global(svg){display:block;width:33px;height:33px;fill:currentColor}.training-quicklink-logo :global(path[opacity]){opacity:.55}
+ @media(max-width:1000px){.training-quicklink{grid-template-columns:80px minmax(0,1fr) 18px;gap:13px;padding:14px}.training-quicklink-primitives{grid-template-columns:minmax(0,1fr) 18px}.training-quicklink-copy>strong{font-size:18px}.training-quicklink-copy>span:not(.training-quicklink-domain){font-size:12px}.training-quicklink :global(.arrow){width:18px;height:18px}}
+ @media(max-width:720px){.training-quicklink-logo-tile{min-height:65px}.training-quicklink-logo{width:51px;height:51px;border-radius:13px}.training-quicklink-logo :global(svg){width:29px;height:29px}.training-quicklink-badges :global(.primitive-badges){gap:9px 3px}}
+ @media(prefers-reduced-motion:reduce){.training-quicklink{transition:none}}
+</style>

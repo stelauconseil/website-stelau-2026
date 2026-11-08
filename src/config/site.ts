@@ -29,4 +29,4 @@ export const expertiseSectionHref = (lang: Locale, section: ExpertiseSection) =>
 export const formationHref = (lang: Locale) => href(lang,'training');
 
 export const openidTrainingHref = (lang: Locale) => href(lang,'openidTraining');
-export const externalLearning = {courseHome:'https://cours.stelau.com/',course:'https://cours.stelau.com/cours.html',oidapp:'https://le-du6.github.io/OIDApp/'} as const;
+export const externalLearning = {courseHome:'https://cours.stelau.com/',course:'https://cours.stelau.com/cours.html',cryptoWorkshop:'https://crypto.stelau.com/',oidapp:'https://le-du6.github.io/OIDApp/'} as const;
