@@ -6,7 +6,7 @@ const title=fr?'L’évaluation du cours, à l’EPITA':'Course assessment at EP
 ---
 <figure class="training-video" data-course-video data-video-state={src?'ready':'pending'}>
  <div class="training-video-kicker"><span>{fr?'En salle / EPITA':'In the classroom / EPITA'}</span>{!src&&<span class="training-video-status">{fr?'Vidéo à venir':'Coming soon'}</span>}</div>
- {src?<video controls muted playsinline preload="none" poster={poster} width="1280" height="720" aria-label={title}>
+ {src?<video controls playsinline preload="none" poster={poster} width="1280" height="720" aria-label={title}>
    <source src={src} type="video/mp4"/>
    {captions&&<track kind="captions" src={captions} srclang={lang} label={fr?'Français':'English'} default/>}
    <p>{fr?'Votre navigateur ne peut pas lire cette vidéo.':'Your browser cannot play this video.'} <a href={src}>{fr?'Ouvrir la vidéo':'Open the video'}</a></p>
@@ -14,7 +14,7 @@ const title=fr?'L’évaluation du cours, à l’EPITA':'Course assessment at EP
    <div class="training-video-frame" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="m19 13 17 11-17 11z" fill="currentColor"/><rect x="4" y="4" width="40" height="40" rx="12" stroke="currentColor" stroke-width="1.3"/></svg><span>{fr?'Montage en préparation':'Editing in progress'}</span></div>
    <span class="training-video-mark" aria-hidden="true">STELAU / CRYPTO</span>
   </div>}
- <figcaption>{title}<span>{fr?'Quelques secondes au cœur de la mise en pratique.':'A brief look at putting the course into practice.'}{src&&(fr?' · Vidéo sans son.':' · Silent video.')}</span></figcaption>
+ <figcaption>{title}<span>{fr?'Quelques secondes au cœur de la mise en pratique.':'A brief look at putting the course into practice.'}</span></figcaption>
 </figure>
 <style>
  .training-video{width:100%;min-width:0;margin:0;border:1px solid var(--line);border-radius:13px;overflow:hidden;background:var(--surface);box-shadow:0 12px 35px #00000005}
