@@ -28,8 +28,6 @@ function show(n:number){
 function tick(){
  if(!playing||!scenes[scene].steps)return;
  const max=scenes[scene].steps;
- // TOTP keeps its final diagram while the scene's own clock continues ticking.
- if(scene==='totp'&&step>=max)return;
  timer=setTimeout(()=>{if(!playing)return;show(step>=max?0:step+1);tick();},step>=max?5200:3600);
 }
 function sync(){

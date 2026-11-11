@@ -17,7 +17,17 @@
     "workshopImages": [
       "slides/tp/ateliers/fiches.webp",
       "slides/tp/ateliers/puzzle.webp"
-    ]
+    ],
+    "updates": {
+      "hachage/totp": {
+        "commit": "8f89d3bb15a9e2b395319f538ea9965aaa25f694",
+        "files": [
+          "slide.html",
+          "slide.css",
+          "slide.js"
+        ]
+      }
+    }
   },
   "oidapp": {
     "repository": "OIDApp",
@@ -31,9 +41,9 @@
     "GSAP lifecycle automatically driven by the website.",
     "Theme and English text adaptation.",
     "Course notes excluded.",
-    "TOTP SMS image replaced by a local authenticator diagram; simplified hash rows explicitly distinguished from RFC 6238 computation.",
     "Private P-256 key made non-exportable in the embedded WebCrypto sample.",
     "TLS role diagram follows the displayed TLS 1.2 cipher suite; each role has an explicit highlight target.",
-    "Five original primitive badges rendered as static HTML in the course page header."
+    "Five original primitive badges rendered as static HTML in the course page header.",
+    "Updated TOTP diagram starts fully revealed, with second-by-second hashes, live 30-second RFC 6238 clock and animated SMS illustration; explicitly distinguished from local TOTP generation."
   ]
 }

@@ -113,8 +113,41 @@
   color: var(--muted);
 }
 .reveal .ha-totp .to-sms {
-  width: 330px;
-  padding: 4px;
+  position: relative;
+  align-self: stretch;
+  width: 348px;
+  overflow: hidden; /* le cadre coupe l'ancien SMS avant la ligne 2 */
+}
+.reveal .ha-totp .to-sms .to-bubble {
+  position: absolute;
+  left: 14px;
+  right: 6px;
+  top: 50%;
+}
+/* SMS reçu, en bulle verte comme sur un téléphone (texte du SMS d'origine, à l'identique) */
+.reveal .ha-totp .to-bubble {
+  position: relative;
+  margin: 0;
+  padding: 10px 14px 11px;
+  border-radius: 18px;
+  background: var(--ok);
+  color: var(--on-accent);
+  font-size: 15px;
+  line-height: 1.32;
+  box-shadow: 0 6px 16px -10px var(--shadow);
+}
+.reveal .ha-totp .to-bubble u {
+  text-underline-offset: 2px;
+}
+.reveal .ha-totp .to-bubble::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  bottom: 0;
+  width: 24px;
+  height: 18px;
+  background: var(--ok);
+  clip-path: path("M14 0 H24 V18 H0 Q12 14 14 0 Z");
 }
 
 /* Calcul RFC 6238 */
@@ -268,8 +301,28 @@
   word-spacing: 0.15em;
   color: var(--ink);
 }
+/* Les secondes « battent » des deux côtés, à chaque nouvelle empreinte */
+.reveal .ha-totp .to-ss {
+  display: inline-block;
+  min-width: 1.25em;
+  border-radius: 4px;
+}
+.reveal .ha-totp .to-ss.tick {
+  animation: to-tick 0.8s ease-out;
+}
+@keyframes to-tick {
+  0% {
+    transform: scale(1.35);
+    background: color-mix(in srgb, var(--sha, #2e7d32) 28%, transparent);
+    color: var(--sha, var(--ink));
+  }
+  100% {
+    transform: scale(1);
+    background: transparent;
+  }
+}
 
-/* Les flèches restent lisibles quand la planche est réduite dans la page. */
+/* Keep arrows legible in the embedded diagram. */
 .reveal .ha-totp .arr{height:3px;background:var(--muted)}
 .reveal .ha-totp .arr::after{border-left-color:var(--muted)}
 .reveal .ha-totp .to-elbow{border-color:var(--muted)}

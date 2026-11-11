@@ -21,8 +21,8 @@ document.querySelectorAll<HTMLElement>('[data-course-scene]').forEach(root=>{
   if(event.data.ready){root.dataset.ready='true';if(frame.dataset.synced!=='true'){frame.dataset.synced='true';send();}}
   root.dataset.step=String(event.data.step);root.dataset.playing=String(event.data.playing);
   const isTotp=root.dataset.scene==='totp';
-  const playback=!event.data.playing?(fr?'pause':'paused'):isTotp?(event.data.step===scenes.totp.steps?(fr?'TOTP en direct · période de 30 s':'Live TOTP · 30-second period'):(fr?'progression automatique':'automatic progression')):(fr?'boucle automatique':'automatic loop');
-  status.textContent=root.dataset.scene==='primitives'?(fr?'5 primitives · scènes originales du cours':'5 primitives · original course scenes'):(fr?`Étape ${event.data.step} / ${scenes[root.dataset.scene as SceneId].steps} · ${playback}`:`Step ${event.data.step} / ${scenes[root.dataset.scene as SceneId].steps} · ${playback}`);
+  const playback=!event.data.playing?(fr?'pause':'paused'):(fr?'boucle automatique':'automatic loop');
+  status.textContent=root.dataset.scene==='primitives'?(fr?'5 primitives · scènes originales du cours':'5 primitives · original course scenes'):isTotp?(event.data.playing?(fr?'TOTP en direct · période de 30 s':'Live TOTP · 30-second period'):(fr?'TOTP · pause':'TOTP · paused')):(fr?`Étape ${event.data.step} / ${scenes[root.dataset.scene as SceneId].steps} · ${playback}`:`Step ${event.data.step} / ${scenes[root.dataset.scene as SceneId].steps} · ${playback}`);
  });
  play.addEventListener('click',()=>{wanted=!wanted;load();send();});
  restart.addEventListener('click',()=>{wanted=true;load();send(true);});
